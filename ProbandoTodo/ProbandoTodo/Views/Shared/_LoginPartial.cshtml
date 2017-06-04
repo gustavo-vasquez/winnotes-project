@@ -1,0 +1,50 @@
+﻿@*@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)*@
+@model ProbandoTodo.Models.UserData
+
+@if(Session["UserLogged"] != null && Model.SessionIsActive(Session["UserLogged"] as string[]))
+{
+    using (Html.BeginForm("LogOff", "User", FormMethod.Post, new { id = "LogoutForm", @class = "navbar-right" }))
+    {
+    @Html.AntiForgeryToken()
+            ViewBag.Email = Model.Email;
+    <ul class="nav navbar-nav">
+        <li class="dropdown">
+            <div class="navbar-form">
+                <div class="btn-group">
+                    <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#" title="@Model.Email"><img src="@Model.AvatarImage" width="24" height="24" alt="user_login" /> @Model.UserName <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="@Url.Action("ProfileManagement", "User")"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp; Mi perfil</a></li>
+                        <li><a href="@Url.Action("List", "Note")"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp; Mis notas</a></li>
+                        <li><a href="@Url.Action("List", "Folder")"><span class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp; Mis carpetas</a></li>
+                        <li class="divider"></li>
+                        <li><button type="submit"><span class="glyphicon glyphicon-log-out"></span> Salir</button></li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+    @*if (!Model.EmailConfirmed)
+    {
+        <div class="alert alert-dismissible alert-info confirm-mail-info">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>@Model.UserName</strong>, su cuenta no se encuentra activada totalmente. Para hacerlo y acceder a las funcionalidades, verifique su casilla de E-mail y abra el enlace dentro. Si no le llego ningún correo puede solicitar enviarlo a <a href="javascript:void(0)" class="alert-link">@Model.Email</a>
+        </div>
+    }*@
+
+    @*<ul class="nav navbar-nav navbar-right">
+        <li>
+            @Html.ActionLink("Hola " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+        </li>
+        <li><a href="javascript:document.getElementById('logoutForm').submit()">Cerrar sesión</a></li>
+    </ul>*@
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">                
+        <li><a id="registerLink" href="#"><i class="glyphicon glyphicon-upload"></i> Registrarse</a></li>        
+        <li><a id="loginLink" href="#"><i class="glyphicon glyphicon-user"></i> Iniciar sesión</a></li>        
+    </ul>    
+}

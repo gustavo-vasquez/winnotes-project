@@ -1,0 +1,57 @@
+﻿@model ProbandoTodo.Models.ProfileManagementModels
+
+@{
+    ViewBag.Title = "Perfil";
+
+    @section custom_scripts {
+            @ScriptsExtension.RenderDefer("~/Scripts/Application/profile-management.view.js", "~/bundles/jqueryval")            
+        }
+}
+
+@if (ViewBag.error != null && ViewBag.error != "")
+{
+    <div class="alert alert-dismissible alert-danger text-center">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <p>@ViewBag.error</p>
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="row">
+            <div class="col-md-12">
+                @Html.Partial("_AvatarSection", Model.AvatarSectionModel)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="list-group profile-links">
+                    <a href="@Url.Action("List", "Folder")" class="list-group-item">
+                        <h4 class="list-group-item-heading"><span class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp; Ir a mis carpetas</h4>
+                        <p class="list-group-item-text">Ver todas las carpetas que has creado desde que te has registrado.</p>
+                    </a>
+                    <a href="@Url.Action("List", "Note")" class="list-group-item">
+                        <h4 class="list-group-item-heading"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp; Ir a mis notas</h4>
+                        <p class="list-group-item-text">Ver todas las notas que has creado asi no te olvidas de nada.</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="row">
+            <div class="col-md-12">
+                @Html.Partial("_PersonalPhraseSection", Model.PersonalPhraseModel)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                @Html.Partial("_InformationSection", Model.ChangePasswordSectionModel)
+            </div>
+        </div>
+    </div>    
+</div>
+
+@*@section scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }*@

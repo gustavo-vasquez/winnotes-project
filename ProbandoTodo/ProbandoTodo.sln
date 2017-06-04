@@ -1,0 +1,67 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.9
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProbandoTodo", "ProbandoTodo\ProbandoTodo.csproj", "{2C71BD4C-B571-462F-BF1F-CE320D7610D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProbandoTodo.Tests", "ProbandoTodo.Tests\ProbandoTodo.Tests.csproj", "{C0AFFADB-586D-406D-A796-03F394A67352}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data_Access_Layer", "Data_Access_Layer\Data_Access_Layer.csproj", "{B1049336-F1BC-4044-A153-96B5238F1A2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business_Logic_Layer", "Business_Logic_Layer\Business_Logic_Layer.csproj", "{A2FE0820-58E0-4F24-81C9-1E26BF85E414}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain_Layer", "Domain_Layer\Domain_Layer.csproj", "{9151B0E7-BF37-4BD5-94A9-0A3A99C80D4F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2C71BD4C-B571-462F-BF1F-CE320D7610D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C71BD4C-B571-462F-BF1F-CE320D7610D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C71BD4C-B571-462F-BF1F-CE320D7610D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C71BD4C-B571-462F-BF1F-CE320D7610D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0AFFADB-586D-406D-A796-03F394A67352}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0AFFADB-586D-406D-A796-03F394A67352}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0AFFADB-586D-406D-A796-03F394A67352}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0AFFADB-586D-406D-A796-03F394A67352}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1049336-F1BC-4044-A153-96B5238F1A2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1049336-F1BC-4044-A153-96B5238F1A2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1049336-F1BC-4044-A153-96B5238F1A2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1049336-F1BC-4044-A153-96B5238F1A2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2FE0820-58E0-4F24-81C9-1E26BF85E414}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2FE0820-58E0-4F24-81C9-1E26BF85E414}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2FE0820-58E0-4F24-81C9-1E26BF85E414}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2FE0820-58E0-4F24-81C9-1E26BF85E414}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9151B0E7-BF37-4BD5-94A9-0A3A99C80D4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9151B0E7-BF37-4BD5-94A9-0A3A99C80D4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9151B0E7-BF37-4BD5-94A9-0A3A99C80D4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9151B0E7-BF37-4BD5-94A9-0A3A99C80D4F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 6
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://gustavovasquez.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = ProbandoTodo.Tests\\ProbandoTodo.Tests.csproj
+		SccProjectName1 = ProbandoTodo.Tests
+		SccLocalPath1 = ProbandoTodo.Tests
+		SccProjectUniqueName2 = ProbandoTodo\\ProbandoTodo.csproj
+		SccProjectName2 = ProbandoTodo
+		SccLocalPath2 = ProbandoTodo
+		SccProjectUniqueName3 = Data_Access_Layer\\Data_Access_Layer.csproj
+		SccProjectName3 = Data_Access_Layer
+		SccLocalPath3 = Data_Access_Layer
+		SccProjectUniqueName4 = Business_Logic_Layer\\Business_Logic_Layer.csproj
+		SccProjectName4 = Business_Logic_Layer
+		SccLocalPath4 = Business_Logic_Layer
+		SccProjectUniqueName5 = Domain_Layer\\Domain_Layer.csproj
+		SccProjectName5 = Domain_Layer
+		SccLocalPath5 = Domain_Layer
+	EndGlobalSection
+EndGlobal

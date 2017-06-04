@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Domain_Layer.Note>
+
+@foreach (var note in Model)
+{
+    <div name="Alarm" class="fired-alarm">
+        <audio name="AlarmSound" loop src="~/Content/Audio/alarm.mp3" autoplay></audio>
+        <div class="panel panel-danger">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>@note.Title</p>
+                        <p>@note.Details</p>
+                    </div>
+                </div>
+                <div class="row text-right">
+                    <div class="col-md-12">
+                        <button class="btn btn-sm btn-block btn-danger stop"><span class="glyphicon glyphicon-off"></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

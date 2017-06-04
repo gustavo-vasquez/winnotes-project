@@ -1,0 +1,27 @@
+﻿@model IEnumerable<ProbandoTodo.Models.FolderModels.FolderListModelView>
+
+@if (Model != null)
+{
+    foreach (var folder in Model)
+    {        
+        <div class="col-md-3">
+            <a href="@Url.Action("NotesList", "Folder", new { folderID = folder.FolderID })" class="text-black">
+                <div class="panel panel-success">
+                    <div class="panel-body text-center">
+                        <p><img src="~/Content/Images/folder.png" width="48" height="40" alt="folder_icon" /></p>
+                        <p class="title-folder">@folder.Name</p>
+                        <p>@folder.Details</p>
+                        <p>Última modificación:</p>
+                        <p>@folder.LastModified</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+}
+else
+{
+    <div class="col-md-12 text-center">
+        <h2>Aún no hay carpetas creadas</h2>
+    </div>
+}

@@ -1,0 +1,19 @@
+﻿@model IEnumerable<ProbandoTodo.Models.FolderModels.FolderListModelView>
+
+@{
+    ViewBag.Title = "Mis carpetas";
+
+    @section custom_scripts {
+            @Scripts.Render("~/Scripts/application/folder-actions.js", "~/bundles/jqueryval")
+        }
+}
+
+<h1>Carpetas creadas</h1>
+<h4>Todas aquellas carpetas que has creado en todo este tiempo.</h4>
+<button id="CreateFolder" class="btn btn-warning"><i class="glyphicon glyphicon-folder-close"></i> Crear carpeta</button>
+<a class="btn btn-success" href="@Url.Action("Create", "Note")"><i class="glyphicon glyphicon-list-alt"></i> Crear nota</a>
+<hr />
+
+<div id="FoldersList" class="row folder-frame">
+    @Html.Partial("_FoldersThumbnail", Model)
+</div>

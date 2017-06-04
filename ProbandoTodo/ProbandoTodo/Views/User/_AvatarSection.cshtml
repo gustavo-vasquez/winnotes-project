@@ -1,0 +1,23 @@
+﻿@model ProbandoTodo.Models.ProfileManagementModels.AvatarSectionViewModel
+
+<div class="panel panel-primary profile-section">
+    <div class="panel-heading">
+        <h3 class="panel-title">Imágen de perfil</h3>
+    </div>
+    @using (Html.BeginForm("UploadAvatar", "User", FormMethod.Post, new { id = "UploadAvatarForm", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="panel-body text-center">
+            <img class="profile-picture" src="@Model.AvatarSource" width="200" height="200" alt="profile_picture" />
+            <label for="UploadAvatar" class="btn btn-primary">Cambiar imágen</label>
+            @Html.TextBoxFor(m => m.UploadAvatar, new { type = "file", @class = "hide" })
+            @Html.ValidationMessageFor(m => m.UploadAvatar, "", new { @class = "text-danger" })
+        </div>
+    }
+</div>
+
+<script>
+    document.getElementById("UploadAvatar").onchange = function () {
+        document.getElementById("UploadAvatarForm").submit();
+    };
+</script>

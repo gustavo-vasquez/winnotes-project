@@ -1,0 +1,65 @@
+﻿@model ProbandoTodo.Models.RegisterModel
+
+@section custom_scripts {
+    @ScriptsExtension.RenderDefer("~/Scripts/application/register-form.js")
+}
+
+<div id="RegisterDialog" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content col-md-12">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="glyphicon glyphicon-upload"></i> Crear nuevo usuario</h4>
+            </div>        
+        @using (Ajax.BeginForm("Register", "User", null,
+            new AjaxOptions { HttpMethod = "POST", OnSuccess = "registerComplete", UpdateTargetId = "MainDialog", InsertionMode = InsertionMode.Replace },
+            htmlAttributes: new { id = "RegisterForm", @class = "form-horizontal", role = "form" }))        
+        {
+                @Html.AntiForgeryToken()
+                <div class="modal-body">                
+                <p class="required-legend">Todos los campos son obligatorios.</p>
+                <div class="form-group">
+                    <label class="control-label">Nick de usuario:</label>
+                    @Html.TextBoxFor(m => m.UserName, htmlAttributes: new { @class = "form-control input-sm", placeholder = "Escribir nick...", maxlength = "50", autofocus = true })
+                    <label class="label-form-required">-Sólo MAYÚSCULAS, minúsculas y Nº</label>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">E-mail:</label>
+                    @Html.TextBoxFor(m => m.Email, htmlAttributes: new { @class = "form-control input-sm", placeholder = "Escribir correo...", maxlength = "30" })
+                    <label class="label-form-required">-Sólo escribir usuario de correo</label>
+                    <span id="MailChosed">@@gmail.com</span>                    
+                    <div id="chooseServiceMail" class="text-center">
+                        <label class="provider-radio">
+                            @Html.RadioButtonFor(m => m.MailProvider, 'G', htmlAttributes: new { id = "rdoProvider1", @checked = true })
+                            Gmail
+                        </label>
+                        <label class="provider-radio">
+                            @Html.RadioButtonFor(m => m.MailProvider, 'O', htmlAttributes: new { id = "rdoProvider2" })
+                            Outlook
+                        </label>
+                        <label class="provider-radio">
+                            @Html.RadioButtonFor(m => m.MailProvider, 'Y', htmlAttributes: new { id = "rdoProvider3" })
+                            Yahoo
+                        </label>
+                    </div>                    
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Contraseña:</label>
+                    @Html.PasswordFor(m => m.Password, htmlAttributes: new { @class = "form-control input-sm", placeholder = "Escribir contraseña..." })                    
+                    <label class="label-form-required">-(6 carac. min.) Al menos un Nº, minús., mayús.</label>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Repetir contraseña:</label>
+                    @Html.PasswordFor(m => m.ConfirmPassword, htmlAttributes: new { @class = "form-control input-sm", placeholder = "Repetir contraseña..." })                    
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger label-form-required" })                    
+                </div>                
+            </div>
+            <div class="modal-footer">                
+                <button type="submit" class="btn btn-success">Registrarse</button>
+            </div>
+        }
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jqueryval")

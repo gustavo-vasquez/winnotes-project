@@ -1,0 +1,56 @@
+﻿@model ProbandoTodo.Models.ProfileManagementModels.ChangePasswordSectionViewModel
+
+<div class="panel panel-primary profile-section">
+    <div class="panel-body form-horizontal">        
+        <div class="form-group">
+            <label class="col-md-3 control-label">Nombre de usuario</label>
+            <div class="col-md-9">
+                <label class="control-label text-default">Windows 10</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Email</label>
+            <div class="col-md-9">
+                <label class="control-label text-default">microsoft.windows@@outlook.com</label>
+            </div>
+        </div>            
+        @*<div class="form-group">
+            <div class="col-md-9 col-md-push-3">
+                <button type="button" class="btn btn-sm btn-danger">Cambiar contraseña</button>
+            </div>                
+        </div>*@
+        @using (Html.BeginForm("ChangePassword", "User", FormMethod.Post, new { id = "ChangePasswordForm", @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <label for="inputEmail" class="col-md-3 control-label">Contraseña actual</label>
+                <div class="col-md-9">
+                    @Html.PasswordFor(m => m.CurrentPassword, new { @class="form-control input-sm", placeholder="Contraseña..." })                    
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail" class="col-md-3 control-label">Nueva contraseña</label>
+                <div class="col-md-9">
+                    @Html.PasswordFor(m => m.NewPassword, new { @class = "form-control input-sm", placeholder = "Nueva contraseña..." })
+                    <label class="label-form-required">-(6 carac. min.) Al menos un Nº, minús., MAYÚS.</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail" class="col-md-3 control-label">Repetir nueva contraseña</label>
+                <div class="col-md-9">
+                    @Html.PasswordFor(m => m.RepeatPassword, new { @class = "form-control input-sm", placeholder = "Repetir nueva contraseña..." })                    
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-9 col-md-push-3">
+                    <button type="submit" class="btn btn-sm btn-primary">Guardar cambios</button>
+                </div>
+            </div>
+        }
+        <div class="form-group">
+            <div class="col-md-9 col-md-push-3">
+                <label class="control-label text-default">Registrado desde 17/04/2017</label>
+            </div>
+        </div>        
+    </div>
+</div>

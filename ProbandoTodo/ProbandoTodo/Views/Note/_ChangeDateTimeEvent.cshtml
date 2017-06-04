@@ -1,0 +1,31 @@
+﻿@model ProbandoTodo.Models.NoteModels.ChangeDatetimeEventModel
+
+<div class="alarm-overlay">
+    <div class="alarm-section">
+        @using (Ajax.BeginForm("SetDatetimeEvent", "Note", new { currentDate = Model.CurrentDate, ID_Note = Model.ID_Note, ID_Folder = Model.ID_Folder, Localized = Model.Localized } , new AjaxOptions { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "NotesInside", OnSuccess = "changeDatetimeEvent", OnFailure = "ajaxError" }, new { id = "SetDatetimeEventForm" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="col-md-12">
+                <h5 class="well well-sm"><span class="glyphicon glyphicon-hourglass"></span> Cambiar fecha al <b>@Model.CurrentDate</b></h5>
+                <div class="col-md-4">
+                    @Html.DropDownListFor(m => m.HourSelected, Model.HourBox, new { @class = "form-control input-sm" })
+                    <span class="two-points">:</span>
+                </div>
+                <div class="col-md-4">
+                    @Html.DropDownListFor(m => m.MinuteSelected, Model.MinuteBox, new { @class = "form-control input-sm" })
+                </div>
+                <div class="col-md-4">
+                    @Html.DropDownListFor(m => m.TimeTableSelected, Model.TimeTableBox, new { @class = "form-control input-sm" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-6">
+                    <button class="btn btn-xs btn-block btn-danger alarm-cancel">Cancelar</button>
+                </div>
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-xs btn-block btn-success alarm-submit">Terminar</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,18 @@
+﻿@model ProbandoTodo.Models.FolderModels.ChangeFolderModelView
+
+<div id="ChangeFolderDialog">
+    <div id="ChangeFolderForm">        
+        <div class="form-group has-warning">
+            <button type="button" class="close close-popup">&times;</button>
+            <label title="@Model.CurrentFolder">@Model.CurrentFolder</label>
+        </div>
+        <div class="form-group has-warning">
+            @Html.DropDownListFor(m => m.FolderSelected, Model.FoldersComboBox, new { multiple = "", size = "7", @class = "form-control input-sm", data_iof = Model.FolderID, data_ion = Model.NoteID })                
+        </div>
+        <div class="text-right">
+            <img class="hide" src="~/Content/Images/loading3.gif" width="32" height="32" alt="spinner" />
+            <button id="btnChangeFolder" type="submit" class="btn btn-sm btn-warning">Confirmar</button>
+        </div>
+    </div>
+</div>
+

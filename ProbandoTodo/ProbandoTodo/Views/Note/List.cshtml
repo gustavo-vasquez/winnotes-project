@@ -1,0 +1,44 @@
+﻿@model ProbandoTodo.Models.NoteModels.ClassifiedQueryableNotes
+
+@{
+    ViewBag.Title = "Todas las notas";
+
+    @section custom_scripts {
+        @Scripts.Render("~/Scripts/application/folder-actions.js", "~/bundles/jqueryval", "~/Scripts/application/note-actions.js")
+    }
+}
+
+<h1>Notas creadas</h1>
+<h4>Todas aquellas notas que has creado en todo este tiempo.</h4>
+<br />
+<div class="row">
+    <div>
+        <div class="col-md-4">
+            <a class="btn btn-success" href="@Url.Action("Create")"><span class="glyphicon glyphicon-list-alt"></span> Crear nota</a>        
+            <button id="CreateFolder" class="btn btn-warning"><span class="glyphicon glyphicon-folder-close"></span> Crear carpeta</button>
+        </div>
+        <div class="col-md-3 pull-right">
+            <select class="form-control">
+                <option>Sin ordenar</option>
+                <option>Fecha de expiración (&uarr;)</option>
+                <option>Fecha de expiración (&darr;)</option>
+                <option>A-Z</option>
+                <option>Z-A</option>
+            </select>
+        </div>
+    </div>
+</div>
+<hr />
+
+@if (Model.PendingNotes.Count() > 0 || Model.CompleteNotes.Count() > 0)
+{
+    <div id="NotesInside">
+        @Html.Partial("_ListOfNotes", Model)
+    </div>
+}
+else
+{
+    <div class="col-md-12 text-center">
+        <p class="well">No hay ninguna nota creada.</p>
+    </div>
+}

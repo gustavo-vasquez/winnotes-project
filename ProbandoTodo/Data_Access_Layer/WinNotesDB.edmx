@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="WinNotesDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Folder">
+          <Key>
+            <PropertyRef Name="FolderID" />
+          </Key>
+          <Property Name="FolderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Details" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="LastModified" Type="datetime" Nullable="false" />
+          <Property Name="Person_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Note">
+          <Key>
+            <PropertyRef Name="NoteID" />
+          </Key>
+          <Property Name="NoteID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Details" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ExpirationDate" Type="datetime" Nullable="false" />
+          <Property Name="Starred" Type="bit" />
+          <Property Name="Completed" Type="bit" />
+          <Property Name="Folder_ID" Type="int" Nullable="false" />
+          <Property Name="Person_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="PersonID" />
+          </Key>
+          <Property Name="PersonID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PersonIDEncrypted" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="RegistrationDate" Type="datetime" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="LastLoginDate" Type="datetime" Nullable="false" />
+          <Property Name="PersonalPhrase" Type="nvarchar(max)" />
+          <Property Name="PhraseColor" Type="varchar(max)" />
+          <Property Name="AvatarImage" Type="varbinary(max)" Nullable="false" />
+          <Property Name="AvatarMIMEType" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_FolderNote">
+          <End Role="Folder" Type="Self.Folder" Multiplicity="1" />
+          <End Role="Note" Type="Self.Note" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Folder">
+              <PropertyRef Name="FolderID" />
+            </Principal>
+            <Dependent Role="Note">
+              <PropertyRef Name="Folder_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonFolder">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Folder" Type="Self.Folder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonID" />
+            </Principal>
+            <Dependent Role="Folder">
+              <PropertyRef Name="Person_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonNote">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Note" Type="Self.Note" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonID" />
+            </Principal>
+            <Dependent Role="Note">
+              <PropertyRef Name="Person_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WinNotesDBModelStoreContainer">
+          <EntitySet Name="Folder" EntityType="Self.Folder" Schema="WinNotes" store:Type="Tables" />
+          <EntitySet Name="Note" EntityType="Self.Note" Schema="WinNotes" store:Type="Tables" />
+          <EntitySet Name="Person" EntityType="Self.Person" Schema="WinNotes" store:Type="Tables" />
+          <AssociationSet Name="FK_FolderNote" Association="Self.FK_FolderNote">
+            <End Role="Folder" EntitySet="Folder" />
+            <End Role="Note" EntitySet="Note" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonFolder" Association="Self.FK_PersonFolder">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Folder" EntitySet="Folder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonNote" Association="Self.FK_PersonNote">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Note" EntitySet="Note" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="WinNotesDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Folder">
+          <Key>
+            <PropertyRef Name="FolderID" />
+          </Key>
+          <Property Name="FolderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Details" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastModified" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Person_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Note" Relationship="Self.FK_FolderNote" FromRole="Folder" ToRole="Note" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_PersonFolder" FromRole="Folder" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="Note">
+          <Key>
+            <PropertyRef Name="NoteID" />
+          </Key>
+          <Property Name="NoteID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Details" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ExpirationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Starred" Type="Boolean" />
+          <Property Name="Completed" Type="Boolean" />
+          <Property Name="Folder_ID" Type="Int32" Nullable="false" />
+          <Property Name="Person_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Folder" Relationship="Self.FK_FolderNote" FromRole="Note" ToRole="Folder" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_PersonNote" FromRole="Note" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="PersonID" />
+          </Key>
+          <Property Name="PersonID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PersonIDEncrypted" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RegistrationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="LastLoginDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PersonalPhrase" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhraseColor" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="AvatarImage" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="AvatarMIMEType" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Folder" Relationship="Self.FK_PersonFolder" FromRole="Person" ToRole="Folder" />
+          <NavigationProperty Name="Note" Relationship="Self.FK_PersonNote" FromRole="Person" ToRole="Note" />
+        </EntityType>
+        <Association Name="FK_FolderNote">
+          <End Role="Folder" Type="Self.Folder" Multiplicity="1" />
+          <End Role="Note" Type="Self.Note" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Folder">
+              <PropertyRef Name="FolderID" />
+            </Principal>
+            <Dependent Role="Note">
+              <PropertyRef Name="Folder_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonFolder">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Folder" Type="Self.Folder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonID" />
+            </Principal>
+            <Dependent Role="Folder">
+              <PropertyRef Name="Person_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonNote">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Note" Type="Self.Note" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonID" />
+            </Principal>
+            <Dependent Role="Note">
+              <PropertyRef Name="Person_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WinNotesDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Folder" EntityType="Self.Folder" />
+          <EntitySet Name="Note" EntityType="Self.Note" />
+          <EntitySet Name="Person" EntityType="Self.Person" />
+          <AssociationSet Name="FK_FolderNote" Association="Self.FK_FolderNote">
+            <End Role="Folder" EntitySet="Folder" />
+            <End Role="Note" EntitySet="Note" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonFolder" Association="Self.FK_PersonFolder">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Folder" EntitySet="Folder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonNote" Association="Self.FK_PersonNote">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Note" EntitySet="Note" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="WinNotesDBModelStoreContainer" CdmEntityContainer="WinNotesDBEntities">
+          <EntitySetMapping Name="Folder">
+            <EntityTypeMapping TypeName="WinNotesDBModel.Folder">
+              <MappingFragment StoreEntitySet="Folder">
+                <ScalarProperty Name="FolderID" ColumnName="FolderID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Details" ColumnName="Details" />
+                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+                <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Note">
+            <EntityTypeMapping TypeName="WinNotesDBModel.Note">
+              <MappingFragment StoreEntitySet="Note">
+                <ScalarProperty Name="NoteID" ColumnName="NoteID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Details" ColumnName="Details" />
+                <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
+                <ScalarProperty Name="Starred" ColumnName="Starred" />
+                <ScalarProperty Name="Completed" ColumnName="Completed" />
+                <ScalarProperty Name="Folder_ID" ColumnName="Folder_ID" />
+                <ScalarProperty Name="Person_ID" ColumnName="Person_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Person">
+            <EntityTypeMapping TypeName="WinNotesDBModel.Person">
+              <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="PersonID" ColumnName="PersonID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="PersonIDEncrypted" ColumnName="PersonIDEncrypted" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="RegistrationDate" ColumnName="RegistrationDate" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="LastLoginDate" ColumnName="LastLoginDate" />
+                <ScalarProperty Name="PersonalPhrase" ColumnName="PersonalPhrase" />
+                <ScalarProperty Name="PhraseColor" ColumnName="PhraseColor" />
+                <ScalarProperty Name="AvatarImage" ColumnName="AvatarImage" />
+                <ScalarProperty Name="AvatarMIMEType" ColumnName="AvatarMIMEType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

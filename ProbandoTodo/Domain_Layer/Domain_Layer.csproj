@@ -43,6 +43,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -52,16 +53,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Folder.cs">
-      <DependentUpon>WinNotesModel.tt</DependentUpon>
+      <DependentUpon>WinNotesDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Note.cs">
-      <DependentUpon>WinNotesModel.tt</DependentUpon>
+      <DependentUpon>WinNotesDB.tt</DependentUpon>
     </Compile>
     <Compile Include="NoteInformationQueryable.cs" />
     <Compile Include="Person.cs">
-      <DependentUpon>WinNotesModel.tt</DependentUpon>
+      <DependentUpon>WinNotesDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WinNotesDB.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WinNotesDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="WinNotesModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -69,6 +75,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="WinNotesDB.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>WinNotesDB.cs</LastGenOutput>
+    </Content>
     <Content Include="WinNotesModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>WinNotesModel.cs</LastGenOutput>

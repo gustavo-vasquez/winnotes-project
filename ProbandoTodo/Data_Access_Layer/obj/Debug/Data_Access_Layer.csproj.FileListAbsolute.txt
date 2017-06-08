@@ -14,3 +14,17 @@ C:\Users\Gustavo\Documents\TFS Workspaces\Practicas\ProbandoTodo-ProjectApp\Debu
 C:\Users\Gustavo\Documents\TFS Workspaces\Practicas\ProbandoTodo-ProjectApp\Debug\ProbandoTodo-develop\Data_Access_Layer\bin\Debug\Domain_Layer.pdb
 C:\Users\Gustavo\Documents\TFS Workspaces\Practicas\ProbandoTodo-ProjectApp\Debug\ProbandoTodo-develop\Data_Access_Layer\bin\Debug\Domain_Layer.dll.config
 C:\Users\Gustavo\Documents\TFS Workspaces\Practicas\ProbandoTodo-ProjectApp\Debug\ProbandoTodo-develop\Data_Access_Layer\bin\Debug\System.Web.Mvc.dll
+C:\Users\Gustavo\Documents\GIT_Repositories\Proyecto_Notas\ProbandoTodo\Data_Access_Layer\obj\Debug\Data_Access_Layer.csprojResolveAssemblyReference.cache
+C:\Users\Gustavo\Documents\GIT_Repositories\Proyecto_Notas\ProbandoTodo\Data_Access_Layer\obj\Debug\Data_Access_Layer.dll
+C:\Users\Gustavo\Documents\GIT_Repositories\Proyecto_Notas\ProbandoTodo\Data_Access_Layer\obj\Debug\Data_Access_Layer.pdb
+C:\Users\Gustavo\Documents\GIT_Repositories\Proyecto_Notas\ProbandoTodo\Data_Access_Layer\bin\Debug\Data_Access_Layer.dll.config
+C:\Users\Gustavo\Documents\GIT_Repositories\Proyecto_Notas\ProbandoTodo\Data_Access_Layer\bin\Debug\Data_Access_Layer.dll
+C:\Users\Gustavo\Documents\GIT_Repositories\Proyecto_Notas\ProbandoTodo\Data_Access_Layer\bin\Debug\Data_Access_Layer.pdb
+C:\Users\Gustavo\Documents\GIT_Repositories\Proyecto_Notas\ProbandoTodo\Data_Access_Layer\bin\Debug\Domain_Layer.dll
+C:\Users\Gustavo\Documents\GIT_Repositories\Proyecto_Notas\ProbandoTodo\Data_Access_Layer\bin\Debug\EntityFramework.dll
+C:\Users\Gustavo\Documents\GIT_Repositories\Proyecto_Notas\ProbandoTodo\Data_Access_Layer\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Gustavo\Documents\GIT_Repositories\Proyecto_Notas\ProbandoTodo\Data_Access_Layer\bin\Debug\Domain_Layer.pdb
+C:\Users\Gustavo\Documents\GIT_Repositories\Proyecto_Notas\ProbandoTodo\Data_Access_Layer\bin\Debug\EntityFramework.xml
+C:\Users\Gustavo\Documents\GIT_Repositories\Proyecto_Notas\ProbandoTodo\Data_Access_Layer\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Gustavo\Documents\GIT_Repositories\Proyecto_Notas\ProbandoTodo\Data_Access_Layer\bin\Debug\es\EntityFramework.resources.dll
+C:\Users\Gustavo\Documents\GIT_Repositories\Proyecto_Notas\ProbandoTodo\Data_Access_Layer\bin\Debug\es\EntityFramework.SqlServer.resources.dll

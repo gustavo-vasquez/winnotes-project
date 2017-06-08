@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -12,15 +13,15 @@ namespace Data_Access_Layer
 {
     public class UserDAL
     {
-        public WinNotesEntities OpenConnection()
-        {
-            WinNotesEntities WinNotesContext = new WinNotesEntities();
+        public WinNotesDBEntities OpenConnection()
+        {            
+            WinNotesDBEntities WinNotesContext = new WinNotesDBEntities();
             return WinNotesContext;
         }
 
-        public void CloseConnection(WinNotesEntities WinNotesContext)
+        public void CloseConnection(WinNotesDBEntities WinNotesContext)
         {
-            WinNotesContext.Dispose();
+            WinNotesContext.Dispose();            
         }
 
         /// <summary>
@@ -44,12 +45,15 @@ namespace Data_Access_Layer
                     userToAdd.Email = Email;
                     userToAdd.Password = Password;
                     userToAdd.AvatarImage = null;
+                    userToAdd.AvatarMIMEType = null;
                     userToAdd.Active = false;
-                    userToAdd.EmailConfirmed = false;
+                    userToAdd.PersonIDEncrypted = "err";
                     userToAdd.RegistrationDate = DateTime.Now;
                     userToAdd.LastLoginDate = DateTime.Now;
 
                     context.Person.Add(userToAdd);
+                    context.SaveChanges();
+                    userToAdd.PersonIDEncrypted = this.EncryptToSHA256(userToAdd.PersonID);
                     context.SaveChanges();
                     CloseConnection(context);
 
@@ -59,11 +63,54 @@ namespace Data_Access_Layer
                 CloseConnection(context);
                 return false;
             }
-            catch(Exception ex)
+            catch
             {
-                throw ex;
+                throw;
             }
         }
+
+
+        #region ENCRIPTAR INFORMACIÓN DE USUARIO
+
+        /// <summary>
+        /// Devuelve el ID de usuario encriptado.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        public string EncryptToSHA256(int userID)
+        {
+            try
+            {
+                //var dataToEncrypt = new UserDAL().RetrieveIdToEncrypt(email);
+
+                HashAlgorithm hasher = null;
+
+                try
+                {
+                    hasher = new SHA256Managed();
+                }
+                catch
+                {
+                    hasher = new SHA256CryptoServiceProvider();
+                }
+
+                byte[] plainBytes = Encoding.UTF8.GetBytes(userID.ToString());
+                byte[] hashedBytes = hasher.ComputeHash(plainBytes);
+                hasher.Clear();
+
+                var IdentifierEncrypted = Convert.ToBase64String(hashedBytes);
+                //new UserDAL().SaveHashDAL(IdentifierEncrypted, email);
+
+                return IdentifierEncrypted;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        #endregion
+
 
         /// <summary>
         /// Verifica la existencia del nombre de usuario elegido.
@@ -97,7 +144,7 @@ namespace Data_Access_Layer
                     User.PersonID.ToString(),
                     User.UserName,
                     User.Email,
-                    User.EmailConfirmed.ToString().ToLower(),
+                    User.Active.ToString().ToLower(),
                     GetAvatarImage(User.AvatarImage,
                     User.AvatarMIMEType)
                 };
@@ -109,23 +156,23 @@ namespace Data_Access_Layer
         }        
         
         /// <summary>
-        /// Devuelve el ID de usuario que se va a encriptar.
+        /// Devuelve el ID de usuario encriptado desde la base de datos.
         /// </summary>
-        /// <param name="userData">Correo electrónico</param>
+        /// <param name="email">Correo electrónico</param>
         /// <returns></returns>
-        public string RetrieveIdToEncrypt(string userData)
+        public string RetrieveEncryptedID(string email)
         {
             try
             {
                 var context = OpenConnection();
-                int PersonID = context.Person.Where(p => p.Email == userData).First().PersonID;                
+                string EncryptedID = context.Person.Where(p => p.Email == email).First().PersonIDEncrypted;                
                 CloseConnection(context);
 
-                return PersonID.ToString();
+                return EncryptedID;
             }
-            catch(Exception ex)
+            catch
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -140,7 +187,7 @@ namespace Data_Access_Layer
             {
                 var context = OpenConnection();
                 Person person = context.Person.Where(p => p.Email == email).First();
-                person.IdentifierEncrypted = IdentifierEncrypted;
+                person.PersonIDEncrypted = IdentifierEncrypted;
                 context.SaveChanges();
                 CloseConnection(context);
             }
@@ -159,7 +206,7 @@ namespace Data_Access_Layer
         {
             string[] LoginData = null;
             var context = OpenConnection();
-            Person User = context.Person.Where(p => p.IdentifierEncrypted == encryptedID).FirstOrDefault();
+            Person User = context.Person.Where(p => p.PersonIDEncrypted == encryptedID).FirstOrDefault();
 
             if (User != null)
             {
@@ -167,7 +214,7 @@ namespace Data_Access_Layer
                     User.PersonID.ToString(),
                     User.UserName,
                     User.Email,
-                    User.EmailConfirmed.ToString().ToLower(),
+                    User.Active.ToString().ToLower(),
                     GetAvatarImage(User.AvatarImage, User.AvatarMIMEType)
                 };
             }

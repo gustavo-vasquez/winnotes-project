@@ -75,52 +75,52 @@
         </div>
     </div>    
     <div class="container body-content">
-        @RenderBody()
-        <footer>
-            <div class="row footer-section">
-                <div class=" col-md-2">
-                    <h3></h3>
-                    <p class="logo-footer">WN</p>
-                    <p>&copy; WinNotes - @DateTime.Now.Year</p>
-                    <p>Buenos Aires</p>
-                    <p>Argentina</p>                    
-                </div>
-                <div class="col-md-4">
-                    <h3>CONTACTO</h3>
-                    <ul>
-                        <li>One Microsoft Way</li>
-                        <li>Redmond, WA 98052-6399</li>
-                        <li>Teléfono: 425.555.0100</li>
-                    </ul>
-                    <br />
-                    <ol type="I">
-                        <li>Soporte: <a href="#">Soporte@winnotes.com</a></li>
-                        <li>Marketing: <a href="#">Marketing@winnotes.com</a></li>
-                    </ol>
-                </div>
-                <div class="col-md-3 social-media">
-                    <h3>REDES SOCIALES</h3>
-                    <ol>
-                        <li><a href="https://www.facebook.com/"><img src="~/Content/Images/social_media/1495840813_facebook_circle.png" width="32" alt="facebook" /> &nbsp; Facebook</a></li>
-                        <li><a href="https://twitter.com/"><img src="~/Content/Images/social_media/1495840731_twitter_circle.png" width="32" alt="twitter" /> &nbsp; Twitter</a></li>
-                        <li><a href="https://plus.google.com/?hl=es"><img src="~/Content/Images/social_media/1495840725_social-03.png" width="32" alt="google+" /> &nbsp; Google+</a></li>
-                        <li><a href="https://www.youtube.com/"><img src="~/Content/Images/social_media/1495840705_youtube.png" width="32" alt="youtube" /> &nbsp; Youtube</a></li>
-                        <li><a href="https://www.instagram.com/"><img src="~/Content/Images/social_media/1495840698_instagram.png" width="32" alt="instagram" /> &nbsp; Instagram</a></li>
-                        <li><a href="https://github.com/"><img src="~/Content/Images/social_media/1495840711_github.png" width="32" alt="github" /> &nbsp; Github</a></li>
-                        <li><a href="https://www.reddit.com/"><img src="~/Content/Images/social_media/1495840719_reddit.png" width="32" alt="reddit" /> &nbsp; Reddit</a></li>
-                    </ol>                    
-                </div>
-                <div class="col-md-3">
-                    <h3>LEGAL</h3>
-                    <ul>
-                        <li><a href="#">Términos y condiciones</a></li>
-                        <li><a href="#">Política de privacidad</a></li>
-                    </ul>
-                </div>
-            </div>            
-        </footer>
+        @RenderBody()        
         <div id="MainDialog"></div>
     </div>
+    <footer class="col-md-12">
+        <div class="container">
+            <div class="col-md-2">
+                <h3></h3>
+                <p class="logo-footer">WN</p>
+                <p>&copy; WinNotes - @DateTime.Now.Year</p>
+                <p>Buenos Aires</p>
+                <p>Argentina</p>
+            </div>
+            <div class="col-md-3">
+                <h3 class="text-center">LEGAL</h3>
+                <ul>
+                    <li><a href="#">Términos y condiciones</a></li>
+                    <li><a href="#">Política de privacidad</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h3>CONTACTO</h3>
+                <ul>
+                    <li>One Microsoft Way</li>
+                    <li>Redmond, WA 98052-6399</li>
+                    <li>Teléfono: 425.555.0100</li>
+                </ul>
+                <br />
+                <ol type="I">
+                    <li>Soporte: <a href="#">Soporte@winnotes.com</a></li>
+                    <li>Marketing: <a href="#">Marketing@winnotes.com</a></li>
+                </ol>
+            </div>            
+            <div class="col-md-3 social-media">
+                <h3>REDES SOCIALES</h3>
+                <ol>
+                    <li><img src="~/Content/Images/social_media/1495840813_facebook_circle.png" width="32" alt="facebook" /> &nbsp; <a href="https://www.facebook.com/">Facebook</a></li>
+                    <li><img src="~/Content/Images/social_media/1495840731_twitter_circle.png" width="32" alt="twitter" /> &nbsp; <a href="https://twitter.com/">Twitter</a></li>
+                    <li><img src="~/Content/Images/social_media/1495840725_social-03.png" width="32" alt="google+" /> &nbsp; <a href="https://plus.google.com/?hl=es">Google+</a></li>
+                    <li><img src="~/Content/Images/social_media/1495840705_youtube.png" width="32" alt="youtube" /> &nbsp; <a href="https://www.youtube.com/">Youtube</a></li>
+                    <li><img src="~/Content/Images/social_media/1495840698_instagram.png" width="32" alt="instagram" /> &nbsp; <a href="https://www.instagram.com/">Instagram</a></li>
+                    <li><img src="~/Content/Images/social_media/1495840711_github.png" width="32" alt="github" /> &nbsp; <a href="https://github.com/">Github</a></li>
+                    <li><img src="~/Content/Images/social_media/1495840719_reddit.png" width="32" alt="reddit" /> &nbsp; <a href="https://www.reddit.com/">Reddit</a></li>
+                </ol>
+            </div>
+        </div>
+    </footer>
     @Scripts.Render("~/bundles/jquery", "~/bundles/bootstrap")    
     @Scripts.Render("~/jquery-ui-1.12.1.custom/jquery-ui.js")
     @Scripts.Render("~/Scripts/application.js")

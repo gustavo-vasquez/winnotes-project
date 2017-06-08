@@ -177,20 +177,19 @@ namespace ProbandoTodo.Controllers
         public void SetCookieData(string email)
         {
             try
-            {
-                var hashUser = userBLL.EncryptToSHA256(email);
+            {                
                 HttpCookie userCookie = new HttpCookie("UHICK");
                 userCookie.Domain = "localhost";
                 userCookie.Expires = DateTime.Now.AddDays(15);
                 userCookie.Path = "/";
                 userCookie.Secure = false;
-                userCookie.Value = hashUser;
+                userCookie.Value = userBLL.RetrieveEncryptedID(email);
                 Response.Cookies.Add(userCookie);
             }
             catch(Exception ex)
             {
                 throw ex;
-            }            
-        }               
+            }
+        }           
     }
 }

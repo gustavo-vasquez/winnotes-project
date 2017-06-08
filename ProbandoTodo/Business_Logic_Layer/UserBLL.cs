@@ -13,6 +13,8 @@ namespace Business_Logic_Layer
 {
     public class UserBLL
     {
+        static UserDAL userDAL = new UserDAL();
+
         /// <summary>
         /// (Capa de negocio) Crea un nuevo usuario en la base de datos.
         /// </summary>
@@ -58,6 +60,16 @@ namespace Business_Logic_Layer
         public string[] Login(string Email, string Password)
         {            
             return new UserDAL().LoginDAL(Email, Password);
+        }
+
+        /// <summary>
+        /// (Capa de negocio) Devuelve el ID de usuario encriptado desde la base de datos.
+        /// </summary>
+        /// <param name="email">Correo electrónico</param>
+        /// <returns></returns>
+        public string RetrieveEncryptedID(string email)
+        {
+            return userDAL.RetrieveEncryptedID(email);
         }
 
         /// <summary>
@@ -177,48 +189,6 @@ namespace Business_Logic_Layer
             
         }
 
-        #endregion
-
-        
-        #region ENCRIPTAR INFORMACIÓN DE USUARIO
-
-        /// <summary>
-        /// Devuelve el ID de usuario encriptado.
-        /// </summary>
-        /// <param name="email"></param>
-        /// <returns></returns>
-        public string EncryptToSHA256(string email)
-        {
-            try
-            {
-                var dataToEncrypt = new UserDAL().RetrieveIdToEncrypt(email);
-
-                HashAlgorithm hasher = null;
-
-                try
-                {
-                    hasher = new SHA256Managed();
-                }
-                catch
-                {
-                    hasher = new SHA256CryptoServiceProvider();
-                }
-
-                byte[] plainBytes = Encoding.UTF8.GetBytes(dataToEncrypt);
-                byte[] hashedBytes = hasher.ComputeHash(plainBytes);
-                hasher.Clear();
-
-                var IdentifierEncrypted = Convert.ToBase64String(hashedBytes);
-                new UserDAL().SaveHashDAL(IdentifierEncrypted, email);
-
-                return IdentifierEncrypted;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        #endregion
+        #endregion               
     }
 }

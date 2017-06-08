@@ -1,10 +1,10 @@
 ﻿@model ProbandoTodo.Models.RegisterModel
 
 @section custom_scripts {
-    @ScriptsExtension.RenderDefer("~/Scripts/application/register-form.js")
+    @Scripts.Render("~/bundles/jqueryval", "~/Scripts/application/register-form.js")
 }
 
-<div id="RegisterDialog" class="modal">
+<div id="RegisterDialog" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content col-md-12">
             <div class="modal-header">
@@ -61,5 +61,3 @@
         </div>
     </div>
 </div>
-
-@Scripts.Render("~/bundles/jqueryval")

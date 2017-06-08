@@ -217,7 +217,7 @@ namespace Data_Access_Layer
             try
             {
                 var context = OpenConnection();
-                int userID = context.Person.Where(p => p.IdentifierEncrypted == encryptedUser).First().PersonID;
+                int userID = context.Person.Where(p => p.PersonIDEncrypted == encryptedUser).First().PersonID;
                 List<Note> notes = context.Note.Where(n => n.Person_ID == userID && n.Completed != true).ToList();
                 List<Note> expiredNotes = new List<Note>();
 

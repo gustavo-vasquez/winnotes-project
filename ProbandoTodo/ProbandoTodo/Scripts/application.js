@@ -13,7 +13,7 @@
             success: function (data) {
                 $('#MainDialog').html(data);
                 $('#RegisterDialog').modal("show");
-                registerFormActions();                
+                registerFormActions();
             }
         });
     });
@@ -44,8 +44,8 @@
         //}
     });
 
-    checkIfEventsIsExpired();
-    setInterval(checkIfEventsIsExpired, (60 - new Date().getSeconds) * 1000);
+    checkIfEventsAreExpired();
+    setInterval(checkIfEventsAreExpired, (60 - new Date().getSeconds) * 1000);
 });
 
 function scrollFunction() {    
@@ -62,25 +62,29 @@ function topFunction() {
     return false;
 }
 
-function checkIfEventsIsExpired() {        
-    var obj = { "uhick": readCookie("UHICK") };    
-    $.ajax({
-        url: "/Note/CheckExpiredEventsPartial",
-        method: "POST",
-        dataType: "html",
-        data: JSON.stringify(obj),
-        contentType: "application/json; charset=utf-8",        
-        success: function (data) {
-            $('.body-content').append(data);
-            $('.fired-alarm').show('puff');
-            $('.stop').on('click', stopAlarm);            
-        },
-        error: function (response, error, errorThrown) {
-            console.log(response);
-            console.log(error);
-            console.log(errorThrown);
-        }
-    });
+function checkIfEventsAreExpired() {
+    var userCk = readCookie("UHICK");
+
+    if(userCk != null && userCk != undefined) {
+        var obj = { "uhick": userCk };
+        $.ajax({
+            url: "/Note/CheckExpiredEventsPartial",
+            method: "POST",
+            dataType: "html",
+            data: JSON.stringify(obj),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $('.body-content').append(data);
+                $('.fired-alarm').show('puff');
+                $('.stop').on('click', stopAlarm);
+            },
+            error: function (response, error, errorThrown) {
+                console.log(response);
+                console.log(error);
+                console.log(errorThrown);
+            }
+        });
+    }
 }
 
 function stopAlarm() {

@@ -70,6 +70,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WinNotesDatabase.edmx</DependentUpon>
     </Compile>
+    <Compile Include="WinNotesDB.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WinNotesDB.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WinNotesDB.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WinNotesDB.edmx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="WinNotesDatabase.edmx">
@@ -83,12 +93,25 @@
     <None Include="WinNotesDatabase.edmx.diagram">
       <DependentUpon>WinNotesDatabase.edmx</DependentUpon>
     </None>
+    <EntityDeploy Include="WinNotesDB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>WinNotesDB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="WinNotesDB.edmx.diagram">
+      <DependentUpon>WinNotesDB.edmx</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="WinNotesDatabase.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>WinNotesDatabase.Context.cs</LastGenOutput>
       <DependentUpon>WinNotesDatabase.edmx</DependentUpon>
+      <CustomToolNamespace>Domain_Layer</CustomToolNamespace>
+    </Content>
+    <Content Include="WinNotesDB.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>WinNotesDB.edmx</DependentUpon>
+      <LastGenOutput>WinNotesDB.Context.cs</LastGenOutput>
       <CustomToolNamespace>Domain_Layer</CustomToolNamespace>
     </Content>
   </ItemGroup>

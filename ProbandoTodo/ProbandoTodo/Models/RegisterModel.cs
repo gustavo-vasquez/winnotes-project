@@ -9,24 +9,31 @@ using static ProbandoTodo.Models.CustomDataAnnotations;
 namespace ProbandoTodo.Models
 {            
     public class RegisterModel
-    {        
-        [Required(ErrorMessage = "-Debe ingresar el nombre de usuario")]
+    {
+        public enum MailProviders
+        {
+            gmail = 'g',
+            outlook = 'o',
+            yahoo = 'y'
+        };        
+
+        [Required(ErrorMessage = "-Ingresar nombre de usuario")]
         [RegularExpression("^[a-zA-Z0-9 _]*$")]
         public string UserName { get; set; }
 
-        [Required(ErrorMessage = "Debe ingresar el usuario de email")]
+        [Required(ErrorMessage = "Ingresar nombre de email")]
         [RegularExpression("^[^@]+$")]
         public string Email { get; set; }
 
-        public char MailProvider { get; set; }
+        public MailProviders MailProvider { get; set; }
 
-        [Required(ErrorMessage = "-Debe ingresar algo")]
+        [Required(ErrorMessage = "-Ingresar contraseña")]
         [MinLength(6)]
         [RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).+$")]
         public string Password { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = " ")]
         [Compare("Password", ErrorMessage = "-Las contraseñas no coinciden")]
-        public string ConfirmPassword { get; set; }                       
+        public string ConfirmPassword { get; set; }
     }
 }

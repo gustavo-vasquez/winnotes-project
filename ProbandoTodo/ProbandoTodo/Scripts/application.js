@@ -11,9 +11,11 @@
         $.ajax({
             url: "/User/Register",            
             success: function (data) {
-                $('#MainDialog').html(data);
+                $('#MainDialog').html(data);                
                 $('#RegisterDialog').modal("show");
-                registerFormActions();
+                $("form").removeData("validator");
+                $("form").removeData("unobtrusiveValidation");
+                $.validator.unobtrusive.parse("form");
             }
         });
     });

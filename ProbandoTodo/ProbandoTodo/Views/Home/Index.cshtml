@@ -2,75 +2,34 @@
     ViewBag.Title = "Home Page";
 }
 
-<div id="myCarousel" class="row carousel slide" data-ride="carousel" style="margin-top: -40px; margin-bottom: 50px;">
-    <!-- Indicators -->
-    @*<ol class="carousel-indicators">
-            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#myCarousel" data-slide-to="1"></li>
-            <li data-target="#myCarousel" data-slide-to="2"></li>
-        </ol>*@
-
-    <!-- Wrapper for slides -->
-    <div class="carousel-inner">
-        <div class="item active">
-            <div class="overlay"></div>
-            <div class="hero">
-                <hgroup>
-                    <h1>Crear notas</h1>
-                    <h3>Utilice la plataforma para crear notas y recordatorios útiles. Aumente la productividad de sus actividades diarias.</h3>
-                </hgroup>
-                <a href="@Url.Action("Create", "Note")" class="btn btn-danger btn-lg">Crear nota &raquo;</a>
-            </div>
-            <img src="~/Content/Images/446.jpg" alt="Los Angeles">
-            @*<div class="carousel-caption">
-                <h3>Los Angeles</h3>
-                <p>LA is always so much fun!</p>
-            </div>*@
-        </div>
-
-        <div class="item">
-            <div class="overlay"></div>
-            <div class="hero">
-                <hgroup>
-                    <h1>Mis carpetas</h1>
-                    <h3>Acceda a todas sus carpetas y vea que notas ha creado.</h3>
-                </hgroup>
-                <a href="@Url.Action("List", "Folder")" class="btn btn-danger btn-lg">Ir a carpetas &raquo;</a>
-            </div>
-            <img src="~/Content/Images/landscape_bliss_alternate_1680_1920x1200_artwallpaperhi.com.jpg" alt="Chicago">
-            @*<div class="carousel-caption">
-                <h3>Chicago</h3>
-                <p>Thank you, Chicago!</p>
-            </div>*@
-        </div>
-
-        <div class="item">
-            <div class="overlay"></div>
-            <div class="hero">
-                <hgroup>
-                    <h1>Mis notas</h1>
-                    <h3>Visualice todas sus notas para no olvidarse de ningún evento.</h3>
-                </hgroup>
-                <a href="@Url.Action("List", "Note")" class="btn btn-danger btn-lg">Ir a las notas &raquo;</a>
-            </div>
-            <img src="~/Content/Images/blue-and-green-triangles.jpg" alt="New York">
-            @*<div class="carousel-caption">
-                <h3>New York</h3>
-                <p>We love the Big Apple!</p>
-            </div>*@
+<div class="row">
+    <div class="col-md-4">
+        <div class="jumbotron">
+            <img src="~/Content/Images/folder.png" width="128" height="128" alt="carpetas" />
+            <h2><b>Mis carpetas</b></h2>
+            <p>Acceda a todas sus carpetas y vea que notas ha creado.</p>
+            <p><a href="@Url.Action("List", "Folder")" class="btn btn-warning btn-lg">Ir a carpetas &raquo;</a></p>
         </div>
     </div>
-
-    <!-- Left and right controls -->
-    @*<a class="left carousel-control" href="#myCarousel" data-slide="prev">
-            <span class="glyphicon glyphicon-chevron-left"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="right carousel-control" href="#myCarousel" data-slide="next">
-            <span class="glyphicon glyphicon-chevron-right"></span>
-            <span class="sr-only">Next</span>
-        </a>*@
+    <div class="col-md-4">
+        <div class="jumbotron">
+            <img src="~/Content/Images/notepad.png" width="128" height="128" alt="notas" />
+            <h2><b>Crear notas</b></h2>
+            <p>Utilice la plataforma para crear notas y recordatorios útiles.</p>
+            <p><a href="@Url.Action("Create", "Note")" class="btn btn-primary btn-lg">Crear nota &raquo;</a></p>
+        </div>
+    </div>    
+    <div class="col-md-4">
+        <div class="jumbotron">
+            <img src="~/Content/Images/sticky.png" width="128" height="128" alt="nueva_nota" />
+            <h2><b>Mis notas</b></h2>
+            <p>Visualice todas sus notas para no olvidarse de ningún evento.</p>
+            <p><a href="@Url.Action("List", "Note")" class="btn btn-danger btn-lg">Ir a las notas &raquo;</a></p>
+        </div>
+    </div>
 </div>
+
+<hr />
 
 <div class="row technologies">
     <div class="col-md-3 text-center">
@@ -82,7 +41,7 @@
             HTML5[a] is a markup language used for structuring and presenting content on the World Wide Web.
             It is the fifth and current version of the HTML standard.
         </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Ver más &raquo;</a></p>
     </div>
     <div class="col-md-3 text-center">
         <img class="img-rounded" src="~/Content/Images/technologies/bootstrap.svg" width="196" height="196" alt="bootstrap_logo" />
@@ -92,7 +51,7 @@
         <p>
             Bootstrap is the most popular HTML, CSS, and JS framework for developing responsive, mobile first projects on the web.
         </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Ver más &raquo;</a></p>
     </div>
 </div>
 <div class="row technologies">
@@ -105,7 +64,7 @@
             jQuery is a fast, small, and feature-rich JavaScript library.
             It makes things like HTML document traversal and manipulation, event handling, animation, and Ajax much simpler with an easy-to-use API that works across a multitude of browsers.
         </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Ver más &raquo;</a></p>
     </div>
     <div class="col-md-3 text-center">
         <img class="img-rounded" src="~/Content/Images/technologies/Microsoft_.NET_Logo.png" width="196" height="196" alt="asp.net_logo" />
@@ -116,7 +75,7 @@
             ASP.NET is an open source web framework for building modern web apps and services with .NET.
             ASP.NET creates websites based on HTML5, CSS, and JavaScript that are simple, fast, and can scale to millions of users.
         </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Ver más &raquo;</a></p>
     </div>
 </div>
 <div class="row technologies">
@@ -129,7 +88,7 @@
             C# (pronounced "C sharp") is a programming language that is designed for building a variety of applications that run on the .NET Framework.
             C# is simple, powerful, type-safe, and object-oriented.
         </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Ver más &raquo;</a></p>
     </div>
     <div class="col-md-3">
         <img class="img-rounded" src="~/Content/Images/technologies/SQL-Server-2012.png" width="196" height="196" alt="sqlserver_logo" />
@@ -140,6 +99,6 @@
             Microsoft SQL Server is a relational database management system developed by Microsoft.
             As a database server, it is a software product with the primary function of storing and retrieving data as requested by other software applications—which may run either on the same computer or on another computer across a network (including the Internet).
         </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Ver más &raquo;</a></p>
     </div>
 </div>

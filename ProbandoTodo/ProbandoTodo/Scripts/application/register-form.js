@@ -1,23 +1,6 @@
-﻿function setMailService() {
-	$('input:radio[name=MailProvider]').on('click', function () {
-		$.each($('input:radio[name=MailProvider]'), function (index, value) {
-			if ($(this).is(":checked")) {
-				switch (index) {
-					case 0: $('#MailChosed').html("@gmail.com");
-						break;
-					case 1: $('#MailChosed').html("@outlook.com");
-						break;
-					case 2: $('#MailChosed').html("@yahoo.com");
-						break;
-				}
-				return false;
-			}
-		});
-	});
-}
+﻿$(document).ready(registerFormActions);
 
-function registerFormActions() {
-	setMailService();
+function registerFormActions() {    
 	$('#RegisterForm').on('blur', '#UserName', function () {
 		var textbox = $(this);
 

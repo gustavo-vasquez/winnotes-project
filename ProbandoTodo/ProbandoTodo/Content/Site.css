@@ -37,8 +37,13 @@
     font-size: 72px;
 }
 
+div .jumbotron {
+    background-color: #ecf0f1;
+    text-align: center;
+}
+
 .technologies {
-    margin-top: 8%;
+    margin-bottom: 6%;
 }
 
 .technologies h2 {
@@ -246,39 +251,20 @@ textarea {
 }
 
 .required-legend {
-    font-size: 12px;
-    margin-bottom: 2%;
+    font-size: 12px;    
     text-align: center;
+    color: crimson;
 }
 
 .label-form-required {
     color: gray !important;
     background-color: transparent !important;
-    display: inline !important;
-    padding: .2em .6em .3em !important;
+    display: inline !important;    
     font-size: 75% !important;
     font-weight: bold !important;
-    line-height: 1 !important;    
-    text-align: center !important;
-    white-space: nowrap !important;
+    line-height: 1 !important;            
     vertical-align: baseline !important;
     border-radius: .25em !important;
-}
-
-#RegisterForm #Email {
-    padding-right: 40%;    
-}
-
-#MailChosed {
-    position: absolute;
-    color: gray;
-    direction: ltr;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    right: 15px;
-    bottom: 310px;
 }
 
 #chooseServiceMail {

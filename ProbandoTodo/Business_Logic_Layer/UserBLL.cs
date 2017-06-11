@@ -1,4 +1,6 @@
 ﻿using Data_Access_Layer;
+using Domain_Layer;
+using Domain_Layer.Enums;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -22,23 +24,25 @@ namespace Business_Logic_Layer
         /// <param name="Email">Correo electrónico</param>
         /// <param name="Password">Contraseña</param>
         /// <returns></returns>
-        public bool CreateUser(string UserName, string Email, char MailProvider, string Password)
+        public string CreateUser(string UserName, string Email, MailProviders MailProvider, string Password)
         {
             string EmailComplete;
 
             switch (MailProvider)
             {
-                case 'G':
-                    EmailComplete = String.Concat(Email, "@gmail.com");
+                case MailProviders.gmail:
+                    EmailComplete =  String.Concat(Email, "@gmail.com");
                     break;
-                case 'O':
+                case MailProviders.outlook:
                     EmailComplete = String.Concat(Email, "@outlook.com");
-                    break;                
-                default: EmailComplete = String.Concat(Email, "@yahoo.com");
                     break;
+                case MailProviders.yahoo:
+                    EmailComplete = String.Concat(Email, "@yahoo.com");
+                    break;
+                default: throw new ArgumentNullException("El proveedor de correo es erróneo.");
             }
             
-            return new UserDAL().CreateUserDAL(UserName, EmailComplete, Password);
+            return userDAL.CreateUserDAL(UserName, EmailComplete, Password);
         }
 
         /// <summary>
@@ -57,9 +61,9 @@ namespace Business_Logic_Layer
         /// <param name="Email">Correo electrónico</param>
         /// <param name="Password">Contraseña</param>
         /// <returns></returns>
-        public string[] Login(string Email, string Password)
+        public UserLoginData Login(string Email, string Password)
         {            
-            return new UserDAL().LoginDAL(Email, Password);
+            return userDAL.LoginDAL(Email, Password);
         }
 
         /// <summary>

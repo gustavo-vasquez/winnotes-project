@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\MailProviders.cs" />
     <Compile Include="Folder.cs">
       <DependentUpon>WinNotesDB.tt</DependentUpon>
     </Compile>
@@ -63,6 +64,7 @@
       <DependentUpon>WinNotesDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserLoginData.cs" />
     <Compile Include="WinNotesDB.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

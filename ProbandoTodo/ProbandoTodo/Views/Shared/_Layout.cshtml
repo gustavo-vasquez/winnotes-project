@@ -70,7 +70,7 @@
                     <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>
                 </ul>
                 @*@Html.Partial("_SearchBox")*@
-                @Html.Partial("_LoginPartial", new ProbandoTodo.Models.UserData())
+                @Html.Partial("_LoginPartial")
             </div>
         </div>
     </div>    
@@ -124,7 +124,8 @@
     @Scripts.Render("~/bundles/jquery", "~/bundles/bootstrap")
     @Scripts.Render("~/jquery-ui-1.12.1.custom/jquery-ui.js", "~/bundles/jqueryval")
     @Scripts.Render("~/Scripts/application.js")
-    @RenderSection("custom_scripts", required: false)
+    @Html.RenderJavaScripts()
+    @*@RenderSection("custom_scripts", required: false)*@
     <button id="ToTop" class="btn btn-primary" onclick="topFunction();"><span class="glyphicon glyphicon-arrow-up"></span></button>
 </body>
 </html>

@@ -28,22 +28,28 @@ namespace ProbandoTodo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register(RegisterModel model)
         {
-            if(ModelState.IsValid)
+            try
             {
-                bool QueryResult = userBLL.CreateUser(model.UserName, model.Email, model.MailProvider, model.Password);
-                switch(QueryResult)
-                {
-                    case true:
-                        Session["UserLogged"] = userBLL.Login(model.UserName, model.Email);
+                if (ModelState.IsValid)
+                {                    
+                    string EmailParsed = userBLL.CreateUser(model.UserName, model.Email, model.MailProvider, model.Password);
+                    if (EmailParsed != null)
+                    {
+                        Session["UserLogged"] = userBLL.Login(EmailParsed, model.Password);
                         return Json(new { url = "Home/Index" });
-                    default:
-                        return PartialView("_Register", model);
-                }                
+                    }
+                    return PartialView("_Register", model);
+                }
+                else
+                {
+                    return PartialView("_Register", model);
+                }
             }
-            else
+            catch(Exception ex)
             {
-                return PartialView("_Register", model);
-            }            
+                Response.StatusCode = 500;
+                return Json(new { message = ex.Message, source = ex.Source, stackTrace = ex.StackTrace });
+            }
         }
 
         public bool CheckUserName(string name)

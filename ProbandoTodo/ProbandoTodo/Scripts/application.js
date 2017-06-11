@@ -15,8 +15,8 @@
                 $('#RegisterDialog').modal("show");
                 $("form").removeData("validator");
                 $("form").removeData("unobtrusiveValidation");
-                $.validator.unobtrusive.parse("form");
-            }
+                $.validator.unobtrusive.parse("form");                
+            }            
         });
     });
 
@@ -132,3 +132,7 @@ function readCookie(name) {
 }
 
 // *******************************************************************************
+
+function addScripts(src) {
+    $('body').append('<script src=' + src + '></script>');
+}

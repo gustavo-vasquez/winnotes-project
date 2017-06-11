@@ -1,8 +1,5 @@
-﻿@model ProbandoTodo.Models.RegisterModel
-
-@section custom_scripts {
-    @Scripts.Render("~/Scripts/application/register-form.js")
-}
+﻿@using Domain_Layer.Enums;
+@model ProbandoTodo.Models.RegisterModel
 
 <div id="RegisterDialog" class="modal fade">
     <div class="modal-dialog">
@@ -12,8 +9,8 @@
                 <h4 class="modal-title"><i class="glyphicon glyphicon-upload"></i> Crear nuevo usuario</h4>
             </div>        
         @using (Ajax.BeginForm("Register", "User", null,
-            new AjaxOptions { HttpMethod = "POST", OnSuccess = "registerComplete", UpdateTargetId = "MainDialog", InsertionMode = InsertionMode.Replace },
-            htmlAttributes: new { id = "RegisterForm", role = "form" }))        
+    new AjaxOptions { HttpMethod = "POST", OnSuccess = "registerComplete", OnFailure = "registerFailed", UpdateTargetId = "MainDialog", InsertionMode = InsertionMode.Replace },
+    htmlAttributes: new { id = "RegisterForm", role = "form" }))
         {
                 @Html.AntiForgeryToken()
                 <div class="modal-body">                
@@ -25,19 +22,19 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label">Correo (nombre):</label>
-                    @Html.TextBoxFor(m => m.Email, htmlAttributes: new { @class = "form-control input-sm", placeholder = "ej. correopersonal456", maxlength = "30" })
+                    @Html.TextBoxFor(m => m.Email, htmlAttributes: new { @class = "form-control input-sm", placeholder = "ej. mi.nombre.de.correo", maxlength = "30" })
                     <label class="label-form-required">-Sólo escribir nombre de correo</label>                    
                     <div id="chooseServiceMail" class="text-center">
                         <label class="provider-radio">
-                            @Html.RadioButtonFor(m => m.MailProvider, 'g', htmlAttributes: new { id = "rdoProvider1", @checked = true })
+                            @Html.RadioButtonFor(m => m.MailProvider, MailProviders.gmail, htmlAttributes: new { id = "rdoProvider1", @checked = true })
                             Gmail
                         </label>
                         <label class="provider-radio">
-                            @Html.RadioButtonFor(m => m.MailProvider, 'o', htmlAttributes: new { id = "rdoProvider2" })
+                            @Html.RadioButtonFor(m => m.MailProvider, MailProviders.outlook, htmlAttributes: new { id = "rdoProvider2" })
                             Outlook
                         </label>
                         <label class="provider-radio">
-                            @Html.RadioButtonFor(m => m.MailProvider, 'y', htmlAttributes: new { id = "rdoProvider3" })
+                            @Html.RadioButtonFor(m => m.MailProvider, MailProviders.yahoo, htmlAttributes: new { id = "rdoProvider3" })
                             Yahoo
                         </label>
                     </div>                    
@@ -60,3 +57,5 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">addScripts("/Scripts/application/register-form.js");</script>

@@ -4,19 +4,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Web.DynamicData;
 using System.Linq;
 using System.Web;
-using static ProbandoTodo.Models.CustomDataAnnotations;
+using Domain_Layer.Enums;
 
 namespace ProbandoTodo.Models
 {            
     public class RegisterModel
-    {
-        public enum MailProviders
-        {
-            gmail = 'g',
-            outlook = 'o',
-            yahoo = 'y'
-        };        
-
+    {        
         [Required(ErrorMessage = "-Ingresar nombre de usuario")]
         [RegularExpression("^[a-zA-Z0-9 _]*$")]
         public string UserName { get; set; }

@@ -31,7 +31,7 @@ namespace Data_Access_Layer
         /// <param name="Email">Correo electrónico</param>
         /// <param name="Password">Contraseña</param>
         /// <returns></returns>
-        public bool CreateUserDAL(string UserName, string Email, string Password)
+        public string CreateUserDAL(string UserName, string Email, string Password)
         {
             try
             { 
@@ -40,28 +40,27 @@ namespace Data_Access_Layer
 
                 if(!search && !CheckUserNameDAL(UserName))
                 {
-                    Person userToAdd = new Person();
-                    userToAdd.UserName = UserName;
-                    userToAdd.Email = Email;
-                    userToAdd.Password = Password;
-                    userToAdd.AvatarImage = null;
-                    userToAdd.AvatarMIMEType = null;
-                    userToAdd.Active = false;
-                    userToAdd.PersonIDEncrypted = "err";
-                    userToAdd.RegistrationDate = DateTime.Now;
-                    userToAdd.LastLoginDate = DateTime.Now;
+                    Person newUser = new Person();
+                    newUser.UserName = UserName;
+                    newUser.Email = Email;
+                    newUser.Password = Password;
+                    newUser.AvatarImage = null;
+                    newUser.AvatarMIMEType = null;
+                    newUser.Active = false;                    
+                    newUser.RegistrationDate = DateTime.Now;
+                    newUser.LastLoginDate = DateTime.Now;
 
-                    context.Person.Add(userToAdd);
+                    context.Person.Add(newUser);
                     context.SaveChanges();
-                    userToAdd.PersonIDEncrypted = this.EncryptToSHA256(userToAdd.PersonID);
+                    newUser.PersonIDEncrypted = this.EncryptToSHA256(newUser.PersonID);
                     context.SaveChanges();
                     CloseConnection(context);
 
-                    return true;
+                    return Email;
                 }
 
                 CloseConnection(context);
-                return false;
+                return null;
             }
             catch
             {
@@ -132,27 +131,26 @@ namespace Data_Access_Layer
         /// <param name="Email">Correo electrónico</param>
         /// <param name="Password">Contraseña</param>
         /// <returns></returns>
-        public string[] LoginDAL(string Email, string Password)
-        {
-            string[] LoginData = null;
+        public UserLoginData LoginDAL(string Email, string Password)
+        {            
             var context = OpenConnection();
-            Person User = context.Person.Where(p => p.Email == Email).FirstOrDefault();
+            Person user = context.Person.Where(p => p.Email == Email).FirstOrDefault();
+            UserLoginData login = null;
 
-            if(User != null)
+            if(user != null)
             {
-                LoginData = new string[] {
-                    User.PersonID.ToString(),
-                    User.UserName,
-                    User.Email,
-                    User.Active.ToString().ToLower(),
-                    GetAvatarImage(User.AvatarImage,
-                    User.AvatarMIMEType)
-                };
+                login = new UserLoginData(
+                        user.PersonID,
+                        user.UserName,
+                        user.Email,
+                        GetAvatarImage(user.AvatarImage, user.AvatarMIMEType),
+                        Convert.ToBoolean(user.Active)
+                    );
             }
             
             CloseConnection(context);
 
-            return LoginData;
+            return login;
         }        
         
         /// <summary>

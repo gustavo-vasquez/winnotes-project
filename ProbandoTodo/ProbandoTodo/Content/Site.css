@@ -257,14 +257,14 @@ textarea {
 }
 
 .label-form-required {
-    color: gray !important;
-    background-color: transparent !important;
-    display: inline !important;    
-    font-size: 75% !important;
-    font-weight: bold !important;
-    line-height: 1 !important;            
-    vertical-align: baseline !important;
-    border-radius: .25em !important;
+    color: gray;
+    background-color: transparent;
+    /*display: inline !important;*/    
+    font-size: 75%;
+    font-weight: bold;
+    line-height: 1.5;
+    /*vertical-align: baseline !important;
+    border-radius: .25em !important;*/
 }
 
 #chooseServiceMail {
@@ -557,14 +557,14 @@ span.glyphicon-calendar.calendar-trigger {
 
 .message-result {
     text-align: center;
-    width: 300px;
+    width: 50%;
     position: fixed;
     margin: auto;
     top: 76px;
     left: 0;
     right: 0;
     bottom: 75%;
-    /*display: none;*/
+    z-index: 9999;    
 }
 
 /*****************************************************************************/

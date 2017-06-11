@@ -202,6 +202,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\HtmlHelperExtensions.cs" />
     <Compile Include="Helpers\InitialScripts.cs" />
     <Compile Include="Helpers\RouteValuesHelper.cs" />
     <Compile Include="Helpers\ScriptsExtension.cs" />

@@ -81,9 +81,9 @@ namespace Business_Logic_Layer
         /// </summary>
         /// <param name="encryptedID">ID encriptado del usuario</param>
         /// <returns></returns>
-        public string[] RememberSessionInfo(string encryptedID)
+        public UserLoginData RememberSessionInfo(string encryptedID)
         {
-            return new UserDAL().RememberSessionInfo(encryptedID);
+            return userDAL.RememberSessionInfoDAL(encryptedID);
         }
 
         /// <summary>

@@ -206,24 +206,26 @@ namespace Data_Access_Layer
         /// </summary>
         /// <param name="encryptedID">ID encriptado del usuario</param>
         /// <returns></returns>
-        public string[] RememberSessionInfo(string encryptedID)
+        public UserLoginData RememberSessionInfoDAL(string encryptedID)
         {
-            string[] LoginData = null;
-            var context = OpenConnection();
-            Person User = context.Person.Where(p => p.PersonIDEncrypted == encryptedID).FirstOrDefault();
-
-            if (User != null)
+            using (var context = new WinNotesDBEntities())
             {
-                LoginData = new string[] {
-                    User.PersonID.ToString(),
-                    User.UserName,
-                    User.Email,
-                    User.Active.ToString().ToLower(),
-                    GetAvatarImage(User.AvatarImage, User.AvatarMIMEType)
-                };
-            }
+                UserLoginData userLoggedIn = null;                
+                Person user = context.Person.Where(p => p.PersonIDEncrypted == encryptedID).FirstOrDefault();
 
-            return LoginData;
+                if (userLoggedIn != null)
+                {
+                    userLoggedIn = new UserLoginData(
+                                        user.PersonID,
+                                        user.UserName,
+                                        user.Email,
+                                        GetAvatarImage(user.AvatarImage, user.AvatarMIMEType),
+                                        Convert.ToBoolean(user.Active)
+                                    );
+                }
+
+                return userLoggedIn;
+            }                
         }
 
         //public System.Drawing.Image byteArrayToImage(byte[] byteArrayIn)

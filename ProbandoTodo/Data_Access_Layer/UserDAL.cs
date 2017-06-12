@@ -149,7 +149,9 @@ namespace Data_Access_Layer
                                 GetAvatarImage(user.AvatarImage, user.AvatarMIMEType),
                                 Convert.ToBoolean(user.Active)
                             );
-                    }                    
+                        user.LastLoginDate = DateTime.Now;
+                        context.SaveChanges();
+                    }
 
                     return login;
                 }                
@@ -222,18 +224,13 @@ namespace Data_Access_Layer
                                         GetAvatarImage(user.AvatarImage, user.AvatarMIMEType),
                                         Convert.ToBoolean(user.Active)
                                     );
+                    user.LastLoginDate = DateTime.Now;
+                    context.SaveChanges();
                 }
 
                 return userLoggedIn;
             }                
-        }
-
-        //public System.Drawing.Image byteArrayToImage(byte[] byteArrayIn)
-        //{
-        //    MemoryStream ms = new MemoryStream(byteArrayIn);
-        //    System.Drawing.Image returnImage = System.Drawing.Image.FromStream(ms);
-        //    return returnImage;
-        //}
+        }        
 
         /// <summary>
         /// Convierte una imágen a un array de bytes.

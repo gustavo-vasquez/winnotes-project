@@ -9,25 +9,16 @@ using System.Web.Mvc;
 namespace Data_Access_Layer
 {
     public class FolderDAL
-    {
-        private WinNotesEntities OpenConnection()
-        {
-            WinNotesEntities WinNotesContext = new WinNotesEntities();
-            return WinNotesContext;
-        }
-
-        private void CloseConnection(WinNotesEntities WinNotesContext)
-        {
-            WinNotesContext.Dispose();
-        }
-
+    {        
         public IEnumerable<Folder> GetAllFoldersDAL()
         {
             try
             {
-                var context = OpenConnection();
-                IEnumerable<Folder> folders = context.Folder.ToList();
-                return folders;
+                using(var context = new WinNotesDBEntities())
+                {
+                    IEnumerable<Folder> folders = context.Folder.ToList();
+                    return folders;
+                }
             }
             catch
             {
@@ -38,19 +29,19 @@ namespace Data_Access_Layer
         public bool CreateFolderDAL(int id, string name, string details)
         {
             try
-            {                
-                Folder folder = new Folder();
-                folder.Name = name;
-                folder.Details = details;
-                folder.LastModified = DateTime.Now;
-                folder.Person_ID = id;
+            {
+                using (var context = new WinNotesDBEntities())
+                {
+                    Folder folder = new Folder();
+                    folder.Name = name;
+                    folder.Details = details;
+                    folder.LastModified = DateTime.Now;
+                    folder.Person_ID = id;                    
+                    context.Folder.Add(folder);
+                    context.SaveChanges();                    
 
-                var WinNotesContext = OpenConnection();
-                WinNotesContext.Folder.Add(folder);
-                WinNotesContext.SaveChanges();
-                CloseConnection(WinNotesContext);
-
-                return true;
+                    return true;
+                }                    
             }
             catch
             {
@@ -62,9 +53,11 @@ namespace Data_Access_Layer
         {
             try
             {
-                var context = OpenConnection();
-                Folder folder = context.Folder.Where(f => f.FolderID == folderID).First();
-                return folder;
+                using (var context = new WinNotesDBEntities())
+                {
+                    Folder folder = context.Folder.Where(f => f.FolderID == folderID).First();
+                    return folder;
+                }                
             }
             catch(Exception ex)
             {                
@@ -76,10 +69,11 @@ namespace Data_Access_Layer
         {
             try
             {
-                var context = OpenConnection();
-                List<Note> notes = context.Note.Where(n => n.Folder_ID == folderID && n.Person_ID == userID).ToList();
-                CloseConnection(context);
-                return notes;
+                using (var context = new WinNotesDBEntities())
+                {
+                    List<Note> notes = context.Note.Where(n => n.Folder_ID == folderID && n.Person_ID == userID).ToList();                    
+                    return notes;
+                }                
             }            
             catch(Exception ex)
             {
@@ -91,15 +85,15 @@ namespace Data_Access_Layer
         {
             try
             {
-                var context = OpenConnection();
-                List<Folder> folders = context.Folder.Where(f => f.Person_ID == userID).ToList();
-                List<SelectListItem> folderComboBox = new List<SelectListItem>();
-                foreach (var folder in folders)
-                {
-                    folderComboBox.Add(new SelectListItem { Value = folder.Name, Text = folder.Name });
-                }
-                CloseConnection(context);
-                return folderComboBox;
+                using (var context = new WinNotesDBEntities())
+                {                    
+                    List<Folder> folders = context.Folder.Where(f => f.Person_ID == userID).ToList();
+                    List<SelectListItem> folderComboBox = new List<SelectListItem>();
+                    foreach (var folder in folders)                    
+                        folderComboBox.Add(new SelectListItem { Value = folder.Name, Text = folder.Name });
+                                        
+                    return folderComboBox;
+                }                    
             }
             catch
             {
@@ -113,16 +107,17 @@ namespace Data_Access_Layer
         {
             try
             {
-                var context = OpenConnection();
-                int folderID = context.Folder.Where(f => f.Name == folderSelected && f.Person_ID == userID).First().FolderID;
-                Note note = context.Note.Where(n => n.NoteID == noteID).First();
-                if(note.Completed != true)
-                {
-                    note.Folder_ID = folderID;
-                    context.SaveChanges();
-                }                
-                CloseConnection(context);
-                return true;
+                using (var context = new WinNotesDBEntities())
+                {                    
+                    int folderID = context.Folder.Where(f => f.Name == folderSelected && f.Person_ID == userID).First().FolderID;
+                    Note note = context.Note.Where(n => n.NoteID == noteID).First();
+                    if (note.Completed != true)
+                    {
+                        note.Folder_ID = folderID;
+                        context.SaveChanges();
+                    }
+                    return true;
+                }                    
             }
             catch
             {

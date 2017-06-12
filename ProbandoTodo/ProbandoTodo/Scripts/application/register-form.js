@@ -1,7 +1,7 @@
 ﻿$(document).ready(registerFormActions);
 
 function registerFormActions() {
-    console.log("register-form cargado");
+    //console.log("register-form cargado");
 	$('#RegisterForm').on('blur', '#UserName', function () {
 		var $textbox = $(this);
 

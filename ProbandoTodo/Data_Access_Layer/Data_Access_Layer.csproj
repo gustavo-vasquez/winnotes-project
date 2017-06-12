@@ -60,16 +60,6 @@
     <Compile Include="NoteDAL.cs" />
     <Compile Include="UserDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WinNotesDatabase.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WinNotesDatabase.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="WinNotesDatabase.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WinNotesDatabase.edmx</DependentUpon>
-    </Compile>
     <Compile Include="WinNotesDB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -82,17 +72,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="WinNotesDatabase.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>WinNotesDatabase.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.Config" />
     <None Include="packages.config" />
-    <None Include="WinNotesDatabase.edmx.diagram">
-      <DependentUpon>WinNotesDatabase.edmx</DependentUpon>
-    </None>
     <EntityDeploy Include="WinNotesDB.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>WinNotesDB.Designer.cs</LastGenOutput>
@@ -102,12 +83,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="WinNotesDatabase.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>WinNotesDatabase.Context.cs</LastGenOutput>
-      <DependentUpon>WinNotesDatabase.edmx</DependentUpon>
-      <CustomToolNamespace>Domain_Layer</CustomToolNamespace>
-    </Content>
     <Content Include="WinNotesDB.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>WinNotesDB.edmx</DependentUpon>

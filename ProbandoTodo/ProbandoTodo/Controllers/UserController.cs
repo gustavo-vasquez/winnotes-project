@@ -75,7 +75,7 @@ namespace ProbandoTodo.Controllers
                     {
                         Session["UserLogged"] = user;
                         if (model.RememberMe)
-                            SetCookieData(model.Email);
+                            this.SetCookieData(model.Email);
 
                         return Json(new { url = urlPath });
                     }
@@ -189,7 +189,7 @@ namespace ProbandoTodo.Controllers
         public void SetCookieData(string email)
         {
             try
-            {                
+            {
                 HttpCookie userCookie = new HttpCookie("UHICK");
                 userCookie.Domain = "localhost";
                 userCookie.Expires = DateTime.Now.AddDays(15);
@@ -198,9 +198,9 @@ namespace ProbandoTodo.Controllers
                 userCookie.Value = userBLL.RetrieveEncryptedID(email);
                 Response.Cookies.Add(userCookie);
             }
-            catch(Exception ex)
+            catch
             {
-                throw ex;
+                throw;
             }
         }           
     }

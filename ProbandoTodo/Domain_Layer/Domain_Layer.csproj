@@ -70,20 +70,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WinNotesDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="WinNotesModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WinNotesModel.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="WinNotesDB.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>WinNotesDB.cs</LastGenOutput>
-    </Content>
-    <Content Include="WinNotesModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>WinNotesModel.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>

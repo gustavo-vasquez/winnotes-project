@@ -123,10 +123,10 @@
         </div>
     </footer>
     @Scripts.Render("~/bundles/jquery", "~/bundles/bootstrap")
-    @Scripts.Render("~/jquery-ui-1.12.1.custom/jquery-ui.js", "~/bundles/jqueryval")
+    @Scripts.Render("~/jquery-ui-1.12.1.custom/jquery-ui.js")
     @Scripts.Render("~/Scripts/application.js")
     @Html.RenderJavaScripts()
-    @*@RenderSection("custom_scripts", required: false)*@
+    @RenderSection("custom_scripts", required: false)
     <button id="ToTop" class="btn btn-primary" onclick="topFunction();"><span class="glyphicon glyphicon-arrow-up"></span></button>
 </body>
 </html>

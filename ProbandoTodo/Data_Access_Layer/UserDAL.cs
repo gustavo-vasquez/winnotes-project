@@ -169,11 +169,10 @@ namespace Data_Access_Layer
         {
             try
             {
-                var context = OpenConnection();
-                string EncryptedID = context.Person.Where(p => p.Email == email).First().PersonIDEncrypted;                
-                CloseConnection(context);
-
-                return EncryptedID;
+                using (var context = new WinNotesDBEntities())
+                {
+                    return context.Person.Where(p => p.Email == email).First().PersonIDEncrypted;                    
+                }
             }
             catch
             {

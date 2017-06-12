@@ -52,7 +52,7 @@ namespace Business_Logic_Layer
         /// <returns></returns>
         public bool CheckUserName(string name)
         {
-            return new UserDAL().CheckUserNameDAL(name);
+            return userDAL.CheckUserNameDAL(name);
         }
 
         /// <summary>

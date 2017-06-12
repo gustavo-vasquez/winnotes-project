@@ -34,33 +34,32 @@ namespace Data_Access_Layer
         public string CreateUserDAL(string UserName, string Email, string Password)
         {
             try
-            { 
-                var context = OpenConnection();
-                var search = context.Person.Any(p => p.Email == Email);
-
-                if(!search && !CheckUserNameDAL(UserName))
+            {
+                using (var context = new WinNotesDBEntities())
                 {
-                    Person newUser = new Person();
-                    newUser.UserName = UserName;
-                    newUser.Email = Email;
-                    newUser.Password = Password;
-                    newUser.AvatarImage = null;
-                    newUser.AvatarMIMEType = null;
-                    newUser.Active = false;                    
-                    newUser.RegistrationDate = DateTime.Now;
-                    newUser.LastLoginDate = DateTime.Now;
+                    var existingUser = context.Person.Any(p => p.Email == Email);
 
-                    context.Person.Add(newUser);
-                    context.SaveChanges();
-                    newUser.PersonIDEncrypted = this.EncryptToSHA256(newUser.PersonID);
-                    context.SaveChanges();
-                    CloseConnection(context);
+                    if (!existingUser && !CheckUserNameDAL(UserName))
+                    {
+                        Person newUser = new Person();
+                        newUser.UserName = UserName;
+                        newUser.Email = Email;
+                        newUser.Password = Password;
+                        newUser.AvatarImage = null;
+                        newUser.AvatarMIMEType = null;
+                        newUser.Active = false;
+                        newUser.RegistrationDate = DateTime.Now;
+                        newUser.LastLoginDate = DateTime.Now;
 
-                    return Email;
-                }
+                        context.Person.Add(newUser);
+                        context.SaveChanges();
+                        newUser.PersonIDEncrypted = this.EncryptToSHA256(newUser.PersonID);
+                        context.SaveChanges();                        
 
-                CloseConnection(context);
-                return null;
+                        return Email;
+                    }                    
+                    return null;
+                }                
             }
             catch
             {
@@ -118,10 +117,11 @@ namespace Data_Access_Layer
         /// <returns></returns>
         public bool CheckUserNameDAL(string UserName)
         {
-            var context = OpenConnection();
-            bool result = context.Person.Any(p => p.UserName == UserName);
-
-            return result;
+            using (var context = new WinNotesDBEntities())
+            {
+                bool result = context.Person.Any(p => p.UserName == UserName);
+                return result;
+            }                            
         }
 
 
@@ -131,27 +131,34 @@ namespace Data_Access_Layer
         /// <param name="Email">Correo electrónico</param>
         /// <param name="Password">Contraseña</param>
         /// <returns></returns>
-        public UserLoginData LoginDAL(string Email, string Password)
-        {            
-            var context = OpenConnection();
-            Person user = context.Person.Where(p => p.Email == Email).FirstOrDefault();
-            UserLoginData login = null;
-
-            if(user != null)
+        public UserLoginData LoginDAL(string email, string password)
+        {
+            try
             {
-                login = new UserLoginData(
-                        user.PersonID,
-                        user.UserName,
-                        user.Email,
-                        GetAvatarImage(user.AvatarImage, user.AvatarMIMEType),
-                        Convert.ToBoolean(user.Active)
-                    );
-            }
-            
-            CloseConnection(context);
+                using (var context = new WinNotesDBEntities())
+                {
+                    Person user = context.Person.Where(p => p.Email == email && p.Password == password).FirstOrDefault();
+                    UserLoginData login = null;
 
-            return login;
-        }        
+                    if (user != null)
+                    {
+                        login = new UserLoginData(
+                                user.PersonID,
+                                user.UserName,
+                                user.Email,
+                                GetAvatarImage(user.AvatarImage, user.AvatarMIMEType),
+                                Convert.ToBoolean(user.Active)
+                            );
+                    }                    
+
+                    return login;
+                }                
+            }
+            catch
+            {
+                throw;
+            }
+        }
         
         /// <summary>
         /// Devuelve el ID de usuario encriptado desde la base de datos.

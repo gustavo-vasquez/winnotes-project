@@ -9,14 +9,14 @@
         event.preventDefault();
 
         $.ajax({
-            url: "/User/Register",            
+            url: "/User/Register",
             success: function (data) {
                 $('#MainDialog').html(data);                
                 $('#RegisterDialog').modal("show");
-                $("form").removeData("validator");
-                $("form").removeData("unobtrusiveValidation");
-                $.validator.unobtrusive.parse("form");                
-            }            
+                //$("form").removeData("validator");
+                //$("form").removeData("unobtrusiveValidation");
+                //$.validator.unobtrusive.parse("form");
+            }
         });
     });
 
@@ -30,9 +30,7 @@
                 $('#LoginDialog').modal("show");                
             }
         });
-    });    
-
-    $('.message-result').delay(5000).fadeOut('slow');
+    });        
 
     $('.navigation').on({
         mouseenter: function () {

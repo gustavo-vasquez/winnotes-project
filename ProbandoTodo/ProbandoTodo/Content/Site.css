@@ -556,15 +556,16 @@ span.glyphicon-calendar.calendar-trigger {
 /**************************** VISTA DE LAS NOTAS *****************************/
 
 .message-result {
-    text-align: center;
-    width: 50%;
-    position: fixed;
-    margin: auto;
-    top: 76px;
+    background-color: red;
     left: 0;
-    right: 0;
-    bottom: 75%;
-    z-index: 9999;    
+    bottom: 0;
+    width: 100%;
+    color: white;
+    padding: 15px 5px 5px 5px;
+    text-align: center;
+    position: fixed;
+    z-index: 9999;
+    display: none;
 }
 
 /*****************************************************************************/

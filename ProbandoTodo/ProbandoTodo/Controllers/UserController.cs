@@ -66,25 +66,31 @@ namespace ProbandoTodo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string urlPath)
         {
-            if(ModelState.IsValid)
-            {                                                
-                var QueryResult = userBLL.Login(model.Email, model.Password);                
-                
-                if(QueryResult != null)
+            try
+            {
+                if (ModelState.IsValid)
                 {
-                    if (model.RememberMe)
-                    {                                                                        
-                        SetCookieData(model.Email);
+                    var user = userBLL.Login(model.Email, model.Password);
+                    if (user != null)
+                    {
+                        Session["UserLogged"] = user;
+                        if (model.RememberMe)
+                            SetCookieData(model.Email);
+
+                        return Json(new { url = urlPath });
                     }
-                    Session["UserLogged"] = QueryResult;
-                    return Json(new { url = urlPath });
+
+                    ModelState.AddModelError(String.Empty, "Email/contraseña incorrecta");
+                    return PartialView("_Login", model);
                 }
 
-                ModelState.AddModelError(String.Empty, "No hay usuarios con el email ingresado");
                 return PartialView("_Login", model);
             }
-
-            return PartialView("_Login", model);
+            catch(Exception ex)
+            {
+                Response.StatusCode = 500;
+                return Json(new { message = ex.Message, source = ex.Source, stackTrace = ex.StackTrace });
+            }
         }
 
         [HttpPost]

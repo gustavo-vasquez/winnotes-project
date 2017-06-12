@@ -45,9 +45,9 @@ function registerComplete(result) {
 
 function registerFailed(response) {    
     if (response.responseJSON != undefined)
-        $('footer').append('<div class="message-result"><div class="alert alert-danger">' + response.responseJSON.message + '</div></div>');
+        $('body').append('<div class="message-result"><p>' + response.responseJSON.message + '</p></div>');
     else
-        $('footer').append('<div class="message-result"><div class="alert alert-danger">Se ha producido un error inesperado. Inténtelo nuevamente.</div></div>');
+        $('body').append('<div class="message-result"><p>Se ha producido un error inesperado. Inténtelo nuevamente.</p></div>');
     setTimeout(function () {
         $('.message-result').remove();
     }, 6000);

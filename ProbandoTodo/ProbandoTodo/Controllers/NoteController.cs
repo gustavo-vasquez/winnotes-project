@@ -23,7 +23,7 @@ namespace ProbandoTodo.Controllers
         [OnlyUser]
         public ActionResult Create()
         {
-            int userID = Convert.ToInt32(((string[])Session["UserLogged"])[0]);
+            int userID = Convert.ToInt32(((string[])Session["UserLoggedIn"])[0]);
             CreateNoteModelView model = new CreateNoteModelView();
             this.PrepareModelToCreateNote(userID, ref model);
             return View(model);
@@ -34,7 +34,7 @@ namespace ProbandoTodo.Controllers
         [OnlyUser]
         public ActionResult Create(CreateNoteModelView model)
         {
-            int userID = Convert.ToInt32(((string[])Session["UserLogged"])[0]);
+            int userID = Convert.ToInt32(((string[])Session["UserLoggedIn"])[0]);
 
             if (!ModelState.IsValid)
             {
@@ -83,7 +83,7 @@ namespace ProbandoTodo.Controllers
         {
             try
             {
-                string userID = ((string[])Session["UserLogged"])[0];
+                string userID = ((string[])Session["UserLoggedIn"])[0];
                 return View(new ClassifiedQueryableNotes(noteBLL.GetDataForNoteList(userID)));
             }
             catch(Exception ex)
@@ -96,7 +96,7 @@ namespace ProbandoTodo.Controllers
         public ActionResult ForceCompleteTask(string folderID, string noteID, bool localized)
         {
             noteBLL.ForceCompleteTaskBLL(Convert.ToInt32(noteID));
-            string userID = ((string[])Session["UserLogged"])[0];            
+            string userID = ((string[])Session["UserLoggedIn"])[0];            
 
             if(localized)
                 return PartialView("~/Views/Folder/_NotesInFolder.cshtml", new ClassifiedNotes(new FolderBLL().GetNotesInFolderBLL(userID, folderID)));
@@ -108,7 +108,7 @@ namespace ProbandoTodo.Controllers
         public ActionResult StarTask(string folderID, string noteID, bool localized)
         {
             noteBLL.StarTaskBLL(Convert.ToInt32(noteID));
-            string userID = ((string[])Session["UserLogged"])[0];
+            string userID = ((string[])Session["UserLoggedIn"])[0];
 
             if (localized)
                 return PartialView("~/Views/Folder/_NotesInFolder.cshtml", new ClassifiedNotes(new FolderBLL().GetNotesInFolderBLL(userID, folderID)));
@@ -128,7 +128,7 @@ namespace ProbandoTodo.Controllers
         {
             try
             {
-                string userID = ((string[])Session["UserLogged"])[0];
+                string userID = ((string[])Session["UserLoggedIn"])[0];
                 noteBLL.ChangeDatetimeEventBLL(model.CurrentDate, model.HourSelected, model.MinuteSelected, model.TimeTableSelected, model.ID_Note, userID);
                 if (model.Localized)
                     return PartialView("~/Views/Folder/_NotesInFolder.cshtml", new ClassifiedNotes(new FolderBLL().GetNotesInFolderBLL(userID, model.ID_Folder)));

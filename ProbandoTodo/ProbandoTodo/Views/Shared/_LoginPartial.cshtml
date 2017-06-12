@@ -1,7 +1,7 @@
 ﻿@*@using Microsoft.AspNet.Identity
 @if (Request.IsAuthenticated)*@
 
-@{ var session = (Domain_Layer.UserLoginData)Session["UserLogged"]; }
+@{ var session = (Domain_Layer.UserLoginData)Session["UserLoggedIn"]; }
 
 @if(session != null)
 {

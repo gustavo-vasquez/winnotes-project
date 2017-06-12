@@ -14,9 +14,9 @@ namespace ProbandoTodo.Filters
             {
                 var sessionCookie = filterContext.HttpContext.Request.Cookies["UHICK"];
 
-                if (sessionCookie != null && filterContext.HttpContext.Session["UserLogged"] == null)
+                if (sessionCookie != null && filterContext.HttpContext.Session["UserLoggedIn"] == null)
                 {
-                    filterContext.HttpContext.Session["UserLogged"] = new Business_Logic_Layer.UserBLL().RememberSessionInfo(sessionCookie.Value);                    
+                    filterContext.HttpContext.Session["UserLoggedIn"] = new Business_Logic_Layer.UserBLL().RememberSessionInfo(sessionCookie.Value);                    
                 }
             }
         }
@@ -25,7 +25,7 @@ namespace ProbandoTodo.Filters
         {
             public override void OnActionExecuting(ActionExecutingContext filterContext)
             {
-                if (filterContext.HttpContext.Session["UserLogged"] == null)
+                if (filterContext.HttpContext.Session["UserLoggedIn"] == null)
                 {
                     filterContext.Result = new HttpStatusCodeResult(403, "Acceso no autorizado - Solo usuarios registrados pueden ver el contenido");
                 }

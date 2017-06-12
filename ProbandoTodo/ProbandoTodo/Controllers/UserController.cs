@@ -35,7 +35,7 @@ namespace ProbandoTodo.Controllers
                     string EmailParsed = userBLL.CreateUser(model.UserName, model.Email, model.MailProvider, model.Password);
                     if (EmailParsed != null)
                     {
-                        Session["UserLogged"] = userBLL.Login(EmailParsed, model.Password);
+                        Session["UserLoggedIn"] = userBLL.Login(EmailParsed, model.Password);
                         return Json(new { url = "Home/Index" });
                     }
                     return PartialView("_Register", model);
@@ -73,7 +73,7 @@ namespace ProbandoTodo.Controllers
                     var user = userBLL.Login(model.Email, model.Password);
                     if (user != null)
                     {
-                        Session["UserLogged"] = user;
+                        Session["UserLoggedIn"] = user;
                         if (model.RememberMe)
                             this.SetCookieData(model.Email);
 
@@ -112,7 +112,7 @@ namespace ProbandoTodo.Controllers
         {
             try
             {
-                string email = ((string[])Session["UserLogged"])[2];
+                string email = ((string[])Session["UserLoggedIn"])[2];
                 return View(FillProfileManagementView(email));
             }
             catch
@@ -139,7 +139,7 @@ namespace ProbandoTodo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult UploadAvatar(HttpPostedFileBase UploadAvatar)
         {
-            string email = ((string[])Session["UserLogged"])[2];
+            string email = ((string[])Session["UserLoggedIn"])[2];
             string error = String.Empty;
 
             if (UploadAvatar != null && userBLL.ChangeAvatar(UploadAvatar, email, ref error))
@@ -156,7 +156,7 @@ namespace ProbandoTodo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult PersonalPhrase(ProfileManagementModels.PersonalPhraseViewModel model, string pColor)
         {
-            string email = ((string[])Session["UserLogged"])[2];
+            string email = ((string[])Session["UserLoggedIn"])[2];
             string error = String.Empty;
 
             if (ModelState.IsValid && userBLL.ChangePersonalPhrase(email, model.PersonalPhrase, pColor))
@@ -172,7 +172,7 @@ namespace ProbandoTodo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(string CurrentPassword, string NewPassword)
         {
-            string email = ((string[])Session["UserLogged"])[2];
+            string email = ((string[])Session["UserLoggedIn"])[2];
             string error = String.Empty;
 
             if (ModelState.IsValid && userBLL.ChangePassword(email, CurrentPassword, NewPassword, ref error))

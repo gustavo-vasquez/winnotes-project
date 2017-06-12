@@ -33,14 +33,14 @@ namespace ProbandoTodo.Controllers
             model.FolderID = Convert.ToInt32(folderID);
             model.NoteID = Convert.ToInt32(noteID);
             model.CurrentFolder = folderName;
-            model.FoldersComboBox = folderBLL.GetFoldersOfUserBLL(Convert.ToInt32(((string[])Session["UserLogged"])[0]));
+            model.FoldersComboBox = folderBLL.GetFoldersOfUserBLL(Convert.ToInt32(((string[])Session["UserLoggedIn"])[0]));
             return PartialView("_ChangeFolder", model);
         }
 
         [HttpPost]
         public ActionResult ChangeFolder(string folderID, string noteID, string folderSelected)
         {
-            string userID = ((string[])Session["UserLogged"])[0];
+            string userID = ((string[])Session["UserLoggedIn"])[0];
             bool result = folderBLL.ChangeFolderBLL(noteID, userID, folderSelected);
             if (!result)
             {
@@ -69,7 +69,7 @@ namespace ProbandoTodo.Controllers
             {
                 try
                 {
-                    int UserID = Convert.ToInt32(((string[])Session["UserLogged"])[0]);
+                    int UserID = Convert.ToInt32(((string[])Session["UserLoggedIn"])[0]);
                     folderBLL.CreateFolderBLL(UserID, model.Name, model.Details);
                     return PartialView("_FoldersThumbnail", FillFoldersThumbnail());
                 }
@@ -107,7 +107,7 @@ namespace ProbandoTodo.Controllers
         {
             try
             {
-                string userID = ((string[])Session["UserLogged"])[0];                
+                string userID = ((string[])Session["UserLoggedIn"])[0];                
                 ContentInFolderModelView model = new ContentInFolderModelView(folderBLL.GetFolderDataBLL(folderID),
                                                                                 folderBLL.GetNotesInFolderBLL(userID, folderID.ToString()));
                 return View(model);

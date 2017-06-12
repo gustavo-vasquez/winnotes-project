@@ -213,7 +213,7 @@ namespace Data_Access_Layer
                 UserLoginData userLoggedIn = null;                
                 Person user = context.Person.Where(p => p.PersonIDEncrypted == encryptedID).FirstOrDefault();
 
-                if (userLoggedIn != null)
+                if (user != null)
                 {
                     userLoggedIn = new UserLoginData(
                                         user.PersonID,

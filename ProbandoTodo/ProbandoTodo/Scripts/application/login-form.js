@@ -15,11 +15,11 @@
 
 function loginFailed(response) {
     if (response.responseJSON != undefined)
-        $('body').append('<div class="message-result"><p>' + response.responseJSON.message + '</p></div>');        
+        $('body').append('<div class="message-result"><p>' + response.responseJSON.message + '</p></div>');
     else
         $('body').append('<div class="message-result"><p>Se ha producido un error inesperado. Inténtelo nuevamente.</p></div>');            
 
-    $('.message-result').fadeIn();
+    //$('.message-result').fadeIn();
     setTimeout(function () {
         $('.message-result').fadeOut('slow', function () { $(this).remove(); });
     }, 6000);

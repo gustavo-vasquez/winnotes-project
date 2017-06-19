@@ -254,17 +254,22 @@ namespace Data_Access_Layer
         /// <summary>
         /// Devuelve la información de perfil del usuario.
         /// </summary>
-        /// <param name="email">Correo electrónico</param>
+        /// <param name="userID">ID del usuario actual</param>
         /// <returns></returns>
-        public string[] GetUserInformation(string email)
+        public string[] GetUserInformation(int userID)
         {
-            var context = OpenConnection();
-            Person PersonData = context.Person.Where(p => p.Email == email).FirstOrDefault();
-            
-            var UserInformation = new string[] { GetAvatarImage(PersonData.AvatarImage, PersonData.AvatarMIMEType), PersonData.PersonalPhrase, PersonData.UserName, PersonData.Email, PersonData.PhraseColor };
-            CloseConnection(context);
-
-            return UserInformation;
+            using (var context = new WinNotesDBEntities())
+            {
+                Person PersonData = context.Person.Where(p => p.PersonID == userID).FirstOrDefault();
+                var UserInformation = new string[] { GetAvatarImage(PersonData.AvatarImage, PersonData.AvatarMIMEType),
+                                                     PersonData.PersonalPhrase,
+                                                     PersonData.PhraseColor,
+                                                     PersonData.UserName,
+                                                     PersonData.Email,
+                                                     PersonData.RegistrationDate.ToShortDateString()
+                                                   };
+                return UserInformation;
+            }  
         }
 
         /// <summary>
@@ -299,23 +304,21 @@ namespace Data_Access_Layer
         /// <param name="MIMEType">Información MIME</param>
         /// <param name="email">Correo electrónico</param>
         /// <returns></returns>
-        public bool ChangeAvatar(Image avatarImage, string MIMEType, string email)
+        public void ChangeAvatar(Image avatarImage, string MIMEType, int userID)
         {
             try
-            { 
-                var context = OpenConnection();
-                Person PersonData = context.Person.Where(p => p.Email == email).First();
-
-                PersonData.AvatarImage = ConvertImageToByteArray(avatarImage);
-                PersonData.AvatarMIMEType = MIMEType;
-                context.SaveChanges();
-                CloseConnection(context);
-
-                return true;
+            {
+                using (var context = new WinNotesDBEntities())
+                {
+                    Person PersonData = context.Person.Where(p => p.PersonID == userID).First();
+                    PersonData.AvatarImage = ConvertImageToByteArray(avatarImage);
+                    PersonData.AvatarMIMEType = MIMEType;
+                    context.SaveChanges();                    
+                }
             }
             catch
             {
-                return false;
+                throw;
             }
         }
 
@@ -326,22 +329,21 @@ namespace Data_Access_Layer
         /// <param name="phrase">Frase personal</param>
         /// <param name="phraseColor">Fuente de color de la frase</param>
         /// <returns></returns>
-        public bool ChangePersonalPhraseDAL(string email, string phrase, string phraseColor)
+        public void ChangePersonalPhraseDAL(int userID, string phrase, string phraseColor)
         {
             try
             {
-                var context = OpenConnection();
-                Person PersonData = context.Person.Where(p => p.Email == email).First();
-                PersonData.PersonalPhrase = phrase;
-                PersonData.PhraseColor = phraseColor;
-                context.SaveChanges();
-                CloseConnection(context);
-
-                return true;
+                using (var context = new WinNotesDBEntities())
+                {
+                    Person PersonData = context.Person.Where(p => p.PersonID == userID).First();
+                    PersonData.PersonalPhrase = phrase;
+                    PersonData.PhraseColor = phraseColor;
+                    context.SaveChanges();
+                }
             }
             catch
             {
-                return false;
+                throw;
             }
         }
 
@@ -353,27 +355,24 @@ namespace Data_Access_Layer
         /// <param name="newPassword">Nueva contraseña</param>
         /// <param name="error">Posible error</param>
         /// <returns></returns>
-        public bool ChangePasswordDAL(string email, string currentPassword, string newPassword, ref string error)
+        public void ChangePasswordDAL(int userID, string currentPassword, string newPassword)
         {
             try
             {
-                var context = OpenConnection();
-                string CurrentPassword = context.Person.Where(p => p.Email == email).First().Password;
-                if(CurrentPassword == currentPassword)
-                {
-                    CurrentPassword = newPassword;
-                    context.SaveChanges();
-                    CloseConnection(context);
-                    return true;
+                using (var context = new WinNotesDBEntities())
+                {                    
+                    string CurrentPassword = context.Person.Where(p => p.PersonID == userID).First().Password;
+                    if (CurrentPassword == currentPassword)
+                    {
+                        CurrentPassword = newPassword;
+                        context.SaveChanges();                        
+                    }                    
+                    throw new ArgumentException("EL CAMPO CONTRASEÑA ACTUAL NO ES CORRECTO");
                 }
-
-                error = "EL CAMPO CONTRASEÑA ACTUAL NO ES CORRECTO";
-                return false;
             }
             catch
             {
-                error = "SE HA PRODUCIDO UN ERROR DESCONOCIDO";
-                return false;
+                throw;
             }            
         }
     }

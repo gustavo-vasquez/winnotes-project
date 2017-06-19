@@ -2,16 +2,12 @@
 
 @{
     ViewBag.Title = "Perfil";
-
-    @section custom_scripts {
-            @ScriptsExtension.RenderDefer("~/Scripts/Application/profile-management.view.js", "~/bundles/jqueryval")            
-        }
 }
 
 @if (ViewBag.error != null && ViewBag.error != "")
 {
-    <div class="alert alert-dismissible alert-danger text-center">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <div class="message-result">
+        <button type="button" class="close">&times;</button>
         <p>@ViewBag.error</p>
     </div>
 }
@@ -46,12 +42,15 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                @Html.Partial("_InformationSection", Model.ChangePasswordSectionModel)
+                @Html.Partial("_InformationSection", Model)
             </div>
         </div>
     </div>    
 </div>
 
-@*@section scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-    }*@
+@{InitialScripts.Add("~/Scripts/jquery.validate.min.js", "~/Scripts/jquery.validate.unobtrusive.min.js", "~/Scripts/jquery.unobtrusive-ajax.min.js", "~/Scripts/application/profile-management.js");}
+
+@*<script type="text/javascript">addScripts("/Scripts/jquery.validate.min.js");</script>
+<script type="text/javascript">addScripts("/Scripts/jquery.validate.unobtrusive.min.js");</script>
+<script type="text/javascript">addScripts("/Scripts/jquery.unobtrusive-ajax.min.js");</script>
+<script type="text/javascript">addScripts("/Scripts/application/profile-management.js");</script>*@

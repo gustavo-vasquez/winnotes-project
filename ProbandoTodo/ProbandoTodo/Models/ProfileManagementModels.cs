@@ -14,12 +14,56 @@ namespace ProbandoTodo.Models
         public InformationSectionViewModel InformationSectionModel { get; set; }
         public ChangePasswordSectionViewModel ChangePasswordSectionModel { get; set; }
 
-        public ProfileManagementModels()
+        public ProfileManagementModels(string[] userInformation)
         {
-            this.AvatarSectionModel = new AvatarSectionViewModel();
-            this.PersonalPhraseModel = new PersonalPhraseViewModel();
-            this.InformationSectionModel = new InformationSectionViewModel();
+            this.AvatarSectionModel = new AvatarSectionViewModel()
+            {
+                AvatarSource = userInformation[0]                
+            };
+            this.PersonalPhraseModel = new PersonalPhraseViewModel()
+            {
+                PersonalPhrase = userInformation[1],
+                PhraseColor = userInformation[2]
+            };
+            this.InformationSectionModel = new InformationSectionViewModel()
+            {
+                UserName = userInformation[3],
+                Email = userInformation[4],
+                RegistrationDate = userInformation[5]
+            };
             this.ChangePasswordSectionModel = new ChangePasswordSectionViewModel();
+        }
+
+        public ProfileManagementModels(string[] userInformation, object sectionModel)
+        {
+            this.AvatarSectionModel = new AvatarSectionViewModel()
+            {
+                AvatarSource = userInformation[0]
+            };
+            this.PersonalPhraseModel = new PersonalPhraseViewModel()
+            {
+                PersonalPhrase = userInformation[1],
+                PhraseColor = userInformation[2]
+            };
+            this.InformationSectionModel = new InformationSectionViewModel()
+            {
+                UserName = userInformation[3],
+                Email = userInformation[4],
+                RegistrationDate = userInformation[5]
+            };
+            this.ChangePasswordSectionModel = new ChangePasswordSectionViewModel();
+
+            //if (sectionModel is AvatarSectionViewModel)
+            //    this.AvatarSectionModel = (AvatarSectionViewModel)sectionModel;
+
+            if(sectionModel is PersonalPhraseViewModel)
+                this.PersonalPhraseModel = (PersonalPhraseViewModel)sectionModel;
+
+            if (sectionModel is InformationSectionViewModel)
+                this.InformationSectionModel = (InformationSectionViewModel)sectionModel;
+
+            if (sectionModel is ChangePasswordSectionViewModel)
+                this.ChangePasswordSectionModel = (ChangePasswordSectionViewModel)sectionModel;
         }
 
         public class AvatarSectionViewModel
@@ -42,13 +86,14 @@ namespace ProbandoTodo.Models
 
         public class InformationSectionViewModel
         {
-            [Required(ErrorMessage = "-Debe ingresar el nombre de usuario")]
-            [RegularExpression("^[a-zA-Z0-9 _]*$")]
+            //[Required(ErrorMessage = "-Debe ingresar el nombre de usuario")]
+            //[RegularExpression("^[a-zA-Z0-9 _]*$")]
             public string UserName { get; set; }
 
-            [Required(ErrorMessage = "Debe ingresar el usuario de email")]
-            [RegularExpression("^[^@]+$")]
+            //[Required(ErrorMessage = "-Debe ingresar el usuario de email")]
+            //[RegularExpression("^[^@]+$")]
             public string Email { get; set; }
+            public string RegistrationDate { get; set; }
         }
 
         public class ChangePasswordSectionViewModel

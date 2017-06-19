@@ -10,62 +10,73 @@ namespace ProbandoTodo.Helpers
 {
     public static class InitialScripts
     {
-        public static IHtmlString Load()
+        public static IHtmlString myScripts { get; set; }
+
+        public static void Add(params string[] src)
         {
-            string currentPath = HttpContext.Current.Request.Url.AbsolutePath;
-            IHtmlString htmlString = null;            
-
-            switch(currentPath)
-            {
-                case "/Home/Contact":
-                    htmlString = GenerateScript(false, "http://maps.googleapis.com/maps/api/js", "google.maps");
-                    break;
-                case "/User/ProfileManagement":
-                    htmlString = GenerateScript(true, "profile-management.view");
-                    break;
-                case "/Folder/List":
-                    htmlString = GenerateScript(true);
-                    break;
-            }
-
-            return htmlString;
+            myScripts = Scripts.Render(src);
         }
 
-        private static IHtmlString GenerateScript(bool validate, params string[] filename)
+        public static IHtmlString Write()
         {
-            List<string> scriptPathList = new List<string>();            
+            return myScripts;
+        }
+        //public static IHtmlString Load()
+        //{
+        //    string currentPath = HttpContext.Current.Request.Url.AbsolutePath;
+        //    IHtmlString htmlString = null;            
 
-            foreach (var f in filename)
-            {
-                if(f.StartsWith("http:") || f.StartsWith("https:"))
-                {
-                    scriptPathList.Add(f);
-                }
-                else
-                {
-                    scriptPathList.Add(String.Concat("~/Scripts/application/", f, ".js"));
-                }                
-            }
+        //    switch(currentPath)
+        //    {
+        //        case "/Home/Contact":
+        //            htmlString = GenerateScript(false, "http://maps.googleapis.com/maps/api/js", "google.maps");
+        //            break;
+        //        case "/User/ProfileManagement":
+        //            htmlString = GenerateScript(true, "profile-management.view");
+        //            break;
+        //        case "/Folder/List":
+        //            htmlString = GenerateScript(true);
+        //            break;
+        //    }
 
-            if (validate)
-            {
-                scriptPathList.Add("~/bundles/jqueryval");
-            }
+        //    return htmlString;
+        //}
 
-            string[] scriptPathArray = scriptPathList.ToArray();
+        //private static IHtmlString GenerateScript(bool validate, params string[] filename)
+        //{
+        //    List<string> scriptPathList = new List<string>();            
 
-            return ScriptsExtension.RenderDefer(scriptPathArray);
-        }        
+        //    foreach (var f in filename)
+        //    {
+        //        if(f.StartsWith("http:") || f.StartsWith("https:"))
+        //        {
+        //            scriptPathList.Add(f);
+        //        }
+        //        else
+        //        {
+        //            scriptPathList.Add(String.Concat("~/Scripts/application/", f, ".js"));
+        //        }                
+        //    }
 
-        private static IEnumerable<MethodInfo> ControllersInAssembly()
-        {
-            Assembly assembly = Assembly.GetExecutingAssembly();
+        //    if (validate)
+        //    {
+        //        scriptPathList.Add("~/bundles/jqueryval");
+        //    }
 
-            return assembly.GetTypes()
-                        .Where(type => typeof(Controller).IsAssignableFrom(type)) //filter controllers
-                        .SelectMany(type => type.GetMethods())
-                        .Where(method => method.IsPublic && !method.IsDefined(typeof(NonActionAttribute)));
+        //    string[] scriptPathArray = scriptPathList.ToArray();
+
+        //    return ScriptsExtension.RenderDefer(scriptPathArray);
+        //}        
+
+        //private static IEnumerable<MethodInfo> ControllersInAssembly()
+        //{
+        //    Assembly assembly = Assembly.GetExecutingAssembly();
+
+        //    return assembly.GetTypes()
+        //                .Where(type => typeof(Controller).IsAssignableFrom(type)) //filter controllers
+        //                .SelectMany(type => type.GetMethods())
+        //                .Where(method => method.IsPublic && !method.IsDefined(typeof(NonActionAttribute)));
             
-        }
+        //}
     }
 }

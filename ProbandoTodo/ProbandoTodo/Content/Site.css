@@ -564,8 +564,7 @@ span.glyphicon-calendar.calendar-trigger {
     padding: 15px 5px 5px 5px;
     text-align: center;
     position: fixed;
-    z-index: 9999;
-    display: none;
+    z-index: 9999;    
 }
 
 /*****************************************************************************/
@@ -602,6 +601,13 @@ span.glyphicon-calendar.calendar-trigger {
     font-weight: bold;    
 }
 
+.phrase-box-style .input-validation-error {
+    color: rgb(0, 0, 0);
+    border: 2px solid red;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
 .phrase-color-effect {
     background: -webkit-linear-gradient(white, aliceblue); /* For Safari 5.1 to 6.0 */
     background: -o-linear-gradient(white, aliceblue); /* For Opera 11.1 to 12.0 */
@@ -630,7 +636,7 @@ span.glyphicon-calendar.calendar-trigger {
 }
 
 .input-validation-error {
-    border-color: red !important;
+    border-color: red;
 }
 
 .color-box {

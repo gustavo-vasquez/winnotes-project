@@ -89,11 +89,11 @@ namespace Business_Logic_Layer
         /// <summary>
         /// (Capa de negocio) Devuelve la información de perfil del usuario.
         /// </summary>
-        /// <param name="email">Correo electrónico</param>
+        /// <param name="userID">ID del usuario actual</param>
         /// <returns></returns>
-        public string[] GetUserInformation(string email)
+        public string[] GetUserInformation(int userID)
         {
-            return new UserDAL().GetUserInformation(email);
+            return userDAL.GetUserInformation(userID);
         }
 
         /// <summary>
@@ -103,16 +103,11 @@ namespace Business_Logic_Layer
         /// <param name="email">Correo electrónico</param>
         /// <param name="error">Posible error</param>
         /// <returns></returns>
-        public bool ChangeAvatar(HttpPostedFileBase newAvatar, string email, ref string error)
+        public void ChangeAvatar(HttpPostedFileBase newAvatar, int userID)
         {
             Image avatarImage = null;
-
-            if(CheckAvatarConditions(newAvatar, ref error, ref avatarImage))
-            {
-                return new UserDAL().ChangeAvatar(avatarImage, newAvatar.ContentType, email);
-            }
-
-            return false;
+            CheckAvatarConditions(newAvatar, ref avatarImage);
+            userDAL.ChangeAvatar(avatarImage, newAvatar.ContentType, userID);
         }
 
         /// <summary>
@@ -122,9 +117,9 @@ namespace Business_Logic_Layer
         /// <param name="phrase">Frase personal</param>
         /// <param name="phraseColor">Fuente de color de la frase</param>
         /// <returns></returns>
-        public bool ChangePersonalPhrase(string email, string phrase, string phraseColor)
+        public void ChangePersonalPhrase(int userID, string phrase, string phraseColor)
         {
-            return new UserDAL().ChangePersonalPhraseDAL(email, phrase, phraseColor);
+            userDAL.ChangePersonalPhraseDAL(userID, phrase, phraseColor);
         }
 
         /// <summary>
@@ -135,9 +130,9 @@ namespace Business_Logic_Layer
         /// <param name="newPassword">Nueva contraseña</param>
         /// <param name="error">Posible error</param>
         /// <returns></returns>
-        public bool ChangePassword(string email, string currentPassword, string newPassword, ref string error)
+        public void ChangePassword(int userID, string currentPassword, string newPassword)
         {
-            return new UserDAL().ChangePasswordDAL(email, currentPassword, newPassword, ref error);
+            userDAL.ChangePasswordDAL(userID, currentPassword, newPassword);
         }
 
 
@@ -150,45 +145,36 @@ namespace Business_Logic_Layer
         /// <param name="error">Posible error</param>
         /// <param name="avatarImage">Variable de imágen que se convertirá</param>
         /// <returns></returns>
-        private bool CheckAvatarConditions(HttpPostedFileBase newAvatar, ref string error, ref Image avatarImage)
+        private void CheckAvatarConditions(HttpPostedFileBase newAvatar, ref Image avatarImage)
         {
             try
             {
-                int _maxSize = 2 * 1024 * 1024;
-                List<string> _fileTypes = new List<string>() { "jpg", "jpeg", "gif", "png" };
-                int _maxWidth = 1280;
-                int _maxHeight = 720;
+                if (newAvatar == null)
+                    throw new ArgumentNullException("DEBE ELEGIR UNA IMAGEN");
 
-                if (newAvatar.ContentLength > _maxSize)
-                {
-                    error = "EL AVATAR DEBE TENER UN TAMAÑO MAXIMO DE 2MB";
-                    return false;
-                }
+                const int _maxSize = 2 * 1024 * 1024;
+                const int _maxWidth = 1280;
+                const int _maxHeight = 720;
+                List<string> _fileTypes = new List<string>() { "jpg", "jpeg", "gif", "png" };
+
+                if (newAvatar.ContentLength > _maxSize)                
+                    throw new FormatException("EL AVATAR DEBE TENER UN TAMAÑO MAXIMO DE 2MB");                
 
                 string avatarExtension = System.IO.Path.GetExtension(newAvatar.FileName).Substring(1);
 
-                if (!_fileTypes.Contains(avatarExtension, StringComparer.OrdinalIgnoreCase))
-                {
-                    error = "PARA EL AVATAR SOLO SE ADMITEN IMÁGENES JPG, JPEG, GIF Y PNG";
-                    return false;
-                }
+                if (!_fileTypes.Contains(avatarExtension, StringComparer.OrdinalIgnoreCase))                
+                    throw new FormatException("PARA EL AVATAR SOLO SE ADMITEN IMÁGENES JPG, JPEG, GIF Y PNG");
                 
                 MemoryStream ms = new MemoryStream();
                 newAvatar.InputStream.CopyTo(ms);
                 avatarImage = Image.FromStream(ms);
 
-                if (avatarImage.Width > _maxWidth || avatarImage.Height > _maxHeight)
-                {
-                    error = "EL AVATAR ADMITE HASTA UNA RESOLUCIÓN DE 1280x720";
-                    return false;
-                }
-
-                return true;
+                if (avatarImage.Width > _maxWidth || avatarImage.Height > _maxHeight)                
+                    throw new FormatException("EL AVATAR ADMITE HASTA UNA RESOLUCIÓN DE 1280x720");                
             }
             catch
             {
-                error = "HA OCURRIDO UN ERROR INESPERADO";
-                return false;
+                throw;
             }
             
         }

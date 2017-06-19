@@ -6,12 +6,18 @@ using System.Web.Mvc;
 using ProbandoTodo.Models;
 using Business_Logic_Layer;
 using static ProbandoTodo.Filters.CustomFilters;
+using Domain_Layer;
 
 namespace ProbandoTodo.Controllers
 {
     public class UserController : Controller
     {
         static UserBLL userBLL = new UserBLL();        
+
+        private int GetSessionID(object user)
+        {                        
+            return ((UserLoginData)user).UserID;
+        }
 
         // GET: User
         public ActionResult Index()
@@ -112,8 +118,9 @@ namespace ProbandoTodo.Controllers
         {
             try
             {
-                string email = ((string[])Session["UserLoggedIn"])[2];
-                return View(FillProfileManagementView(email));
+                int userID = GetSessionID(Session["UserLoggedIn"]);
+                //return View(FillProfileManagementView(userID));
+                return View(new ProfileManagementModels(userBLL.GetUserInformation(userID)));
             }
             catch
             {
@@ -121,70 +128,81 @@ namespace ProbandoTodo.Controllers
             }
         }
 
-        private ProfileManagementModels FillProfileManagementView(string email)
-        {            
-            ProfileManagementModels model = new ProfileManagementModels();
-            string[] userInformation = userBLL.GetUserInformation(email);
+        //private ProfileManagementModels FillProfileManagementView(int userID)
+        //{            
+        //    ProfileManagementModels model = new ProfileManagementModels();
+        //    string[] userInformation = userBLL.GetUserInformation(userID);
 
-            model.AvatarSectionModel.AvatarSource = userInformation[0];
-            model.PersonalPhraseModel.PersonalPhrase = userInformation[1];
-            model.InformationSectionModel.UserName = userInformation[2];
-            model.InformationSectionModel.Email = userInformation[3];
-            model.PersonalPhraseModel.PhraseColor = userInformation[4];
+        //    model.AvatarSectionModel.AvatarSource = userInformation[0];
+        //    model.PersonalPhraseModel.PersonalPhrase = userInformation[1];
+        //    model.PersonalPhraseModel.PhraseColor = userInformation[2];
+        //    model.InformationSectionModel.UserName = userInformation[3];
+        //    model.InformationSectionModel.Email = userInformation[4];
 
-            return model;
-        }
+        //    return model;
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult UploadAvatar(HttpPostedFileBase UploadAvatar)
         {
-            string email = ((string[])Session["UserLoggedIn"])[2];
-            string error = String.Empty;
-
-            if (UploadAvatar != null && userBLL.ChangeAvatar(UploadAvatar, email, ref error))
+            try
             {
+                int userID = GetSessionID(Session["UserLoggedIn"]);                
+                userBLL.ChangeAvatar(UploadAvatar, userID);
                 return RedirectToAction("ProfileManagement");
             }
-
-            ViewBag.error = error;
-            
-            return View("ProfileManagement", FillProfileManagementView(email));
+            catch(Exception ex)
+            {
+                ViewBag.error = ex.Message;
+                return View("ProfileManagement", new ProfileManagementModels(userBLL.GetUserInformation(GetSessionID(Session["UserLoggedIn"]))));
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult PersonalPhrase(ProfileManagementModels.PersonalPhraseViewModel model, string pColor)
         {
-            string email = ((string[])Session["UserLoggedIn"])[2];
-            string error = String.Empty;
-
-            if (ModelState.IsValid && userBLL.ChangePersonalPhrase(email, model.PersonalPhrase, pColor))
+            try
             {
-                return RedirectToAction("ProfileManagement");
-            }
+                int userID = GetSessionID(Session["UserLoggedIn"]);
+                if (ModelState.IsValid)
+                {
+                    userBLL.ChangePersonalPhrase(userID, model.PersonalPhrase, pColor);
+                    return RedirectToAction("ProfileManagement");
+                }
+                    
 
-            ViewBag.error = "MENSAJE PERSONAL NO VÁLIDO";
-            return View("ProfileManagement", FillProfileManagementView(email));
-        }
+                return View("ProfileManagement", new ProfileManagementModels(userBLL.GetUserInformation(GetSessionID(Session["UserLoggedIn"])), model));
+            }
+            catch(Exception ex)
+            {
+                ViewBag.error = ex.Message;                
+                return View("ProfileManagement", new ProfileManagementModels(userBLL.GetUserInformation(GetSessionID(Session["UserLoggedIn"])), model));
+            }
+        }        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChangePassword(string CurrentPassword, string NewPassword)
+        public ActionResult ChangePassword(ProfileManagementModels.ChangePasswordSectionViewModel model)
         {
-            string email = ((string[])Session["UserLoggedIn"])[2];
-            string error = String.Empty;
-
-            if (ModelState.IsValid && userBLL.ChangePassword(email, CurrentPassword, NewPassword, ref error))
+            try
             {
-                return RedirectToAction("ProfileManagement");
+                int userID = GetSessionID(Session["UserLoggedIn"]);
+                if (ModelState.IsValid)
+                {
+                    userBLL.ChangePassword(userID, model.CurrentPassword, model.NewPassword);
+                    return RedirectToAction("ProfileManagement");
+                }
+
+                return View("ProfileManagement", new ProfileManagementModels(userBLL.GetUserInformation(GetSessionID(Session["UserLoggedIn"])), model));
             }
-
-            ViewBag.error = error;
-
-            return View("ProfileManagement", FillProfileManagementView(email));
+            catch(Exception ex)
+            {
+                ViewBag.error = ex.Message;
+                return View("ProfileManagement", new ProfileManagementModels(userBLL.GetUserInformation(GetSessionID(Session["UserLoggedIn"])), model));
+            }
         }
-
 
         public void SetCookieData(string email)
         {

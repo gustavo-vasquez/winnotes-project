@@ -108,6 +108,10 @@ function loginComplete(result) {
     }
 }
 
+$('.message-result').on('click', 'button', function () {
+    $(this).parent().remove();
+});
+
 // ****************** FUNCIÓN PARA OBTENER EL VALOR DE UNA COOKIE ********************************
 
 function readCookie(name) {

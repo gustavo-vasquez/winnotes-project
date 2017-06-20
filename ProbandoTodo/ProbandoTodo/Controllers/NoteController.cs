@@ -1,4 +1,5 @@
 ﻿using Business_Logic_Layer;
+using Domain_Layer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,12 @@ namespace ProbandoTodo.Controllers
 {
     public class NoteController : Controller
     {
-        static NoteBLL noteBLL = new NoteBLL();        
+        static NoteBLL noteBLL = new NoteBLL();
+
+        private int GetSessionID(object user)
+        {
+            return ((UserLoginData)user).UserID;
+        }
 
         // GET: Note
         public ActionResult Index()
@@ -23,7 +29,7 @@ namespace ProbandoTodo.Controllers
         [OnlyUser]
         public ActionResult Create()
         {
-            int userID = Convert.ToInt32(((string[])Session["UserLoggedIn"])[0]);
+            int userID = GetSessionID(Session["UserLoggedIn"]);
             CreateNoteModelView model = new CreateNoteModelView();
             this.PrepareModelToCreateNote(userID, ref model);
             return View(model);
@@ -34,35 +40,38 @@ namespace ProbandoTodo.Controllers
         [OnlyUser]
         public ActionResult Create(CreateNoteModelView model)
         {
-            int userID = Convert.ToInt32(((string[])Session["UserLoggedIn"])[0]);
+            try
+            {                
+                int userID = GetSessionID(Session["UserLoggedIn"]);
 
-            if (!ModelState.IsValid)
+                if (!ModelState.IsValid)
+                {
+                    this.PrepareModelToCreateNote(userID, ref model);
+                    return View(model);
+                }
+
+                int folderAuxID = 0;
+                noteBLL.CreateNoteBLL(
+                                    userID,
+                                    model.Title,
+                                    model.Details,
+                                    model.ExpirationDate,
+                                    model.Starred,
+                                    model.FolderSelected,
+                                    model.HourSelected,
+                                    model.MinuteSelected,
+                                    model.TimeTableSelected,
+                                    ref folderAuxID
+                                   );
+
+                return RedirectToAction("NotesList", "Folder", new { folderID = folderAuxID });
+            }
+            catch(Exception ex)
             {
-                this.PrepareModelToCreateNote(userID, ref model);
+                TempData["error"] = ex.Message;
+                this.PrepareModelToCreateNote(GetSessionID(Session["UserLoggedIn"]), ref model);
                 return View(model);
             }
-            
-            int folderAuxID = 0;
-            var QueryResult = noteBLL.CreateNoteBLL(userID,
-                                                    model.Title,
-                                                    model.Details,
-                                                    model.ExpirationDate,
-                                                    model.Starred,
-                                                    model.FolderSelected,
-                                                    model.HourSelected,
-                                                    model.MinuteSelected,
-                                                    model.TimeTableSelected,
-                                                    ref folderAuxID
-                                                   );
-
-            if (!QueryResult)
-            {
-                ViewBag.ErrorMessage = "Ha ocurrido un error inesperado. Vuelve a intentarlo.";
-                this.PrepareModelToCreateNote(userID, ref model);
-                return View(model);
-            }
-
-            return RedirectToAction("NotesList", "Folder", new { folderID = folderAuxID });
         }
 
         private void PrepareModelToCreateNote(int userID, ref CreateNoteModelView model)

@@ -23,9 +23,9 @@ namespace Business_Logic_Layer
             return noteDAL.GetUserBoxInfoDAL(userID);
         }
 
-        public bool CreateNoteBLL(int userID, string title, string details, DateTime expirationDate, bool starred, string folderSelected, string hourSelected, string minuteSelected, string timeTableSelected, ref int folderAuxID)
+        public void CreateNoteBLL(int userID, string title, string details, DateTime expirationDate, bool starred, string folderSelected, string hourSelected, string minuteSelected, string timeTableSelected, ref int folderAuxID)
         {            
-            return noteDAL.CreateNoteDAL(userID, title, details, expirationDate, starred, folderSelected, Convert.ToInt32(hourSelected), Convert.ToInt32(minuteSelected), timeTableSelected, ref folderAuxID);
+            noteDAL.CreateNoteDAL(userID, title, details, expirationDate, starred, folderSelected, Convert.ToInt32(hourSelected), Convert.ToInt32(minuteSelected), timeTableSelected, ref folderAuxID);
         }
 
         public void ForceCompleteTaskBLL(int noteID)

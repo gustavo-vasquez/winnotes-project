@@ -1,13 +1,35 @@
 ﻿@model ProbandoTodo.Models.FolderModels.CreateFolderModelView
 
 <div id="FolderDialog">
-    @using (Ajax.BeginForm("Create", "Folder", null, new AjaxOptions() {
+    @using (Html.BeginForm("Create", "Folder", FormMethod.Post, new { id = "NewFolderForm" }))
+    {
+        @Html.AntiForgeryToken()
+        <fieldset>
+            <div class="form-group has-warning">
+                <label>Carpeta</label>
+                <button type="button" class="close close-popup">&times;</button>
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control input-sm", placeholder = "Nombre de la carpeta..." })
+            </div>
+            <div class="form-group has-warning">
+                @Html.TextAreaFor(m => m.Details, new { @class = "form-control input-sm", rows = "3", placeholder = "Descripción de la carpeta..." })
+            </div>
+            <div class="text-right">
+                <button type="submit" class="btn btn-sm btn-warning">Confirmar</button>
+            </div>
+        </fieldset>
+    }
+</div>
+
+@*<div id="FolderDialog">
+    @using (Ajax.BeginForm("Create", "Folder", null, new AjaxOptions()
+    {
         HttpMethod = "POST",
         OnSuccess = "folderCreated('y')",
         OnFailure = "folderCreated('n')",
-        UpdateTargetId = "FoldersList",
-        LoadingElementId = "SpinnerAnim" },        
-        new { id = "NewFolderForm" }))
+        //UpdateTargetId = "FoldersList",
+        LoadingElementId = "SpinnerAnim"
+    },
+    new { id = "NewFolderForm" }))
     {
         @Html.AntiForgeryToken()
         <fieldset>
@@ -25,4 +47,4 @@
             </div>
         </fieldset>
     }
-</div>
+</div>*@

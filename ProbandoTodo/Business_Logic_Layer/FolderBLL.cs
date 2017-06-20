@@ -18,9 +18,9 @@ namespace Business_Logic_Layer
             return folderDAL.GetAllFoldersDAL();
         }
 
-        public bool CreateFolderBLL(int id, string name, string details)
+        public void CreateFolderBLL(int id, string name, string details)
         {
-            return folderDAL.CreateFolderDAL(id, name, details);
+            folderDAL.CreateFolderDAL(id, name, details);
         }
 
         public Folder GetFolderDataBLL(int folderID)

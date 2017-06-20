@@ -54,7 +54,7 @@ namespace Data_Access_Layer
             {
                 using (var context = new WinNotesDBEntities())
                 {                    
-                    Person user = context.Person.Where(p => p.PersonID == userID).FirstOrDefault();
+                    Person user = context.Person.Where(p => p.PersonID == userID).First();
                     int foldersCount = context.Folder.Where(f => f.Person_ID == userID).Count();
                     int notesCount = context.Note.Where(n => n.Person_ID == userID).Count();
 
@@ -70,9 +70,9 @@ namespace Data_Access_Layer
                     return userBoxInfo;
                 }
             }
-            catch(Exception ex)
+            catch
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -85,13 +85,16 @@ namespace Data_Access_Layer
         /// <param name="starred">Destacado</param>
         /// <param name="folderSelected">Carpeta elegida</param>
         /// <returns></returns>
-        public bool CreateNoteDAL(int userID, string title, string details, DateTime expirationDate, bool starred, string folderSelected, int hourSelected, int minuteSelected, string timeTableSelected, ref int folderAuxID)
+        public void CreateNoteDAL(int userID, string title, string details, DateTime expirationDate, bool starred, string folderSelected, int hourSelected, int minuteSelected, string timeTableSelected, ref int folderAuxID)
         {
             try
             {
                 if (timeTableSelected.Equals("PM"))
                 {
-                    hourSelected += 12;
+                    if (hourSelected < 12)
+                        hourSelected += 12;
+                    else
+                        hourSelected = 0;
                 }
 
                 expirationDate = new DateTime(expirationDate.Year, expirationDate.Month, expirationDate.Day, hourSelected, minuteSelected, 0);
@@ -108,13 +111,12 @@ namespace Data_Access_Layer
                     newNote.Person_ID = userID;
                     context.Note.Add(newNote);
                     context.SaveChanges();
-                    folderAuxID = newNote.Folder_ID;                    
-                    return true;
-                }                    
+                    folderAuxID = newNote.Folder_ID;
+                }
             }
             catch
             {
-                return false;
+                throw;
             }
         }
 

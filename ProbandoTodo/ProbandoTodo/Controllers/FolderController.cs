@@ -6,12 +6,18 @@ using System.Web.Mvc;
 using Business_Logic_Layer;
 using static ProbandoTodo.Filters.CustomFilters;
 using static ProbandoTodo.Models.FolderModels;
+using Domain_Layer;
 
 namespace ProbandoTodo.Controllers
 {
     public class FolderController : Controller
     {
         static private FolderBLL folderBLL = new FolderBLL();
+
+        private int GetSessionID(object user)
+        {
+            return ((UserLoginData)user).UserID;
+        }
 
         // GET: Folder
         [OnlyUser]
@@ -63,23 +69,26 @@ namespace ProbandoTodo.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(CreateFolderModelView model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    int UserID = Convert.ToInt32(((string[])Session["UserLoggedIn"])[0]);
-                    folderBLL.CreateFolderBLL(UserID, model.Name, model.Details);
-                    return PartialView("_FoldersThumbnail", FillFoldersThumbnail());
+                if (ModelState.IsValid)
+                {                    
+                    int userID = GetSessionID(Session["UserLoggedIn"]);
+                    folderBLL.CreateFolderBLL(userID, model.Name, model.Details);
+                    //return PartialView("_FoldersThumbnail", FillFoldersThumbnail());
+                    return Redirect(Request.UrlReferrer.AbsolutePath.ToString());
                 }
-                catch
-                {
-                    return PartialView("_CreateFolder");
-                }
-            }
 
-            return PartialView("_CreateFolder");
+                return PartialView("_CreateFolder", model);
+            }
+            catch(Exception ex)
+            {
+                TempData["error"] = ex.Message;
+                return Redirect(Request.UrlReferrer.AbsolutePath.ToString());
+            }
         }
 
         public IEnumerable<FolderListModelView> FillFoldersThumbnail()

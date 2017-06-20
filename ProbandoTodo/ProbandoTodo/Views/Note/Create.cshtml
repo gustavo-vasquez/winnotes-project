@@ -4,12 +4,13 @@
     ViewBag.Title = "Crear nota";
 
     @section custom_scripts {
-        @Scripts.Render("~/Scripts/application/note-actions.js", "~/bundles/jqueryval")
+        @Scripts.Render("~/Scripts/application/note-actions.js", "~/Scripts/application/folder-actions.js", "~/bundles/jqueryval")
     }
 }
 
 <h1>Crea una nueva nota</h1>
 <h4>Anota todo aquello que quieras recordar para que nunca te pierdas ningún acontecimiento en tu vida cotidiana.</h4>
+<button id="CreateFolder" class="btn btn-warning"><span class="glyphicon glyphicon-folder-close"></span> Crear carpeta</button>
 <hr />
 
 <div class="row">
@@ -78,9 +79,9 @@
     }            
 </div>
 
-@if (ViewBag.ErrorMessage != null)
+@*@if (ViewBag.ErrorMessage != null)
 {
     <div class="message-result">
         <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
     </div>
-}
+}*@

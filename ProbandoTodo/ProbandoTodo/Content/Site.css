@@ -567,6 +567,10 @@ span.glyphicon-calendar.calendar-trigger {
     z-index: 9999;    
 }
 
+.message-result > .close {
+    margin-right: 15px;
+}
+
 /*****************************************************************************/
 
 
@@ -636,7 +640,7 @@ span.glyphicon-calendar.calendar-trigger {
 }
 
 .input-validation-error {
-    border-color: red;
+    border-color: red !important;
 }
 
 .color-box {

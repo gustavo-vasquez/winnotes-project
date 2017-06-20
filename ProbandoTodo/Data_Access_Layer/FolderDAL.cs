@@ -26,26 +26,31 @@ namespace Data_Access_Layer
             }
         }
 
-        public bool CreateFolderDAL(int id, string name, string details)
+        public void CreateFolderDAL(int id, string name, string details)
         {
             try
             {
                 using (var context = new WinNotesDBEntities())
                 {
-                    Folder folder = new Folder();
-                    folder.Name = name;
-                    folder.Details = details;
-                    folder.LastModified = DateTime.Now;
-                    folder.Person_ID = id;                    
-                    context.Folder.Add(folder);
-                    context.SaveChanges();                    
-
-                    return true;
-                }                    
+                    if(!context.Folder.Any(f => f.Name == name))
+                    {
+                        Folder folder = new Folder();
+                        folder.Name = name;
+                        folder.Details = details;
+                        folder.LastModified = DateTime.Now;
+                        folder.Person_ID = id;
+                        context.Folder.Add(folder);
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Ya existe una carpeta con ese nombre");
+                    }
+                }
             }
             catch
             {
-                return false;
+                throw;
             }
         }
 

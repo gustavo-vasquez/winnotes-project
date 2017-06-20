@@ -172,8 +172,7 @@ namespace ProbandoTodo.Controllers
                     return RedirectToAction("ProfileManagement");
                 }
                     
-
-                return View("ProfileManagement", new ProfileManagementModels(userBLL.GetUserInformation(GetSessionID(Session["UserLoggedIn"])), model));
+                return View("ProfileManagement", new ProfileManagementModels(userBLL.GetUserInformation(userID), model));
             }
             catch(Exception ex)
             {

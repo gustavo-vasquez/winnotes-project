@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\AlarmBoxTime.cs" />
     <Compile Include="Enums\MailProviders.cs" />
     <Compile Include="Folder.cs">
       <DependentUpon>WinNotesDB.tt</DependentUpon>

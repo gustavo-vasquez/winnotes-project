@@ -121,6 +121,15 @@
             </div>
         </div>
     </footer>
+
+    @if (TempData["error"] != null)
+    {
+        <div class="message-result">
+            <button type="button" class="close">&times;</button>
+            <p>@TempData["error"]</p>
+        </div>
+    }
+
     @Scripts.Render("~/bundles/jquery", "~/bundles/bootstrap")
     @Scripts.Render("~/jquery-ui-1.12.1.custom/jquery-ui.js")
     @Scripts.Render("~/Scripts/application.js")

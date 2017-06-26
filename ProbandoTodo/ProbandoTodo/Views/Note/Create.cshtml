@@ -10,78 +10,79 @@
 
 <h1>Crea una nueva nota</h1>
 <h4>Anota todo aquello que quieras recordar para que nunca te pierdas ningún acontecimiento en tu vida cotidiana.</h4>
-<button id="CreateFolder" class="btn btn-warning"><span class="glyphicon glyphicon-folder-close"></span> Crear carpeta</button>
 <hr />
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="panel panel-primary panel-new-note">            
             <div id="UserInfo" class="panel-body text-center">
-                <p><span class="user-box-bg"><i class="glyphicon glyphicon-user"></i> @Model.UserName</span></p>
+                <p class="user-box-bg">@Model.UserName</p>
+                <p><i>@Model.PersonalPhrase</i></p>
                 <img class="img-circle" src="@Model.AvatarSrc" alt="user_pic" />                
                 <p><a href="@Url.Action("List", "Note")"><i class="glyphicon glyphicon-list-alt"></i> @Model.NotesCount notas creadas</a></p>
                 <p><a href="@Url.Action("List", "Folder")"><i class="glyphicon glyphicon-folder-close"></i> @Model.FoldersCount carpetas</a></p>
             </div>
         </div>        
     </div>
-    @using (Html.BeginForm("Create", "Note", FormMethod.Post, new { id = "NewNoteForm", @class = "form-horizontal col-md-8", role = "form" }))
+    @using (Html.BeginForm("Create", "Note", FormMethod.Post, new { id = "NewNoteForm", @class = "col-md-9", role = "form" }))
     {
         @Html.AntiForgeryToken()
         <div class="panel panel-success panel-new-note">
             <div class="panel-body">
-                <div class="form-group">
-                    <div class="col-md-9">
-                        @Html.TextBoxFor(m => m.Title, new { @class="form-control", placeholder="Título de la nota...", autofocus = true })                        
-                    </div>
-                    <div class="col-md-3">
-                        @Html.DropDownListFor(m => m.FolderSelected, Model.FoldersBox, new { @class="form-control" })                        
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-12">
-                        @Html.TextAreaFor(m => m.Details, new { @class ="form-control", rows="3", placeholder="Contenido de la nota..." })                        
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-5">                        
-                        <div id="DatePicker"></div>
-                        @Html.HiddenFor(m => m.ExpirationDate)
-                    </div>
-                    <div class="col-md-3 time-box">
-                        <div class="row">                            
-                            <div class="col-md-9">
-                                @Html.DropDownListFor(m => m.HourSelected, Model.HourBox, "Horas...", new { @class="form-control input-sm" })                                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button id="CreateFolder" type="button" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-plus"></span> <span class="glyphicon glyphicon-folder-open"></span>
+                                    </button>
+                                </span>
+                                @Html.DropDownListFor(m => m.FolderSelected, Model.FoldersBox, new { @class = "form-control" })
                             </div>
                         </div>
-                        <div class="row">                            
-                            <div class="col-md-9">
-                                @Html.DropDownListFor(m => m.MinuteSelected, Model.MinuteBox, "Minutos...", new { @class = "form-control input-sm" })                                
-                            </div>
+                        <div class="form-group">
+                            @Html.TextBoxFor(m => m.Title, new { @class = "form-control", placeholder = "Título de la nota...", autofocus = true })
                         </div>
-                        <div class="row">                            
-                            <div class="col-md-9">
-                                @Html.DropDownListFor(m => m.TimeTableSelected, Model.TimeTableBox, "am/pm...", new { @class = "form-control input-sm" })                                
-                            </div>
+                        <div class="form-group">
+                            @Html.TextAreaFor(m => m.Details, new { @class = "form-control", rows = "3", placeholder = "Contenido de la nota..." })
                         </div>                        
                     </div>
-                    <div class="col-md-2 text-right">
-                        <label class="highlight-note" for="Starred">
-                            <span class="glyphicon glyphicon-star-empty"></span>
-                            @Html.CheckBoxFor(m => m.Starred, new { style = "display: none;" }) Destacar
-                        </label>
+                    <div class="col-md-6">
+                        <div id="DatePicker" class="col-md-6"></div>
+                        @Html.HiddenFor(m => m.ExpirationDate)
                     </div>
-                    <div class="col-md-2 text-right">
-                        <button type="submit" class="btn btn-success">Finalizar</button>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group highlight-note">
+                            <label for="Starred">
+                                <span class="glyphicon glyphicon-star-empty"></span>
+                                @Html.CheckBoxFor(m => m.Starred, new { style = "display: none;" }) Destacar
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group time-select">
+                            <div class="col-md-4">
+                                @Html.DropDownListFor(m => m.HourSelected, Model.HourBox, "Hora", new { @class = "form-control input-sm" })
+                            </div>
+                            <div class="col-md-4">
+                                @Html.DropDownListFor(m => m.MinuteSelected, Model.MinuteBox, "Min", new { @class = "form-control input-sm" })
+                            </div>
+                            <div class="col-md-4">
+                                @Html.DropDownListFor(m => m.TimeTableSelected, Model.TimeTableBox, "am/pm", new { @class = "form-control input-sm" })
+                            </div>
+                        </div>                        
                     </div>                    
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-block btn-success">Finalizar</button>
+                    </div>
                 </div>
             </div>
         </div>
     }            
 </div>
-
-@*@if (ViewBag.ErrorMessage != null)
-{
-    <div class="message-result">
-        <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
-    </div>
-}*@

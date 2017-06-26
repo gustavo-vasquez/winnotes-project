@@ -21,7 +21,7 @@ namespace ProbandoTodo.Filters
             }
         }
 
-        public class OnlyUserAttribute : ActionFilterAttribute
+        public class WithAccountAttribute : ActionFilterAttribute
         {
             public override void OnActionExecuting(ActionExecutingContext filterContext)
             {

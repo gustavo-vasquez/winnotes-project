@@ -38,14 +38,14 @@ namespace Business_Logic_Layer
             noteDAL.StarTaskDAL(noteID);
         }
 
-        public void ChangeDatetimeEventBLL(string currentDate, string hour, string minute, string timeTable, string id_note, string userID)
+        public void ChangeDatetimeEventBLL(string currentDate, string hour, string minute, string timeTable, string id_note, int userID)
         {
-            noteDAL.ChangeDatetimeEventDAL(currentDate, Convert.ToInt32(hour), Convert.ToInt32(minute), timeTable, Convert.ToInt32(id_note), Convert.ToInt32(userID));
+            noteDAL.ChangeDatetimeEventDAL(currentDate, Convert.ToInt32(hour), Convert.ToInt32(minute), timeTable, Convert.ToInt32(id_note), userID);
         }
 
-        public IQueryable<NoteInformationQueryable> GetDataForNoteList(string userID)
+        public IQueryable<NoteInformationQueryable> GetDataForNoteList(int userID)
         {
-            return noteDAL.GetDataForNoteList(Convert.ToInt32(userID));
+            return noteDAL.GetDataForNoteList(userID);
         }
 
         public IEnumerable<SelectListItem> GenerateHourCombo()

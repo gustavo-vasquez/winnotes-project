@@ -14,6 +14,7 @@ namespace ProbandoTodo.Models
         public class CreateNoteModelView
         {
             public string UserName { get; set; }
+            public string PersonalPhrase { get; set; }
             public string AvatarSrc { get; set; }
             public int FoldersCount { get; set; }
             public int NotesCount { get; set; }

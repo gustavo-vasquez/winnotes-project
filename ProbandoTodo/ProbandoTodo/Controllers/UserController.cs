@@ -113,7 +113,7 @@ namespace ProbandoTodo.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [OnlyUser]
+        [WithAccount]
         public ActionResult ProfileManagement()
         {
             try

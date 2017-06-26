@@ -4,13 +4,17 @@
     ViewBag.Title = Model.FolderData.Name;
 
     @section custom_scripts {
-        @Scripts.Render("~/Scripts/application/note-actions.js")
-        @Scripts.Render("~/bundles/jqueryval")
+        @Scripts.Render("~/Scripts/application/note-actions.js", "~/Scripts/application/folder-actions.js", "~/bundles/jqueryval")
     }
 }
 
 <a href="@Url.Action("List", "Folder")" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-arrow-left"></span> Volver a las carpetas</a>
-<h2 id="ThisFolder" class="text-center text-uppercase" data-iof="@Model.FolderData.FolderID">@Model.FolderData.Name</h2>
+<h2 id="ThisFolder" class="text-center text-uppercase" data-iof="@Model.FolderData.FolderID">
+    @Model.FolderData.Name
+    <a id="EditFolder" data-folder-name="@Model.FolderData.Name" data-folder-details="@Model.FolderData.Details" title="Editar carpeta">
+        <span class="glyphicon glyphicon-edit"></span>
+    </a>
+</h2>
 <h3 class="text-center">@Model.FolderData.Details</h3>
 
 <a class="btn btn-success" href="@Url.Action("Create", "Note")"><i class="glyphicon glyphicon-list-alt"></i> Crear nota</a>

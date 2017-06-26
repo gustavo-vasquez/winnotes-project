@@ -1,57 +1,59 @@
-﻿$('#CreateFolder').on('click', function (event) {
+﻿$('#CreateFolder').on('click', function () {
     $.ajax({
         url: "/Folder/FolderPartial",
-        success: function (data) {
-            folderActions(data);
+        success: function (data) {            
+            folderActions(data, true);
         }
     });
 });
 
-
+$('#EditFolder').on('click', function () {   
+    //var dateModel = {
+    //    "FolderID": $('#ThisFolder').data('iof'),
+    //    "Name": $('#EditFolder').data('folder-name'),
+    //    "Details": $('#EditFolder').data('folder-details')
+    //};
+    $.ajax({
+        url: "/Folder/Edit",
+        method: "GET",
+        data: "folderID=" + $('#ThisFolder').data('iof') + "&name=" + $('#EditFolder').data('folder-name') + "&details=" + $('#EditFolder').data('folder-details'),        
+        success: function (data) {
+            folderActions(data, false);
+        }
+    });
+});
 
 // ************************ FUNCIONES PARA CARPETA *****************************
 
-function folderActions(data) {
+function folderActions(data, action) {
     $('#MainDialog').html(data);
-    $("#FolderDialog").css({
-        'position': 'absolute',
-        'left': $('#CreateFolder').offset().left,
-        'top': $('#CreateFolder').offset().top + 50,
-        'display': 'none'
-    }).slideDown('slow');
 
-    $('#NewFolderForm').on('click', '.close', function () {
-        $("#FolderDialog").slideUp();
-    });
+    if (action) {
+        $("#FolderDialog").css({
+            'position': 'absolute',
+            'left': $('#CreateFolder').offset().left,
+            'top': $('#CreateFolder').offset().top + 50,
+            'display': 'none'
+        }).slideDown('fast');
+
+        $('#NewFolderForm').on('click', '.close', function () {
+            $("#FolderDialog").slideUp('fast');
+        });
+    }
+    else {
+        $("#FolderDialog").css({
+            'position': 'absolute',
+            'left': $('#EditFolder').offset().left - 100,
+            'top': $('#EditFolder').offset().top + 30,
+            'display': 'none'
+        }).slideDown('fast');
+
+        $('#EditFolderForm').on('click', '.close', function () {
+            $("#FolderDialog").slideUp('fast');
+        });
+    }
 
     $('form').removeData('validator').removeData('unobtrusiveValidation');
     $.validator.unobtrusive.parse('form');
 }
-
-//function folderCreated(isCreated) {
-//    var newAlert;
-
-//    if (isCreated !== 'n') {
-//        newAlert = $('<div></div>')
-//            .addClass('folder-result')
-//            .append('<div class="alert alert-info">¡Carpeta creada exitosamente!</div>');
-//        $('footer').append(newAlert);
-//        $("#FolderDialog").slideUp('slow');
-//        $('.folder-result').fadeIn('slow').delay(3000).fadeOut('slow');
-//        setTimeout(function () {
-//            $('footer > div').last().remove();
-//        }, 5000);
-//    }
-//    else {
-//        newAlert = $('<div></div>')
-//            .addClass('folder-result')
-//            .append('<div class="alert alert-danger">Ha ocurrido un error. Inténtelo de nuevo.</div>');
-//        $('footer').append(newAlert);
-//        $("#FolderDialog").slideUp('slow');
-//        $('.folder-result').fadeIn('slow').delay(3000).fadeOut('slow');
-//        setTimeout(function () {
-//            $('footer > div').last().remove();
-//        }, 5000);
-//    }
-//}
 

@@ -150,11 +150,11 @@ footer a:hover {
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
-input,
+/*input,
 select,
 textarea {
     max-width: 280px;
-}
+}*/
 
 /* enable absolute positioning */
 .inner-addon {
@@ -291,10 +291,14 @@ textarea {
     text-align: center;
 }
 
-.highlight-note {
-    font-weight: normal;    
+.highlight-note {    
+    font-size: large;
+    text-align: center;
+    color: darkgoldenrod;
+}
+
+.highlight-note > label {
     cursor: pointer;
-    padding-top: 6%;
 }
 
 .jumbotron {
@@ -310,15 +314,20 @@ textarea {
     width: 100%;
 }
 
-#UserInfo > p:first-of-type {    
+/*#UserInfo > p:first-of-type {    
     margin-top: 5%;
+}*/
+
+#UserInfo p {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .user-box-bg {
-    background-color: lightseagreen;
+    background-color: lightslategrey;
     color: white;
     border-radius: 6px;
-    padding: 10px;
+    padding: 5px;
 }
 
 #UserInfo img {
@@ -341,6 +350,9 @@ textarea {
     margin-top: 10px;
 }
 
+.time-select div {
+    padding-right: 0;
+}
 
 /* Clases que afectan a las grillas */
 
@@ -539,15 +551,25 @@ span.glyphicon-calendar.calendar-trigger {
 .folder-frame .panel-success:hover {
     background-color: #18bc9c;
     color: white;
-    cursor: pointer;
+    cursor: pointer;    
 }
 
 .title-folder {
-    font-size: medium !important;
+    font-weight: bold;
 }
 
 .text-black {
+    color: black;    
+}
+
+.text-black:hover {
+    text-decoration: none;
+}
+
+#EditFolder {
+    font-size: large;
     color: black;
+    cursor: pointer;
 }
 
 /*****************************************************************************/

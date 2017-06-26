@@ -372,6 +372,7 @@
     <Content Include="Views\Note\_ListOfNotes.cshtml" />
     <Content Include="Views\Note\_ChangeDateTimeEvent.cshtml" />
     <Content Include="Views\Note\_FireAlarmDialog.cshtml" />
+    <Content Include="Views\Folder\_EditFolder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

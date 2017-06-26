@@ -27,6 +27,17 @@ namespace ProbandoTodo.Models
             public string Details { get; set; }
         }
 
+        public class EditFolderModelView
+        {
+            public int FolderID { get; set; }
+
+            [Required]
+            public string Name { get; set; }
+
+            [Required]
+            public string Details { get; set; }
+        }
+
         public class ClassifiedNotes
         {
             public List<NoteInformation> PendingNotes { get; set; }

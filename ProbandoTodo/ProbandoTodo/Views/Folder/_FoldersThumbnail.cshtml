@@ -10,9 +10,9 @@
                     <div class="panel-body text-center">
                         <p><img src="~/Content/Images/folder.png" width="48" height="40" alt="folder_icon" /></p>
                         <p class="title-folder">@folder.Name</p>
-                        <p>@folder.Details</p>
+                        <p class="title-folder">@folder.Details</p>
                         <p>Última modificación:</p>
-                        <p>@folder.LastModified</p>
+                        <p>@folder.LastModified.ToString("dd/MM/yyyy hh:mm tt", new System.Globalization.CultureInfo("en-US"))</p>
                     </div>
                 </div>
             </a>

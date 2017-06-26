@@ -23,14 +23,19 @@ namespace Business_Logic_Layer
             folderDAL.CreateFolderDAL(id, name, details);
         }
 
+        public void EditFolderBLL(int userID, int folderID, string name, string details)
+        {
+            folderDAL.EditFolderDAL(userID, folderID, name, details);
+        }
+
         public Folder GetFolderDataBLL(int folderID)
         {
             return folderDAL.GetFolderDataDAL(folderID);
         }
 
-        public List<Note> GetNotesInFolderBLL(string userID, string folderID)
+        public List<Note> GetNotesInFolderBLL(int userID, int folderID)
         {
-            return folderDAL.GetNotesInFolderDAL(Convert.ToInt32(userID), Convert.ToInt32(folderID));
+            return folderDAL.GetNotesInFolderDAL(userID, folderID);
         }
 
         public List<SelectListItem> GetFoldersOfUserBLL(int userID)
@@ -38,7 +43,7 @@ namespace Business_Logic_Layer
             return folderDAL.GetFoldersOfUserDAL(userID);
         }
 
-        public bool ChangeFolderBLL(string noteID, string userID, string folderSelected)
+        public bool ChangeFolderBLL(string noteID, int userID, string folderSelected)
         {
             return folderDAL.ChangeFolderDAL(Convert.ToInt32(noteID), Convert.ToInt32(userID), folderSelected);
         }

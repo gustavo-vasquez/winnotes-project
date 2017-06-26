@@ -62,6 +62,7 @@ namespace Data_Access_Layer
                     userBoxInfo = new string[]
                     {
                         user.UserName,
+                        user.PersonalPhrase,
                         new UserDAL().GetAvatarImage(user.AvatarImage, user.AvatarMIMEType),
                         foldersCount.ToString(),
                         notesCount.ToString()

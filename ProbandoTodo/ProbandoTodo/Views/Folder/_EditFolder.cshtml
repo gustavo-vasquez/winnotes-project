@@ -1,0 +1,22 @@
+﻿@model ProbandoTodo.Models.FolderModels.EditFolderModelView
+
+<div id="FolderDialog">
+    @using (Html.BeginForm("Edit", "Folder", FormMethod.Post, new { id = "EditFolderForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.FolderID)
+        <fieldset>
+            <div class="form-group has-warning">
+                <label>Carpeta</label>
+                <button type="button" class="close close-popup">&times;</button>
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control input-sm", placeholder = "Nombre de la carpeta..." })
+            </div>
+            <div class="form-group has-warning">
+                @Html.TextAreaFor(m => m.Details, new { @class = "form-control input-sm", rows = "3", placeholder = "Descripción de la carpeta..." })
+            </div>
+            <div class="text-right">
+                <button type="submit" class="btn btn-sm btn-warning">Confirmar</button>
+            </div>
+        </fieldset>
+    }
+</div>

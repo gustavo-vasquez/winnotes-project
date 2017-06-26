@@ -20,7 +20,7 @@ namespace ProbandoTodo.Controllers
         }
 
         // GET: Folder
-        [OnlyUser]
+        [WithAccount]
         public ActionResult List()
         {
             return View(FillFoldersThumbnail());
@@ -46,7 +46,7 @@ namespace ProbandoTodo.Controllers
         [HttpPost]
         public ActionResult ChangeFolder(string folderID, string noteID, string folderSelected)
         {
-            string userID = ((string[])Session["UserLoggedIn"])[0];
+            int userID = GetSessionID(Session["UserLoggedIn"]);
             bool result = folderBLL.ChangeFolderBLL(noteID, userID, folderSelected);
             if (!result)
             {
@@ -61,7 +61,7 @@ namespace ProbandoTodo.Controllers
             switch (controller)
             {
                 case "Folder":
-                    return PartialView("_NotesInFolder", new ClassifiedNotes(folderBLL.GetNotesInFolderBLL(userID, folderID)));                    
+                    return PartialView("_NotesInFolder", new ClassifiedNotes(folderBLL.GetNotesInFolderBLL(userID, Convert.ToInt32(folderID))));
                 case "Note":
                     return PartialView("~/Views/Note/_ListOfNotes.cshtml", new Models.NoteModels.ClassifiedQueryableNotes(new NoteBLL().GetDataForNoteList(userID)));
                 default: return Json(Response, JsonRequestBehavior.DenyGet);
@@ -91,6 +91,31 @@ namespace ProbandoTodo.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult Edit(string folderID, string name, string details)
+        {            
+            return PartialView("_EditFolder", new EditFolderModelView() { FolderID = Convert.ToInt32(folderID), Name = name, Details = details });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(EditFolderModelView model)
+        {
+            if(!ModelState.IsValid)            
+                return PartialView("_EditFolder", model);            
+
+            try
+            {
+                folderBLL.EditFolderBLL(GetSessionID(Session["UserLoggedIn"]), model.FolderID, model.Name, model.Details);
+                return Redirect(Request.UrlReferrer.AbsolutePath.ToString());
+            }
+            catch(Exception ex)
+            {
+                TempData["error"] = ex.Message;
+                return Redirect(Request.UrlReferrer.AbsolutePath.ToString());
+            }
+        }
+
         public IEnumerable<FolderListModelView> FillFoldersThumbnail()
         {
             List<FolderListModelView> model = new List<FolderListModelView>();
@@ -111,18 +136,19 @@ namespace ProbandoTodo.Controllers
             return model;
         }
 
-        [OnlyUser]
+        [WithAccount]
         public ActionResult NotesList(int folderID)
         {
             try
-            {
-                string userID = ((string[])Session["UserLoggedIn"])[0];                
+            {                
+                int userID = GetSessionID(Session["UserLoggedIn"]);
                 ContentInFolderModelView model = new ContentInFolderModelView(folderBLL.GetFolderDataBLL(folderID),
-                                                                                folderBLL.GetNotesInFolderBLL(userID, folderID.ToString()));
+                                                                                folderBLL.GetNotesInFolderBLL(userID, folderID));
                 return View(model);
             }
-            catch
+            catch(Exception ex)
             {
+                TempData["error"] = ex.Message;
                 return RedirectToAction("List");
             }
         }        

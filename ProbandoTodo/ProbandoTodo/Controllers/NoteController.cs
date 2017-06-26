@@ -11,6 +11,7 @@ using static ProbandoTodo.Models.NoteModels;
 
 namespace ProbandoTodo.Controllers
 {
+    [WithAccount]
     public class NoteController : Controller
     {
         static NoteBLL noteBLL = new NoteBLL();
@@ -18,15 +19,9 @@ namespace ProbandoTodo.Controllers
         private int GetSessionID(object user)
         {
             return ((UserLoginData)user).UserID;
-        }
+        }        
 
-        // GET: Note
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        [OnlyUser]
+        //[WithAccount]
         public ActionResult Create()
         {
             int userID = GetSessionID(Session["UserLoggedIn"]);
@@ -37,7 +32,7 @@ namespace ProbandoTodo.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [OnlyUser]
+        //[WithAccount]
         public ActionResult Create(CreateNoteModelView model)
         {
             try
@@ -75,25 +70,27 @@ namespace ProbandoTodo.Controllers
         }
 
         private void PrepareModelToCreateNote(int userID, ref CreateNoteModelView model)
-        {            
+        {
             string[] userInfoBox = noteBLL.GetUserBoxInfoBLL(userID);
             model.FoldersBox = noteBLL.GetFoldersToSelectBLL(userID);
             model.HourBox = noteBLL.GenerateHourCombo();
             model.MinuteBox = noteBLL.GenerateMinuteCombo();
             model.TimeTableBox = noteBLL.GenerateTimeTableCombo();
             model.UserName = userInfoBox[0];
-            model.AvatarSrc = userInfoBox[1];
-            model.FoldersCount = Convert.ToInt32(userInfoBox[2]);
-            model.NotesCount = Convert.ToInt32(userInfoBox[3]);            
+            model.PersonalPhrase = userInfoBox[1];
+            model.AvatarSrc = userInfoBox[2];
+            model.FoldersCount = Convert.ToInt32(userInfoBox[3]);
+            model.NotesCount = Convert.ToInt32(userInfoBox[4]);
         }
 
-        [OnlyUser]
+        //[WithAccount]
         public ActionResult List()
         {
             try
             {
-                string userID = ((string[])Session["UserLoggedIn"])[0];
-                return View(new ClassifiedQueryableNotes(noteBLL.GetDataForNoteList(userID)));
+                int userID = GetSessionID(Session["UserLoggedIn"]);
+                return View();
+                //return View(new ClassifiedQueryableNotes(noteBLL.GetDataForNoteList(userID)));
             }
             catch(Exception ex)
             {
@@ -105,10 +102,10 @@ namespace ProbandoTodo.Controllers
         public ActionResult ForceCompleteTask(string folderID, string noteID, bool localized)
         {
             noteBLL.ForceCompleteTaskBLL(Convert.ToInt32(noteID));
-            string userID = ((string[])Session["UserLoggedIn"])[0];            
+            int userID = GetSessionID(Session["UserLoggedIn"]);
 
             if(localized)
-                return PartialView("~/Views/Folder/_NotesInFolder.cshtml", new ClassifiedNotes(new FolderBLL().GetNotesInFolderBLL(userID, folderID)));
+                return PartialView("~/Views/Folder/_NotesInFolder.cshtml", new ClassifiedNotes(new FolderBLL().GetNotesInFolderBLL(userID, Convert.ToInt32(folderID))));
 
             return PartialView("_ListOfNotes", new ClassifiedQueryableNotes(noteBLL.GetDataForNoteList(userID)));
         }
@@ -117,10 +114,10 @@ namespace ProbandoTodo.Controllers
         public ActionResult StarTask(string folderID, string noteID, bool localized)
         {
             noteBLL.StarTaskBLL(Convert.ToInt32(noteID));
-            string userID = ((string[])Session["UserLoggedIn"])[0];
+            int userID = GetSessionID(Session["UserLoggedIn"]);
 
             if (localized)
-                return PartialView("~/Views/Folder/_NotesInFolder.cshtml", new ClassifiedNotes(new FolderBLL().GetNotesInFolderBLL(userID, folderID)));
+                return PartialView("~/Views/Folder/_NotesInFolder.cshtml", new ClassifiedNotes(new FolderBLL().GetNotesInFolderBLL(userID, Convert.ToInt32(folderID))));
 
             return PartialView("_ListOfNotes", new ClassifiedQueryableNotes(noteBLL.GetDataForNoteList(userID)));
         }
@@ -137,10 +134,10 @@ namespace ProbandoTodo.Controllers
         {
             try
             {
-                string userID = ((string[])Session["UserLoggedIn"])[0];
+                int userID = GetSessionID(Session["UserLoggedIn"]);
                 noteBLL.ChangeDatetimeEventBLL(model.CurrentDate, model.HourSelected, model.MinuteSelected, model.TimeTableSelected, model.ID_Note, userID);
                 if (model.Localized)
-                    return PartialView("~/Views/Folder/_NotesInFolder.cshtml", new ClassifiedNotes(new FolderBLL().GetNotesInFolderBLL(userID, model.ID_Folder)));
+                    return PartialView("~/Views/Folder/_NotesInFolder.cshtml", new ClassifiedNotes(new FolderBLL().GetNotesInFolderBLL(userID, Convert.ToInt32(model.ID_Folder))));
                 else
                     return PartialView("_ListOfNotes", new ClassifiedQueryableNotes(noteBLL.GetDataForNoteList(userID)));
             }

@@ -54,6 +54,25 @@ namespace Data_Access_Layer
             }
         }
 
+        public void EditFolderDAL(int userID, int folderID, string name, string details)
+        {
+            try
+            {
+                using (var context = new WinNotesDBEntities())
+                {
+                    var folder = context.Folder.Where(f => f.Person_ID == userID && f.FolderID == folderID).First();
+                    folder.Name = name;
+                    folder.Details = details;
+                    folder.LastModified = DateTime.Now;
+                    context.SaveChanges();
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public Folder GetFolderDataDAL(int folderID)
         {
             try
@@ -78,11 +97,11 @@ namespace Data_Access_Layer
                 {
                     List<Note> notes = context.Note.Where(n => n.Folder_ID == folderID && n.Person_ID == userID).ToList();                    
                     return notes;
-                }                
-            }            
-            catch(Exception ex)
+                }
+            }
+            catch
             {
-                throw ex;
+                throw;
             }
         }
 

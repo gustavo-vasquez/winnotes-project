@@ -2,7 +2,18 @@
 
 <div class="alarm-overlay">
     <div class="alarm-section">
-        @using (Ajax.BeginForm("SetDatetimeEvent", "Note", new { currentDate = Model.CurrentDate, ID_Note = Model.ID_Note, ID_Folder = Model.ID_Folder, Localized = Model.Localized } , new AjaxOptions { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "NotesInside", OnSuccess = "changeDatetimeEvent", OnFailure = "ajaxError" }, new { id = "SetDatetimeEventForm" }))
+        @using (Ajax.BeginForm("SetDatetimeEvent", "Note",
+            new { currentDate = Model.CurrentDate,
+                ID_Note = Model.ID_Note,
+                ID_Folder = Model.ID_Folder,
+                InFolder = Model.InFolder },
+            new AjaxOptions { HttpMethod = "POST",
+                InsertionMode = InsertionMode.Replace,
+                UpdateTargetId = "NotesInside",
+                OnSuccess = "changeDatetimeEvent",
+                OnFailure = "errorHandler"
+            },
+            new { id = "SetDatetimeEventForm" }))
         {
             @Html.AntiForgeryToken()
             <div class="col-md-12">

@@ -1,6 +1,7 @@
 ﻿$('#CreateFolder').on('click', function () {
     $.ajax({
-        url: "/Folder/FolderPartial",
+        url: "/Folder/Create",
+        method: "GET",
         success: function (data) {            
             folderActions(data, true);
         }

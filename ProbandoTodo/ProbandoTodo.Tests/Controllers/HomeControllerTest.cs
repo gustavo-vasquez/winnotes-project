@@ -86,7 +86,7 @@ namespace ProbandoTodo.Tests.Controllers
         public void TestChangeFolderPartial()
         {
             FolderController controller = new FolderController();
-            PartialViewResult partial = controller.ChangeFolderPartial("2", "Ocio", "3") as PartialViewResult;
+            PartialViewResult partial = controller.ChangeFolderPartial(2, "Ocio", 3) as PartialViewResult;
             Assert.IsNotNull(partial);
         }
 
@@ -94,7 +94,7 @@ namespace ProbandoTodo.Tests.Controllers
         public void TestCreateFolderPartial()
         {
             FolderController controller = new FolderController();
-            PartialViewResult partial = controller.FolderPartial() as PartialViewResult;
+            PartialViewResult partial = controller.Create() as PartialViewResult;
             Assert.IsNotNull(partial);
         }        
     }

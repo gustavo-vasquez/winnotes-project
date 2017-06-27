@@ -59,15 +59,19 @@ function note_actions() {
         minDate: 0,
         onSelect: function (dateText, inst) {
             $this = $(this);
-            $formNotes = $this.parent().prev().prev();
-            var myData;
+            $formNotes = $this.parent().prev().prev();            
+            var myData = "currentDate=" + dateText
+                        + "&previousDate=" + $this.prev().text()
+                        + "&idNote=" + $formNotes.data('ion')
+                        + "&idFolder=" + $('#ThisFolder').data('iof')
+                        + "&inFolder=" + $formNotes.hasClass('in-folder');
 
-            if ($formNotes.hasClass('localized')) {
-                myData = "currentDate=" + dateText + "&previousDate=" + $this.prev().text() + "&idNote=" + $formNotes.data('ion') + "&idFolder=" + $('#ThisFolder').data('iof') + "&localized=true"
-            }
-            else {
-                myData = "currentDate=" + dateText + "&previousDate=" + $this.prev().text() + "&idNote=" + $formNotes.data('ion') + "&localized=false"
-            }
+            //if ($formNotes.hasClass('in-folder')) {
+            //    myData = "currentDate=" + dateText + "&previousDate=" + $this.prev().text() + "&idNote=" + $formNotes.data('ion') + "&idFolder=" + $('#ThisFolder').data('iof') + "&inFolder=true"
+            //}
+            //else {
+            //    myData = "currentDate=" + dateText + "&previousDate=" + $this.prev().text() + "&idNote=" + $formNotes.data('ion') + "&inFolder=false"
+            //}
 
             $.ajax({
                 url: "/Note/ChangeDateTimeEventPartial",
@@ -80,11 +84,8 @@ function note_actions() {
                         $('.alarm-overlay').remove();
                     });
                 },
-                error: function (response) {
-                    $('footer').append('<div class="message-result"><div class="alert alert-danger">' + response.statusText + ' (' + response.status + ')</div></div>');
-                    setTimeout(function () {
-                        $('.message-result').remove();
-                    }, 4000);
+                error: function () {
+                    alert("Ocurrió un error. Intentelo de nuevo.");
                 }
             });
         }
@@ -137,11 +138,11 @@ function note_actions() {
             default: return false;
         }
 
-        if ($formNotes.hasClass('localized')) {
-            myData = "folderID=" + $('#ThisFolder').data('iof') + "&noteID=" + $formNotes.data('ion') + "&localized=true";
+        if ($formNotes.hasClass('in-folder')) {
+            myData = "folderID=" + $('#ThisFolder').data('iof') + "&noteID=" + $formNotes.data('ion') + "&inFolder=true";
         }
         else {
-            myData = "folderID=" + $formNotes.data('iof') + "&noteID=" + $formNotes.data('ion') + "&localized=false";
+            myData = "folderID=" + $formNotes.data('iof') + "&noteID=" + $formNotes.data('ion') + "&inFolder=false";
         }
 
         $.ajax({
@@ -152,9 +153,7 @@ function note_actions() {
                 $('#NotesInside').html(data);
                 note_actions();
             },
-            error: function (data) {
-                $('#NotesInside').html('<div class="row"><div class="col-md-6 col-md-offset-3 text-center"><div class="alert alert-danger">No se pudieron mostrar las notas. Pruebe recargando la página.</div></div></div>');
-            }
+            error: errorHandler            
         });
     }
 
@@ -164,10 +163,11 @@ function note_actions() {
         $.ajax({
             url: "/Folder/ChangeFolderPartial",
             method: "GET",
-            data: "folderID=" + $('#ThisFolder').data('iof') + "&folderName=" + $('#ThisFolder').text() + "&noteID=" + $this.data('ion'),
+            data: "folderID=" + $('#ThisFolder').data('iof') + "&folderName=" + $('#EditFolder').data('folder-name') + "&noteID=" + $this.data('ion'),
             success: function (data) {
                 showChangeFolderSection(data, $this);
-            }
+            },
+            error: errorHandler
         });
     });
 
@@ -180,7 +180,8 @@ function note_actions() {
             data: "folderID=" + $this.data('iof') + "&folderName=" + $this.data('nof') + "&noteID=" + $this.data('ion'),
             success: function (data) {
                 showChangeFolderSection(data, $this);
-            }
+            },
+            error: errorHandler
         });
     });
 
@@ -198,22 +199,18 @@ function note_actions() {
         });
 
         $('#btnChangeFolder').on('click', function () {
+            $folder = $('#FolderSelected');            
+
             $.ajax({
                 url: "/Folder/ChangeFolder",
                 method: "POST",
-                data: "folderID=" + $('#FolderSelected').data('iof') + "&noteID=" + $('#FolderSelected').data('ion') + "&folderSelected=" + $('#FolderSelected').val(),
+                data: "FolderID=" + $folder.data('iof') + "&NoteID=" + $folder.data('ion') + "&FolderSelected=" + $folder.val(),
                 success: function (data) {
                     $("#ChangeFolderDialog").slideUp();
                     $('#NotesInside').html(data);
                     note_actions();                    
                 },
-                error: function (response) {
-                    $('footer').append('<div class="message-result"><div class="alert alert-danger">' + response.statusText + ' (' + response.status + ')</div></div>');
-
-                    setTimeout(function () {
-                        $('.message-result').remove();
-                    }, 4000);
-                }
+                error: errorHandler
             });
         });        
     }    

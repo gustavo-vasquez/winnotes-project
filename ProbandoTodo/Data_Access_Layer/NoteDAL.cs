@@ -123,63 +123,74 @@ namespace Data_Access_Layer
 
         public void ForceCompleteTaskDAL(int noteID)
         {
-            using (var context = new WinNotesDBEntities())
-            {                
-                Note note = new Note();
-                note = context.Note.Where(n => n.NoteID == noteID).FirstOrDefault();
-                if (note.Completed != true)
+            try
+            {
+                using (var context = new WinNotesDBEntities())
                 {
-                    note.Completed = true;
-                    context.SaveChanges();
-                }                
-            }                
+                    Note note = new Note();
+                    note = context.Note.Where(n => n.NoteID == noteID).First();
+                    if (note.Completed != true)
+                    {
+                        note.Completed = true;
+                        context.SaveChanges();
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }           
         }
 
         public void StarTaskDAL(int noteID)
         {
-            using (var context = new WinNotesDBEntities())
-            {                
-                Note note = new Note();
-                note = context.Note.Where(n => n.NoteID == noteID).FirstOrDefault();
-                if (note.Completed != true)
+            try
+            {
+                using (var context = new WinNotesDBEntities())
                 {
-                    if (Convert.ToBoolean(note.Starred))
-                        note.Starred = false;
-                    else
-                        note.Starred = true;
+                    Note note = new Note();
+                    note = context.Note.Where(n => n.NoteID == noteID).First();
+                    if (note.Completed != true)
+                    {
+                        if (note.Starred != false)
+                            note.Starred = false;
+                        else
+                            note.Starred = true;
 
-                    context.SaveChanges();
+                        context.SaveChanges();
+                    }
                 }
-            }                
+            }
+            catch
+            {
+                throw;
+            }           
         }
 
         public IQueryable<NoteInformationQueryable> GetDataForNoteList(int userID)
         {
             try
             {
-                using (var context = new WinNotesDBEntities())
-                {                    
-                    IQueryable<NoteInformationQueryable> notes = context.Note.Join(context.Folder,
-                                                                                n => n.Folder_ID,
-                                                                                f => f.FolderID,
-                                                                                (n, f) => new { n, f })
-                                                                                .Where(parameters => parameters.n.Person_ID == userID)
-                                                                                .Select(m => new NoteInformationQueryable
-                                                                                {
-                                                                                    NoteID = m.n.NoteID,
-                                                                                    Title = m.n.Title,
-                                                                                    Details = m.n.Details,
-                                                                                    ExpirationDate = m.n.ExpirationDate,
-                                                                                    Starred = m.n.Starred,
-                                                                                    Completed = m.n.Completed,
-                                                                                    BelongsToFolderID = m.f.FolderID,
-                                                                                    BelongsToFolderName = m.f.Name
-                                                                                });
-                    //CloseConnection(context);
-                    return notes;
-                }                    
+                var context = new WinNotesDBEntities();                
+                IQueryable<NoteInformationQueryable> notes = context.Note.Join(context.Folder,
+                                                                            n => n.Folder_ID,
+                                                                            f => f.FolderID,
+                                                                            (n, f) => new { n, f })
+                                                                            .Where(parameters => parameters.n.Person_ID == userID)
+                                                                            .Select(m => new NoteInformationQueryable
+                                                                            {
+                                                                                NoteID = m.n.NoteID,
+                                                                                Title = m.n.Title,
+                                                                                Details = m.n.Details,
+                                                                                ExpirationDate = m.n.ExpirationDate,
+                                                                                Starred = m.n.Starred,
+                                                                                Completed = m.n.Completed,
+                                                                                BelongsToFolderID = m.f.FolderID,
+                                                                                BelongsToFolderName = m.f.Name
+                                                                            });                    
+                return notes;
             }
-            catch(Exception)
+            catch
             {
                 throw;
             }

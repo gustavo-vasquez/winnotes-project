@@ -109,7 +109,7 @@ function loginComplete(result) {
 }
 
 $('.message-result').on('click', 'button', function () {
-    $(this).parent().remove();
+    $(this).parent().fadeOut(function () { $(this).remove() });
 });
 
 // ****************** FUNCIÓN PARA OBTENER EL VALOR DE UNA COOKIE ********************************
@@ -134,6 +134,16 @@ function readCookie(name) {
 }
 
 // *******************************************************************************
+
+function errorHandler(xhr) {
+    $('body').append('<div class="message-result"><button type="button" class="close">&times;</button><p>' + xhr.responseJSON.error + '</p></div>');
+    $('.message-result').on('click', 'button', function () {
+        $(this).parent().fadeOut(function () { $(this).remove() });
+    });
+    setTimeout(function () {
+        $('.message-result').fadeOut(function () { $(this).remove() });
+    }, 6000);
+}
 
 function addScripts(src) {
     $('body').append('<script src=' + src + '></script>');

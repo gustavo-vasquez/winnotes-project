@@ -284,7 +284,6 @@
     <Content Include="Scripts\application\folder-actions.js" />
     <Content Include="Scripts\application\login-form.js" />
     <Content Include="Scripts\application\note-actions.js" />
-    <Content Include="Scripts\application\parse-ajax-form.js" />
     <Content Include="Scripts\application\profile-management.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

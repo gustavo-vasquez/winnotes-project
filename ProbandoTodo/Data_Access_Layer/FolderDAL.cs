@@ -121,31 +121,28 @@ namespace Data_Access_Layer
             }
             catch
             {
-                List<SelectListItem> folderComboBox = new List<SelectListItem>();
-                folderComboBox.Add(new SelectListItem { Value = "error", Text = "se ha producido un error" });
-                return folderComboBox;
+                throw new ArgumentException("No se han podido cargar las carpetas disponibles");
             }
         }
 
-        public bool ChangeFolderDAL(int noteID, int userID, string folderSelected)
+        public void ChangeFolderDAL(int noteID, int userID, string folderSelected)
         {
             try
             {
                 using (var context = new WinNotesDBEntities())
-                {                    
+                {
                     int folderID = context.Folder.Where(f => f.Name == folderSelected && f.Person_ID == userID).First().FolderID;
                     Note note = context.Note.Where(n => n.NoteID == noteID).First();
-                    if (note.Completed != true)
-                    {
-                        note.Folder_ID = folderID;
-                        context.SaveChanges();
-                    }
-                    return true;
-                }                    
+                    if (note.Completed != false)
+                        throw new ArgumentException("Esta nota ya se completó");
+
+                    note.Folder_ID = folderID;
+                    context.SaveChanges();
+                }
             }
             catch
             {
-                return false;
+                throw;
             }
         }
     }

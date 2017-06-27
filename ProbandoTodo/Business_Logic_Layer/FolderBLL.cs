@@ -43,9 +43,9 @@ namespace Business_Logic_Layer
             return folderDAL.GetFoldersOfUserDAL(userID);
         }
 
-        public bool ChangeFolderBLL(string noteID, int userID, string folderSelected)
+        public void ChangeFolderBLL(int noteID, int userID, string folderSelected)
         {
-            return folderDAL.ChangeFolderDAL(Convert.ToInt32(noteID), Convert.ToInt32(userID), folderSelected);
+            folderDAL.ChangeFolderDAL(noteID, userID, folderSelected);
         }
     }
 }

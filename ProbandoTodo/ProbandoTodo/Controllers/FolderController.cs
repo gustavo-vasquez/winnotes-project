@@ -10,6 +10,7 @@ using Domain_Layer;
 
 namespace ProbandoTodo.Controllers
 {
+    [WithAccount]
     public class FolderController : Controller
     {
         static private FolderBLL folderBLL = new FolderBLL();
@@ -19,53 +20,80 @@ namespace ProbandoTodo.Controllers
             return ((UserLoginData)user).UserID;
         }
 
-        // GET: Folder
-        [WithAccount]
+        // GET: Folder        
         public ActionResult List()
         {
             return View(FillFoldersThumbnail());
         }
 
-        public ActionResult FolderPartial()
+        public IEnumerable<FolderListModelView> FillFoldersThumbnail()
+        {
+            List<FolderListModelView> model = new List<FolderListModelView>();
+            var folders = folderBLL.GetAllFoldersBLL();
+
+            foreach (var folder in folders)
+            {
+                model.Add(
+                    new FolderListModelView()
+                    {
+                        FolderID = folder.FolderID,
+                        Name = folder.Name,
+                        Details = folder.Details,
+                        LastModified = folder.LastModified
+                    });
+            }
+
+            return model;
+        }
+
+        [HttpGet]
+        public ActionResult Create()
         {
             return PartialView("_CreateFolder");
         }
 
         [HttpGet]
-        public ActionResult ChangeFolderPartial(string folderID, string folderName, string noteID)
+        public ActionResult ChangeFolderPartial(int folderID, string folderName, int noteID)
         {
-
-            ChangeFolderModelView model = new ChangeFolderModelView();
-            model.FolderID = Convert.ToInt32(folderID);
-            model.NoteID = Convert.ToInt32(noteID);
-            model.CurrentFolder = folderName;
-            model.FoldersComboBox = folderBLL.GetFoldersOfUserBLL(Convert.ToInt32(((string[])Session["UserLoggedIn"])[0]));
-            return PartialView("_ChangeFolder", model);
+            try
+            {                
+                ChangeFolderModelView model = new ChangeFolderModelView();
+                model.FolderID = folderID;
+                model.NoteID = noteID;
+                model.CurrentFolder = folderName;
+                model.FoldersComboBox = folderBLL.GetFoldersOfUserBLL(GetSessionID(Session["UserLoggedIn"]));
+                return PartialView("_ChangeFolder", model);
+            }
+            catch(Exception ex)
+            {
+                Response.StatusCode = 500;
+                return Json(new { error = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         [HttpPost]
-        public ActionResult ChangeFolder(string folderID, string noteID, string folderSelected)
+        public ActionResult ChangeFolder(ChangeFolderModelView model)
         {
-            int userID = GetSessionID(Session["UserLoggedIn"]);
-            bool result = folderBLL.ChangeFolderBLL(noteID, userID, folderSelected);
-            if (!result)
+            try
+            {
+                int userID = GetSessionID(Session["UserLoggedIn"]);
+                folderBLL.ChangeFolderBLL(model.NoteID, userID, model.FolderSelected);
+                string controller = (Request.UrlReferrer.AbsolutePath.Split('/'))[2];
+
+                switch (controller)
+                {
+                    case "Folder":
+                        return PartialView("_NotesInFolder", new ClassifiedNotes(folderBLL.GetNotesInFolderBLL(userID, model.FolderID)));
+                    case "Note":
+                        return PartialView("~/Views/Note/_ListOfNotes.cshtml", new Models.NoteModels.ClassifiedQueryableNotes(new NoteBLL().GetDataForNoteList(userID)));
+                    default: throw new HttpException("Error desconocido. Vuelva a intentarlo.");
+                }
+            }
+            catch(Exception ex)
             {
                 Response.StatusCode = 500;
-                Response.StatusDescription = "No se ha procesado la operación.";            
-                var responseError = new { statusCode = Response.StatusCode, statusText = Response.StatusDescription };
-                return Json(responseError, JsonRequestBehavior.DenyGet);
+                return Json(new { error = ex.Message }, JsonRequestBehavior.DenyGet);
             }
-
-            string controller = (Request.UrlReferrer.AbsolutePath.Split('/'))[2];
-
-            switch (controller)
-            {
-                case "Folder":
-                    return PartialView("_NotesInFolder", new ClassifiedNotes(folderBLL.GetNotesInFolderBLL(userID, Convert.ToInt32(folderID))));
-                case "Note":
-                    return PartialView("~/Views/Note/_ListOfNotes.cshtml", new Models.NoteModels.ClassifiedQueryableNotes(new NoteBLL().GetDataForNoteList(userID)));
-                default: return Json(Response, JsonRequestBehavior.DenyGet);
-            }            
         }
 
         [HttpPost]
@@ -114,29 +142,8 @@ namespace ProbandoTodo.Controllers
                 TempData["error"] = ex.Message;
                 return Redirect(Request.UrlReferrer.AbsolutePath.ToString());
             }
-        }
-
-        public IEnumerable<FolderListModelView> FillFoldersThumbnail()
-        {
-            List<FolderListModelView> model = new List<FolderListModelView>();
-            var folders = folderBLL.GetAllFoldersBLL();
-
-            foreach (var folder in folders)
-            {
-                model.Add(
-                    new FolderListModelView()
-                    {
-                        FolderID = folder.FolderID,
-                        Name = folder.Name,
-                        Details = folder.Details,
-                        LastModified = folder.LastModified
-                    });
-            }
-
-            return model;
-        }
-
-        [WithAccount]
+        }        
+        
         public ActionResult NotesList(int folderID)
         {
             try

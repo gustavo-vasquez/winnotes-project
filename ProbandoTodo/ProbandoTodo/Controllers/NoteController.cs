@@ -20,8 +20,7 @@ namespace ProbandoTodo.Controllers
         {
             return ((UserLoginData)user).UserID;
         }        
-
-        //[WithAccount]
+        
         public ActionResult Create()
         {
             int userID = GetSessionID(Session["UserLoggedIn"]);
@@ -31,8 +30,7 @@ namespace ProbandoTodo.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        //[WithAccount]
+        [ValidateAntiForgeryToken]        
         public ActionResult Create(CreateNoteModelView model)
         {
             try
@@ -82,8 +80,7 @@ namespace ProbandoTodo.Controllers
             model.FoldersCount = Convert.ToInt32(userInfoBox[3]);
             model.NotesCount = Convert.ToInt32(userInfoBox[4]);
         }
-
-        //[WithAccount]
+        
         public ActionResult List()
         {
             try
@@ -99,54 +96,68 @@ namespace ProbandoTodo.Controllers
         }
 
         [HttpPost]
-        public ActionResult ForceCompleteTask(string folderID, string noteID, bool localized)
+        public ActionResult ForceCompleteTask(int folderID, int noteID, bool inFolder)
         {
-            noteBLL.ForceCompleteTaskBLL(Convert.ToInt32(noteID));
-            int userID = GetSessionID(Session["UserLoggedIn"]);
+            try
+            {
+                noteBLL.ForceCompleteTaskBLL(noteID);
+                int userID = GetSessionID(Session["UserLoggedIn"]);
 
-            if(localized)
-                return PartialView("~/Views/Folder/_NotesInFolder.cshtml", new ClassifiedNotes(new FolderBLL().GetNotesInFolderBLL(userID, Convert.ToInt32(folderID))));
+                if (inFolder)
+                    return PartialView("~/Views/Folder/_NotesInFolder.cshtml", new ClassifiedNotes(new FolderBLL().GetNotesInFolderBLL(userID, folderID)));
 
-            return PartialView("_ListOfNotes", new ClassifiedQueryableNotes(noteBLL.GetDataForNoteList(userID)));
+                return PartialView("_ListOfNotes", new ClassifiedQueryableNotes(noteBLL.GetDataForNoteList(userID)));
+            }
+            catch(Exception ex)
+            {
+                Response.StatusCode = 500;
+                return Json(new { error = ex.Message }, JsonRequestBehavior.DenyGet);
+            }
         }
 
         [HttpPost]
-        public ActionResult StarTask(string folderID, string noteID, bool localized)
+        public ActionResult StarTask(int folderID, int noteID, bool inFolder)
         {
-            noteBLL.StarTaskBLL(Convert.ToInt32(noteID));
-            int userID = GetSessionID(Session["UserLoggedIn"]);
+            try
+            {
+                noteBLL.StarTaskBLL(noteID);
+                int userID = GetSessionID(Session["UserLoggedIn"]);
 
-            if (localized)
-                return PartialView("~/Views/Folder/_NotesInFolder.cshtml", new ClassifiedNotes(new FolderBLL().GetNotesInFolderBLL(userID, Convert.ToInt32(folderID))));
+                if (inFolder)
+                    return PartialView("~/Views/Folder/_NotesInFolder.cshtml", new ClassifiedNotes(new FolderBLL().GetNotesInFolderBLL(userID, folderID)));
 
-            return PartialView("_ListOfNotes", new ClassifiedQueryableNotes(noteBLL.GetDataForNoteList(userID)));
+                return PartialView("_ListOfNotes", new ClassifiedQueryableNotes(noteBLL.GetDataForNoteList(userID)));
+            }
+            catch(Exception ex)
+            {
+                Response.StatusCode = 500;
+                return Json(new { error = ex.Message }, JsonRequestBehavior.DenyGet);
+            }
         }
 
         [HttpGet]
-        public ActionResult ChangeDateTimeEventPartial(string currentDate, string previousDate, string idNote, string idFolder, bool localized)
+        public ActionResult ChangeDateTimeEventPartial(string currentDate, string previousDate, int idNote, int idFolder, bool inFolder)
         {            
-            return PartialView("_ChangeDateTimeEvent", new ChangeDatetimeEventModel(currentDate, previousDate, idNote, idFolder, localized));
-        }        
+            return PartialView("_ChangeDateTimeEvent", new ChangeDatetimeEventModel(currentDate, previousDate, idNote, idFolder, inFolder));
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult SetDatetimeEvent(ChangeDatetimeEventModel model)
         {
             try
-            {
+            {                
                 int userID = GetSessionID(Session["UserLoggedIn"]);
                 noteBLL.ChangeDatetimeEventBLL(model.CurrentDate, model.HourSelected, model.MinuteSelected, model.TimeTableSelected, model.ID_Note, userID);
-                if (model.Localized)
-                    return PartialView("~/Views/Folder/_NotesInFolder.cshtml", new ClassifiedNotes(new FolderBLL().GetNotesInFolderBLL(userID, Convert.ToInt32(model.ID_Folder))));
+                if (model.InFolder)
+                    return PartialView("~/Views/Folder/_NotesInFolder.cshtml", new ClassifiedNotes(new FolderBLL().GetNotesInFolderBLL(userID, model.ID_Folder)));
                 else
                     return PartialView("_ListOfNotes", new ClassifiedQueryableNotes(noteBLL.GetDataForNoteList(userID)));
             }
             catch(Exception ex)
             {
                 Response.StatusCode = 500;
-                Response.StatusDescription = "No se ha procesado la operación. " + ex.Message;
-                var responseError = new { statusCode = Response.StatusCode, statusText = Response.StatusDescription };
-                return Json(responseError, JsonRequestBehavior.DenyGet);
+                return Json(new { error = ex.Message }, JsonRequestBehavior.DenyGet);
             }
         }
 

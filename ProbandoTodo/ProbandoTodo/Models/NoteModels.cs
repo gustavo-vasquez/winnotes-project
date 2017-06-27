@@ -82,11 +82,11 @@ namespace ProbandoTodo.Models
             public IEnumerable<SelectListItem> MinuteBox { get; set; }            
             public string TimeTableSelected { get; set; }
             public IEnumerable<SelectListItem> TimeTableBox { get; set; }
-            public string ID_Note { get; set; }
-            public string ID_Folder { get; set; }
-            public bool Localized { get; set; }
+            public int ID_Note { get; set; }
+            public int ID_Folder { get; set; }
+            public bool InFolder { get; set; }
 
-            public ChangeDatetimeEventModel(string currentDate, string previousDate, string idNote, string idFolder, bool localized)
+            public ChangeDatetimeEventModel(string currentDate, string previousDate, int idNote, int idFolder, bool inFolder)
             {
                 string[] dts = previousDate.Split(' ');
                 string[] ts = dts[1].Split(':');                
@@ -100,7 +100,7 @@ namespace ProbandoTodo.Models
                 this.TimeTableBox = new NoteBLL().GenerateTimeTableCombo();
                 this.ID_Note = idNote;
                 this.ID_Folder = idFolder;
-                this.Localized = localized;
+                this.InFolder = inFolder;
             }
 
             public ChangeDatetimeEventModel()

@@ -504,6 +504,7 @@ span.glyphicon-calendar.calendar-trigger {
     box-shadow: 0 0 1px 0 #c2b801;
     width: 100%;
     max-width: 200px;
+    z-index: 9999;
 }
 
 #ChangeFolderForm label {

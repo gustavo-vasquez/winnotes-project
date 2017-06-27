@@ -55,7 +55,7 @@ function scrollFunction() {
         $('#ToTop').fadeOut('fast');    
 }
 
-function topFunction() {    
+function goTop() {
     $('body,html').animate({
         scrollTop: 0
     }, 800);
@@ -143,8 +143,4 @@ function errorHandler(xhr) {
     setTimeout(function () {
         $('.message-result').fadeOut(function () { $(this).remove() });
     }, 6000);
-}
-
-function addScripts(src) {
-    $('body').append('<script src=' + src + '></script>');
 }

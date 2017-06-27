@@ -132,10 +132,9 @@
 
     @Scripts.Render("~/bundles/jquery", "~/bundles/bootstrap")
     @Scripts.Render("~/jquery-ui-1.12.1.custom/jquery-ui.js")
-    @Scripts.Render("~/Scripts/application.js")
-    @*@Html.RenderJavaScripts()*@
+    @Scripts.Render("~/Scripts/application.js")    
     @InitialScripts.Write()
     @RenderSection("custom_scripts", required: false)
-    <button id="ToTop" class="btn btn-primary" onclick="topFunction();"><span class="glyphicon glyphicon-arrow-up"></span></button>
+    <button id="ToTop" class="btn btn-primary" onclick="goTop();"><span class="glyphicon glyphicon-arrow-up"></span></button>
 </body>
 </html>

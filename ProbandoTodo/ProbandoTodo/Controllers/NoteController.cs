@@ -84,14 +84,14 @@ namespace ProbandoTodo.Controllers
         public ActionResult List()
         {
             try
-            {
+            {                
                 int userID = GetSessionID(Session["UserLoggedIn"]);
-                return View();
-                //return View(new ClassifiedQueryableNotes(noteBLL.GetDataForNoteList(userID)));
+                return View(new ClassifiedQueryableNotes(noteBLL.GetDataForNoteList(userID)));
             }
             catch(Exception ex)
             {
-                return Content(ex.ToString());
+                TempData["error"] = ex.Message;
+                return Redirect(Request.UrlReferrer.AbsolutePath);
             }
         }
 

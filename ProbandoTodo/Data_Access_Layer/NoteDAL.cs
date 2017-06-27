@@ -187,7 +187,7 @@ namespace Data_Access_Layer
                                                                                 Completed = m.n.Completed,
                                                                                 BelongsToFolderID = m.f.FolderID,
                                                                                 BelongsToFolderName = m.f.Name
-                                                                            });                    
+                                                                            });
                 return notes;
             }
             catch

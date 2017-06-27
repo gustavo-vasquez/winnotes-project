@@ -2,34 +2,41 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="row">
-    <div class="col-md-4">
-        <div class="jumbotron">
-            <img src="~/Content/Images/folder.png" width="128" height="128" alt="carpetas" />
-            <h2><b>Mis carpetas</b></h2>
-            <p>Acceda a todas sus carpetas y vea que notas ha creado.</p>
-            <p><a href="@Url.Action("List", "Folder")" class="btn btn-warning btn-lg">Ir a carpetas &raquo;</a></p>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="jumbotron">
-            <img src="~/Content/Images/notepad.png" width="128" height="128" alt="notas" />
-            <h2><b>Crear notas</b></h2>
-            <p>Utilice la plataforma para crear notas y recordatorios útiles.</p>
-            <p><a href="@Url.Action("Create", "Note")" class="btn btn-primary btn-lg">Crear nota &raquo;</a></p>
-        </div>
-    </div>    
-    <div class="col-md-4">
-        <div class="jumbotron">
-            <img src="~/Content/Images/sticky.png" width="128" height="128" alt="nueva_nota" />
-            <h2><b>Mis notas</b></h2>
-            <p>Visualice todas sus notas para no olvidarse de ningún evento.</p>
-            <p><a href="@Url.Action("List", "Note")" class="btn btn-danger btn-lg">Ir a las notas &raquo;</a></p>
-        </div>
-    </div>
+<div class="text-center">
+    <h2><b>¡Bienvenido a WinNotes!</b></h2>
 </div>
-
 <hr />
+
+@if (Session["UserLoggedIn"] != null)
+{
+    <div class="row">
+        <div class="col-md-4">
+            <div class="jumbotron">
+                <img src="~/Content/Images/folder.png" width="128" height="128" alt="carpetas" />
+                <h2><b>Mis carpetas</b></h2>
+                <p>Acceda a todas sus carpetas y vea que notas ha creado.</p>
+                <p><a href="@Url.Action("List", "Folder")" class="btn btn-warning btn-lg">Ir a carpetas &raquo;</a></p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="jumbotron">
+                <img src="~/Content/Images/notepad.png" width="128" height="128" alt="notas" />
+                <h2><b>Crear notas</b></h2>
+                <p>Utilice la plataforma para crear notas y recordatorios útiles.</p>
+                <p><a href="@Url.Action("Create", "Note")" class="btn btn-primary btn-lg">Crear nota &raquo;</a></p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="jumbotron">
+                <img src="~/Content/Images/sticky.png" width="128" height="128" alt="nueva_nota" />
+                <h2><b>Mis notas</b></h2>
+                <p>Visualice todas sus notas para no olvidarse de ningún evento.</p>
+                <p><a href="@Url.Action("List", "Note")" class="btn btn-danger btn-lg">Ir a las notas &raquo;</a></p>
+            </div>
+        </div>
+    </div>
+    <hr />
+}
 
 <div class="row technologies">
     <div class="col-md-3 text-center">

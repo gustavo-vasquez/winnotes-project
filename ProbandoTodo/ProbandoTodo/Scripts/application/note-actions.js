@@ -59,19 +59,14 @@ function note_actions() {
         minDate: 0,
         onSelect: function (dateText, inst) {
             $this = $(this);
-            $formNotes = $this.parent().prev().prev();            
-            var myData = "currentDate=" + dateText
-                        + "&previousDate=" + $this.prev().text()
-                        + "&idNote=" + $formNotes.data('ion')
-                        + "&idFolder=" + $('#ThisFolder').data('iof')
-                        + "&inFolder=" + $formNotes.hasClass('in-folder');
+            $formNotes = $this.parent().prev().prev();
 
-            //if ($formNotes.hasClass('in-folder')) {
-            //    myData = "currentDate=" + dateText + "&previousDate=" + $this.prev().text() + "&idNote=" + $formNotes.data('ion') + "&idFolder=" + $('#ThisFolder').data('iof') + "&inFolder=true"
-            //}
-            //else {
-            //    myData = "currentDate=" + dateText + "&previousDate=" + $this.prev().text() + "&idNote=" + $formNotes.data('ion') + "&inFolder=false"
-            //}
+            if ($formNotes.hasClass('in-folder')) {
+                myData = "currentDate=" + dateText + "&previousDate=" + $this.prev().text() + "&idNote=" + $formNotes.data('ion') + "&idFolder=" + $('#ThisFolder').data('iof') + "&inFolder=true"
+            }
+            else {
+                myData = "currentDate=" + dateText + "&previousDate=" + $this.prev().text() + "&idNote=" + $formNotes.data('ion') + "&idFolder=" + $formNotes.data('iof') + "&inFolder=false"
+            }
 
             $.ajax({
                 url: "/Note/ChangeDateTimeEventPartial",
@@ -86,6 +81,7 @@ function note_actions() {
                 },
                 error: function () {
                     alert("Ocurrió un error. Intentelo de nuevo.");
+                    $this.val(inst.lastVal);
                 }
             });
         }

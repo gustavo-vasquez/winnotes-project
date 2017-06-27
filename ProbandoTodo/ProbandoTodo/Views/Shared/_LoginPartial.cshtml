@@ -7,8 +7,7 @@
 {
     using (Html.BeginForm("LogOff", "User", FormMethod.Post, new { id = "LogoutForm", @class = "navbar-right" }))
     {
-        @Html.AntiForgeryToken()
-                //ViewBag.Email = Model.Email;
+        @Html.AntiForgeryToken()                
         <ul class="nav navbar-nav">
             <li class="dropdown">
                 <div class="navbar-form">

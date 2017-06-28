@@ -236,11 +236,11 @@ textarea {
     height: 250px;
 }
 
-@media (min-width: 768px) {
+/*@media (min-width: 768px) {
     .modal-dialog {
         width: 20%;
     }
-}
+}*/
 
 .modal-body input {
     max-width: 100%;

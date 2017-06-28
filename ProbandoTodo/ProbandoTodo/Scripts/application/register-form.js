@@ -1,7 +1,7 @@
 ﻿$(document).ready(registerFormActions);
 
 function registerFormActions() {
-    //console.log("register-form cargado");
+    console.log("register-form cargado");
 	$('#RegisterForm').on('blur', '#UserName', function () {
 		var $textbox = $(this);
 
@@ -24,7 +24,18 @@ function registerFormActions() {
 			});
 		}
 		$('.user-legend').remove();
-	});	
+	});
+
+	$('input[type=radio][name=MailProvider]').on('change', function () {
+	    switch ($(this).val()) {
+	        case "gmail": $('.provider').text('@gmail.com');
+	            break;
+	        case "outlook": $('.provider').text('@outlook.com');
+	            break;
+	        case "yahoo": $('.provider').text('@yahoo.com');
+	            break;
+	    }
+	})
 }
 
 function registerComplete(result) {    

@@ -13,9 +13,9 @@
             success: function (data) {
                 $('#MainDialog').html(data);                
                 $('#RegisterDialog').modal("show");
-                //$("form").removeData("validator");
-                //$("form").removeData("unobtrusiveValidation");
-                //$.validator.unobtrusive.parse("form");
+                $("form").removeData("validator");
+                $("form").removeData("unobtrusiveValidation");
+                $.validator.unobtrusive.parse("form");
             }
         });
     });
@@ -27,7 +27,10 @@
             url: "/User/Login",            
             success: function (data) {
                 $('#MainDialog').html(data);
-                $('#LoginDialog').modal("show");                
+                $('#LoginDialog').modal("show");
+                $("form").removeData("validator");
+                $("form").removeData("unobtrusiveValidation");
+                $.validator.unobtrusive.parse("form");
             }
         });
     });        
@@ -143,4 +146,8 @@ function errorHandler(xhr) {
     setTimeout(function () {
         $('.message-result').fadeOut(function () { $(this).remove() });
     }, 6000);
+}
+
+function addScripts(src) {
+    $('body').append('<script src=' + src + '></script>');
 }

@@ -17,7 +17,7 @@
         <div class="panel panel-primary panel-new-note">            
             <div id="UserInfo" class="panel-body text-center">
                 <p class="user-box-bg">@Model.UserName</p>
-                <p><i>@Model.PersonalPhrase</i></p>
+                <p id="Phrase" data-color="@Model.PhraseColor"><i>@Model.PersonalPhrase</i></p>
                 <img class="img-circle" src="@Model.AvatarSrc" alt="user_pic" />                
                 <p><a href="@Url.Action("List", "Note")"><i class="glyphicon glyphicon-list-alt"></i> @Model.NotesCount notas creadas</a></p>
                 <p><a href="@Url.Action("List", "Folder")"><i class="glyphicon glyphicon-folder-close"></i> @Model.FoldersCount carpetas</a></p>

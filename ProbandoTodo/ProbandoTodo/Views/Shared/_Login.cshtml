@@ -1,7 +1,9 @@
 ﻿@using ProbandoTodo.Models
 @model LoginModel
 
-<div id="LoginDialog" class="modal">
+@*@{ InitialScripts.Add("~/Scripts/application/login-form.js", "~/Scripts/jquery.validate.min.js", "~/Scripts/jquery.validate.unobtrusive.min.js", "~/Scripts/jquery.unobtrusive-ajax.min.js"); }*@
+
+<div id="LoginDialog" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -15,7 +17,7 @@
         {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary("", new { @class = "text-danger" })
-            <div class="modal-body">                
+            <div class="modal-body">
                 <div class="form-group">
                     <label class="control-label">E-mail:</label>
                     @Html.TextBoxFor(m => m.Email, new { @class = "form-control input-sm", placeholder = "Escribir correo...", maxlength = "30", autofocus = true })                    
@@ -39,4 +41,7 @@
     </div>
 </div>
 
-@{ InitialScripts.Add("~/Scripts/jquery.validate.min.js", "~/Scripts/jquery.validate.unobtrusive.min.js", "~/Scripts/jquery.unobtrusive-ajax.min.js", "~/Scripts/application/login-form.js"); }
+<script type="text/javascript">addScripts("/Scripts/jquery.validate.min.js");</script>
+<script type="text/javascript">addScripts("/Scripts/jquery.validate.unobtrusive.min.js");</script>
+<script type="text/javascript">addScripts("/Scripts/jquery.unobtrusive-ajax.min.js");</script>
+<script type="text/javascript">addScripts("/Scripts/application/login-form.js");</script>

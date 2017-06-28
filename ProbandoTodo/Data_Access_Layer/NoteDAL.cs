@@ -63,6 +63,7 @@ namespace Data_Access_Layer
                     {
                         user.UserName,
                         user.PersonalPhrase,
+                        user.PhraseColor,
                         new UserDAL().GetAvatarImage(user.AvatarImage, user.AvatarMIMEType),
                         foldersCount.ToString(),
                         notesCount.ToString()

@@ -76,9 +76,10 @@ namespace ProbandoTodo.Controllers
             model.TimeTableBox = noteBLL.GenerateTimeTableCombo();
             model.UserName = userInfoBox[0];
             model.PersonalPhrase = userInfoBox[1];
-            model.AvatarSrc = userInfoBox[2];
-            model.FoldersCount = Convert.ToInt32(userInfoBox[3]);
-            model.NotesCount = Convert.ToInt32(userInfoBox[4]);
+            model.PhraseColor = userInfoBox[2];
+            model.AvatarSrc = userInfoBox[3];
+            model.FoldersCount = Convert.ToInt32(userInfoBox[4]);
+            model.NotesCount = Convert.ToInt32(userInfoBox[5]);
         }
         
         public ActionResult List()

@@ -23,6 +23,8 @@ function note_actions() {
 
     // ************************ ACCIONES PARA NOTAS *******************************
 
+    $('#Phrase').css({'color': $('#Phrase').data('color'), 'font-size': 'larger'});
+
     $('#UserInfo').on('mouseenter mouseleave', 'a', function () {
         $(this).parent('p').toggleClass('hover-info');
     });

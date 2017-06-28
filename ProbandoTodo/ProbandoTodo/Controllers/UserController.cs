@@ -86,7 +86,7 @@ namespace ProbandoTodo.Controllers
                         return Json(new { url = urlPath });
                     }
 
-                    ModelState.AddModelError(String.Empty, "Email/contraseña incorrecta");
+                    ModelState.AddModelError(string.Empty, "Email/contraseña incorrecta");
                     return PartialView("_Login", model);
                 }
 

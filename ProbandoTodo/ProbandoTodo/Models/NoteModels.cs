@@ -15,6 +15,7 @@ namespace ProbandoTodo.Models
         {
             public string UserName { get; set; }
             public string PersonalPhrase { get; set; }
+            public string PhraseColor { get; set; }
             public string AvatarSrc { get; set; }
             public int FoldersCount { get; set; }
             public int NotesCount { get; set; }

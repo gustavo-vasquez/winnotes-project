@@ -21,6 +21,7 @@ namespace ProbandoTodo.Helpers
         {
             return myScripts;
         }
+    }
         //public static IHtmlString Load()
         //{
         //    string currentPath = HttpContext.Current.Request.Url.AbsolutePath;
@@ -77,6 +78,5 @@ namespace ProbandoTodo.Helpers
         //                .SelectMany(type => type.GetMethods())
         //                .Where(method => method.IsPublic && !method.IsDefined(typeof(NonActionAttribute)));
             
-        //}
-    }
+        //}    
 }

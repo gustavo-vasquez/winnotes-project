@@ -202,7 +202,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\HtmlHelperExtensions.cs" />
     <Compile Include="Helpers\InitialScripts.cs" />
     <Compile Include="Helpers\RouteValuesHelper.cs" />
     <Compile Include="Helpers\ScriptsExtension.cs" />
@@ -239,6 +238,7 @@
     <Content Include="Content\Images\social_media\1495840725_social-03.png" />
     <Content Include="Content\Images\social_media\1495840731_twitter_circle.png" />
     <Content Include="Content\Images\social_media\1495840813_facebook_circle.png" />
+    <Content Include="Content\Images\spinner_multicolor.gif" />
     <Content Include="Content\Images\technologies\bootstrap.svg" />
     <Content Include="Content\Images\technologies\c_sharp.png" />
     <Content Include="Content\Images\technologies\HTML5_logo_and_wordmark.png" />

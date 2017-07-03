@@ -5,14 +5,17 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title"><i class="glyphicon glyphicon-user"></i> Iniciar sesión</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>                                                
+                <h4 class="modal-title">
+                    <span class="glyphicon glyphicon-user"></span> Iniciar sesión <img id="spinner" src="~/Content/Images/spinner_multicolor.gif" width="29" alt="cargando..." />
+                </h4>
             </div>        
         @using(Ajax.BeginForm("Login", "User",
             new { urlPath = HttpContext.Current.Request.UrlReferrer },
             new AjaxOptions {
                 HttpMethod = "POST",
                 UpdateTargetId = "MainDialog",
+                LoadingElementId = "spinner",
                 InsertionMode = InsertionMode.Replace,
                 OnSuccess = "loginComplete",
                 OnFailure = "errorHandler"
@@ -21,7 +24,7 @@
         {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary("", new { @class = "text-danger" })
-            <div class="modal-body">
+            <div class="modal-body">                
                 <div class="form-group">
                     <label class="control-label">E-mail:</label>
                     @Html.TextBoxFor(m => m.Email, new { @class = "form-control input-sm", placeholder = "Escribir correo...", maxlength = "30", autofocus = true })                    
@@ -30,15 +33,15 @@
                     <label class="control-label">Contraseña:</label>
                     @Html.PasswordFor(m => m.Password, new { @class = "form-control input-sm", placeholder = "Escribir contraseña..." })                    
                 </div>                
-                <div class="form-group">
+                <div class="form-group">                    
                     <label class="provider-radio">
                         @Html.CheckBoxFor(m => m.RememberMe)
-                         Recordarme
-                    </label>
-                </div>
+                        Recordarme
+                    </label>                                        
+                </div>                                
             </div>
-            <div class="modal-footer">                
-                <button type="submit" class="btn btn-success">Entrar</button>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-block btn-success"><span class="glyphicon glyphicon-log-in"></span> Entrar</button>                
             </div>
         }
         </div>

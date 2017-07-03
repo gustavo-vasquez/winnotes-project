@@ -1,67 +1,76 @@
 ﻿@model ProbandoTodo.Models.NoteModels.ClassifiedQueryableNotes
 
-<label class="sub-title-notes">PENDIENTES</label>
-@foreach (var Note in Model.PendingNotes)
+@if (Model.PendingNotes.Count() > 0 || Model.CompleteNotes.Count() > 0)
 {
-    <div class="task-folder-label">
-        <label>Dentro de la carpeta <a href="@Url.Action("NotesList", "Folder", new { folderID = Note.BelongsToFolderID })">"@Note.BelongsToFolderName"</a></label>
-    </div>
-    <div class="panel panel-success">
-        <div class="panel-body">
-            <div class="form-notes" data-nof="@Note.BelongsToFolderName" data-iof="@Note.BelongsToFolderID" data-ion="@Note.NoteID">
-                <div class="col-md-1 text-center">
-                    <img class="force-complete-task" src="~/Content/Images/alarm-clock-128.png" width="13" height="13" alt="checkTask" title="Completar tarea" />
+    <label class="sub-title-notes">PENDIENTES</label>
+    foreach (var Note in Model.PendingNotes)
+    {
+        <div class="task-folder-label">
+            <label>Dentro de la carpeta <a href="@Url.Action("NotesList", "Folder", new { folderID = Note.BelongsToFolderID })">"@Note.BelongsToFolderName"</a></label>
+        </div>
+        <div class="panel panel-success">
+            <div class="panel-body">
+                <div class="form-notes" data-nof="@Note.BelongsToFolderName" data-iof="@Note.BelongsToFolderID" data-ion="@Note.NoteID">
+                    <div class="col-md-1 text-center">
+                        <img class="force-complete-task" src="~/Content/Images/alarm-clock-128.png" width="13" height="13" alt="checkTask" title="Completar tarea" />
+                    </div>
+                    <div class="col-md-9 task-title">
+                        <span><b>@Note.Title</b></span>
+                    </div>
+                    <div class="col-md-2 text-right">
+                        <span class="glyphicon glyphicon-folder-open change-folder-btn" data-nof="@Note.BelongsToFolderName" data-iof="@Note.BelongsToFolderID" data-ion="@Note.NoteID" title="Cambiar carpeta"></span>
+                        <input type="checkbox" id="Note_Starred_@Note.NoteID" name="Note.Starred" checked="@Note.Starred" />
+                        <span class="star-icon glyphicon glyphicon-star-empty"></span>
+                    </div>
                 </div>
-                <div class="col-md-9 task-title">
-                    <span><b>@Note.Title</b></span>
+                <div class="col-md-9 col-md-offset-1 description-note">
+                    <span>&#9657; @Note.Details</span>
                 </div>
-                <div class="col-md-2 text-right">
-                    <span class="glyphicon glyphicon-folder-open change-folder-btn" data-nof="@Note.BelongsToFolderName" data-iof="@Note.BelongsToFolderID" data-ion="@Note.NoteID" title="Cambiar carpeta"></span>                    
-                    <input type="checkbox" id="Note_Starred_@Note.NoteID" name="Note.Starred" checked="@Note.Starred" />
-                    <span class="star-icon glyphicon glyphicon-star-empty"></span>                    
+                <div class="col-md-2 text-right expiration-note">
+                    <label>@Note.ExpirationDate.ToString("dd/MM/yyyy hh:mm tt", new System.Globalization.CultureInfo("en-US"))</label>
+                    @Html.HiddenFor(m => Note.ExpirationDate, new { id = "ExpirationDate" + Note.NoteID })
+                    <span class="glyphicon glyphicon-calendar calendar-trigger" title="Cambiar fecha de expiración"></span>
                 </div>
-            </div>
-            <div class="col-md-9 col-md-offset-1 description-note">
-                <span>&#9657; @Note.Details</span>
-            </div>
-            <div class="col-md-2 text-right expiration-note">
-                <label>@Note.ExpirationDate.ToString("dd/MM/yyyy hh:mm tt", new System.Globalization.CultureInfo("en-US"))</label>
-                @Html.HiddenFor(m => Note.ExpirationDate, new { id = "ExpirationDate" + Note.NoteID })
-                <span class="glyphicon glyphicon-calendar calendar-trigger" title="Cambiar fecha de expiración"></span>
             </div>
         </div>
-    </div>
+    }
+
+    <label class="sub-title-notes">COMPLETADAS</label>
+
+    foreach (var Note in Model.CompleteNotes)
+    {
+        <div class="task-complete task-folder-label">
+            <label>Dentro de la carpeta <a href="@Url.Action("NotesList", "Folder", new { folderID = Note.BelongsToFolderID })">"@Note.BelongsToFolderName"</a></label>
+        </div>
+        <div class="panel panel-success task-complete">
+            <div class="panel-body">
+                <div class="form-notes">
+                    <div class="col-md-1 text-center">
+                        <img src="~/Content/Images/tick-mark-128.png" width="13" height="13" alt="checkTask" />
+                    </div>
+                    <div class="col-md-9">
+                        <span style="text-decoration: line-through">@Note.Title</span>
+                    </div>
+                    <div class="col-md-2 text-right">
+                        <span class="glyphicon glyphicon-folder-open"></span>
+                        <input type="checkbox" id="Note_Starred_@Note.NoteID" name="Note.Starred" checked="@Note.Starred" />
+                        <span class="glyphicon glyphicon-star-empty"></span>
+                    </div>
+                </div>
+                <div class="col-md-9 col-md-offset-1 description-note">
+                    <span>&#9657; @Note.Details</span>
+                </div>
+                <div class="col-md-2 text-right expiration-note">
+                    <label>@Note.ExpirationDate.ToString("dd/MM/yyyy hh:mm tt", new System.Globalization.CultureInfo("en-US"))</label>
+                    <span class="glyphicon glyphicon-calendar" title="Cambiar fecha de expiración"></span>
+                </div>
+            </div>
+        </div>
+    }
 }
-
-<label class="sub-title-notes">COMPLETADAS</label>
-
-@foreach (var Note in Model.CompleteNotes)
+else
 {
-    <div class="task-complete task-folder-label">
-        <label>Dentro de la carpeta <a href="@Url.Action("NotesList", "Folder", new { folderID = Note.BelongsToFolderID })">"@Note.BelongsToFolderName"</a></label>
-    </div>
-    <div class="panel panel-success task-complete">
-        <div class="panel-body">
-            <div class="form-notes">
-                <div class="col-md-1 text-center">
-                    <img src="~/Content/Images/tick-mark-128.png" width="13" height="13" alt="checkTask" />
-                </div>
-                <div class="col-md-9">
-                    <span style="text-decoration: line-through">@Note.Title</span>
-                </div>
-                <div class="col-md-2 text-right">
-                    <span class="glyphicon glyphicon-folder-open"></span>                    
-                    <input type="checkbox" id="Note_Starred_@Note.NoteID" name="Note.Starred" checked="@Note.Starred" />
-                    <span class="glyphicon glyphicon-star-empty"></span>
-                </div>
-            </div>
-            <div class="col-md-9 col-md-offset-1 description-note">
-                <span>&#9657; @Note.Details</span>
-            </div>
-            <div class="col-md-2 text-right expiration-note">
-                <label>@Note.ExpirationDate.ToString("dd/MM/yyyy hh:mm tt", new System.Globalization.CultureInfo("en-US"))</label>
-                <span class="glyphicon glyphicon-calendar" title="Cambiar fecha de expiración"></span>
-            </div>
-        </div>
+    <div class="well text-center">
+        <h4>No tienes notas creadas</h4>
     </div>
 }

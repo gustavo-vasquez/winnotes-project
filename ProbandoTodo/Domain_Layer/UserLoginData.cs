@@ -22,5 +22,10 @@ namespace Domain_Layer
             this.AvatarImage = avatarImage;
             this.Active = active;
         }
+
+        public static int GetSessionID(object user)
+        {
+            return ((UserLoginData)user).UserID;
+        }
     }
 }

@@ -13,12 +13,7 @@ namespace ProbandoTodo.Controllers
     [WithAccount]
     public class FolderController : Controller
     {
-        static private FolderBLL folderBLL = new FolderBLL();
-
-        private int GetSessionID(object user)
-        {
-            return ((UserLoginData)user).UserID;
-        }
+        static private FolderBLL folderBLL = new FolderBLL();        
 
         // GET: Folder        
         public ActionResult List()
@@ -29,7 +24,7 @@ namespace ProbandoTodo.Controllers
         public IEnumerable<FolderListModelView> FillFoldersThumbnail()
         {
             List<FolderListModelView> model = new List<FolderListModelView>();
-            var folders = folderBLL.GetAllFoldersBLL();
+            var folders = folderBLL.GetAllFoldersBLL(UserLoginData.GetSessionID(Session["UserLoggedIn"]));
 
             foreach (var folder in folders)
             {
@@ -61,7 +56,7 @@ namespace ProbandoTodo.Controllers
                 model.FolderID = folderID;
                 model.NoteID = noteID;
                 model.CurrentFolder = folderName;
-                model.FoldersComboBox = folderBLL.GetFoldersOfUserBLL(GetSessionID(Session["UserLoggedIn"]));
+                model.FoldersComboBox = folderBLL.GetFoldersOfUserBLL(UserLoginData.GetSessionID(Session["UserLoggedIn"]));
                 return PartialView("_ChangeFolder", model);
             }
             catch(Exception ex)
@@ -76,7 +71,7 @@ namespace ProbandoTodo.Controllers
         {
             try
             {
-                int userID = GetSessionID(Session["UserLoggedIn"]);
+                int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
                 folderBLL.ChangeFolderBLL(model.NoteID, userID, model.FolderSelected);
                 string controller = (Request.UrlReferrer.AbsolutePath.Split('/'))[2];
 
@@ -104,7 +99,7 @@ namespace ProbandoTodo.Controllers
             {
                 if (ModelState.IsValid)
                 {                    
-                    int userID = GetSessionID(Session["UserLoggedIn"]);
+                    int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
                     folderBLL.CreateFolderBLL(userID, model.Name, model.Details);
                     //return PartialView("_FoldersThumbnail", FillFoldersThumbnail());
                     return Redirect(Request.UrlReferrer.AbsolutePath.ToString());
@@ -134,7 +129,7 @@ namespace ProbandoTodo.Controllers
 
             try
             {
-                folderBLL.EditFolderBLL(GetSessionID(Session["UserLoggedIn"]), model.FolderID, model.Name, model.Details);
+                folderBLL.EditFolderBLL(UserLoginData.GetSessionID(Session["UserLoggedIn"]), model.FolderID, model.Name, model.Details);
                 return Redirect(Request.UrlReferrer.AbsolutePath.ToString());
             }
             catch(Exception ex)
@@ -142,13 +137,20 @@ namespace ProbandoTodo.Controllers
                 TempData["error"] = ex.Message;
                 return Redirect(Request.UrlReferrer.AbsolutePath.ToString());
             }
-        }        
+        }
+
+        [HttpPost]        
+        public void Remove(int folderID)
+        {
+            try { folderBLL.RemoveFolderBLL(UserLoginData.GetSessionID(Session["UserLoggedIn"]), folderID); }
+            catch (Exception ex) { TempData["error"] = ex.Message; }
+        }
         
         public ActionResult NotesList(int folderID)
         {
             try
             {                
-                int userID = GetSessionID(Session["UserLoggedIn"]);
+                int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
                 ContentInFolderModelView model = new ContentInFolderModelView(folderBLL.GetFolderDataBLL(folderID),
                                                                                 folderBLL.GetNotesInFolderBLL(userID, folderID));
                 return View(model);
@@ -158,6 +160,6 @@ namespace ProbandoTodo.Controllers
                 TempData["error"] = ex.Message;
                 return RedirectToAction("List");
             }
-        }        
+        }
     }
 }

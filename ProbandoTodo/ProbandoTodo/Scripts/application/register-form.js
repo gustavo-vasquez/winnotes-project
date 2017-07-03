@@ -1,7 +1,4 @@
-﻿$(document).ready(registerFormActions);
-
-function registerFormActions() {
-    console.log("register-form cargado");
+﻿function registerFormActions() {    
 	$('#RegisterForm').on('blur', '#UserName', function () {
 		var $textbox = $(this);
 
@@ -35,7 +32,7 @@ function registerFormActions() {
 	        case "yahoo": $('.provider').text('@yahoo.com');
 	            break;
 	    }
-	})
+	});
 }
 
 function registerComplete(result) {    
@@ -54,12 +51,12 @@ function registerComplete(result) {
     }
 }
 
-function registerFailed(response) {    
-    if (response.responseJSON != undefined)
-        $('body').append('<div class="message-result"><p>' + response.responseJSON.message + '</p></div>');
-    else
-        $('body').append('<div class="message-result"><p>Se ha producido un error inesperado. Inténtelo nuevamente.</p></div>');
-    setTimeout(function () {
-        $('.message-result').remove();
-    }, 6000);
-}
+//function registerFailed(response) {    
+//    if (response.responseJSON != undefined)
+//        $('body').append('<div class="message-result"><p>' + response.responseJSON.message + '</p></div>');
+//    else
+//        $('body').append('<div class="message-result"><p>Se ha producido un error inesperado. Inténtelo nuevamente.</p></div>');
+//    setTimeout(function () {
+//        $('.message-result').remove();
+//    }, 6000);
+//}

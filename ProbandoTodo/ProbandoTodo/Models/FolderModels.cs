@@ -38,6 +38,12 @@ namespace ProbandoTodo.Models
             public string Details { get; set; }
         }
 
+        public class RemoveFolderModelView
+        {
+            public int FolderID { get; set; }
+            public string UserID { get; set; }
+        }
+
         public class ClassifiedNotes
         {
             public List<NoteInformation> PendingNotes { get; set; }

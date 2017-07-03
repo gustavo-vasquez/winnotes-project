@@ -48,4 +48,6 @@
     </div>    
 </div>
 
-@{InitialScripts.Add("~/Scripts/jquery.validate.min.js", "~/Scripts/jquery.validate.unobtrusive.min.js", "~/Scripts/jquery.unobtrusive-ajax.min.js", "~/Scripts/application/profile-management.js");}
+@section custom_scripts {
+        @Scripts.Render("~/bundles/jqueryval", "~/Scripts/application/profile-management.js")
+    }

@@ -1,8 +1,6 @@
 ﻿@using Domain_Layer.Enums;
 @model ProbandoTodo.Models.RegisterModel
 
-@*@{ InitialScripts.Add("~/Scripts/jquery.validate.min.js", "~/Scripts/jquery.validate.unobtrusive.min.js", "~/Scripts/jquery.unobtrusive-ajax.min.js", "~/Scripts/application/register-form.js"); }*@
-
 <div id="RegisterDialog" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -11,11 +9,11 @@
                 <h4 class="modal-title"><i class="glyphicon glyphicon-upload"></i> Crear nuevo usuario</h4>
             </div>        
         @using (Ajax.BeginForm("Register", "User", null,
-                    new AjaxOptions { HttpMethod = "POST", OnSuccess = "registerComplete", OnFailure = "registerFailed", UpdateTargetId = "MainDialog", InsertionMode = InsertionMode.Replace },
+                    new AjaxOptions { HttpMethod = "POST", OnSuccess = "registerComplete", OnFailure = "errorHandler", UpdateTargetId = "MainDialog", InsertionMode = InsertionMode.Replace },
                     htmlAttributes: new { id = "RegisterForm", role = "form" }))
         {
                 @Html.AntiForgeryToken()
-                <div class="modal-body">                
+                <div class="modal-body">
                 <p class="required-legend">Todos los campos son obligatorios.</p>
                 <div class="form-group">
                     <label class="control-label">Nombre de usuario:</label>
@@ -62,8 +60,3 @@
         </div>
     </div>
 </div>
-
-<script type="text/javascript">addScripts("/Scripts/jquery.validate.min.js");</script>
-<script type="text/javascript">addScripts("/Scripts/jquery.validate.unobtrusive.min.js");</script>
-<script type="text/javascript">addScripts("/Scripts/jquery.unobtrusive-ajax.min.js");</script>
-<script type="text/javascript">addScripts("/Scripts/application/register-form.js");</script>

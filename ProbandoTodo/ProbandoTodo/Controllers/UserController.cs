@@ -12,12 +12,7 @@ namespace ProbandoTodo.Controllers
 {
     public class UserController : Controller
     {
-        static UserBLL userBLL = new UserBLL();        
-
-        private int GetSessionID(object user)
-        {                        
-            return ((UserLoginData)user).UserID;
-        }
+        static UserBLL userBLL = new UserBLL();
 
         // GET: User
         public ActionResult Index()
@@ -54,7 +49,7 @@ namespace ProbandoTodo.Controllers
             catch(Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(new { message = ex.Message, source = ex.Source, stackTrace = ex.StackTrace });
+                return Json(new { error = ex.Message }, JsonRequestBehavior.DenyGet);
             }
         }
 
@@ -75,7 +70,7 @@ namespace ProbandoTodo.Controllers
             try
             {
                 if (ModelState.IsValid)
-                {
+                {                    
                     var user = userBLL.Login(model.Email, model.Password);
                     if (user != null)
                     {
@@ -95,7 +90,7 @@ namespace ProbandoTodo.Controllers
             catch(Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(new { message = ex.Message, source = ex.Source, stackTrace = ex.StackTrace });
+                return Json(new { error = ex.Message }, JsonRequestBehavior.DenyGet);
             }
         }
 
@@ -118,29 +113,15 @@ namespace ProbandoTodo.Controllers
         {
             try
             {
-                int userID = GetSessionID(Session["UserLoggedIn"]);
-                //return View(FillProfileManagementView(userID));
+                int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
                 return View(new ProfileManagementModels(userBLL.GetUserInformation(userID)));
             }
-            catch
+            catch(Exception ex)
             {
+                TempData["error"] = ex.Message;
                 return RedirectToAction("Index", "Home");
             }
-        }
-
-        //private ProfileManagementModels FillProfileManagementView(int userID)
-        //{            
-        //    ProfileManagementModels model = new ProfileManagementModels();
-        //    string[] userInformation = userBLL.GetUserInformation(userID);
-
-        //    model.AvatarSectionModel.AvatarSource = userInformation[0];
-        //    model.PersonalPhraseModel.PersonalPhrase = userInformation[1];
-        //    model.PersonalPhraseModel.PhraseColor = userInformation[2];
-        //    model.InformationSectionModel.UserName = userInformation[3];
-        //    model.InformationSectionModel.Email = userInformation[4];
-
-        //    return model;
-        //}
+        }        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -148,14 +129,14 @@ namespace ProbandoTodo.Controllers
         {
             try
             {
-                int userID = GetSessionID(Session["UserLoggedIn"]);                
+                int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
                 userBLL.ChangeAvatar(UploadAvatar, userID);
                 return RedirectToAction("ProfileManagement");
             }
             catch(Exception ex)
             {
                 ViewBag.error = ex.Message;
-                return View("ProfileManagement", new ProfileManagementModels(userBLL.GetUserInformation(GetSessionID(Session["UserLoggedIn"]))));
+                return View("ProfileManagement", new ProfileManagementModels(userBLL.GetUserInformation(UserLoginData.GetSessionID(Session["UserLoggedIn"]))));
             }
         }
 
@@ -165,7 +146,7 @@ namespace ProbandoTodo.Controllers
         {
             try
             {
-                int userID = GetSessionID(Session["UserLoggedIn"]);
+                int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
                 if (ModelState.IsValid)
                 {
                     userBLL.ChangePersonalPhrase(userID, model.PersonalPhrase, pColor);
@@ -176,8 +157,8 @@ namespace ProbandoTodo.Controllers
             }
             catch(Exception ex)
             {
-                ViewBag.error = ex.Message;                
-                return View("ProfileManagement", new ProfileManagementModels(userBLL.GetUserInformation(GetSessionID(Session["UserLoggedIn"])), model));
+                TempData["error"] = ex.Message;
+                return View("ProfileManagement", new ProfileManagementModels(userBLL.GetUserInformation(UserLoginData.GetSessionID(Session["UserLoggedIn"])), model));
             }
         }        
 
@@ -187,19 +168,19 @@ namespace ProbandoTodo.Controllers
         {
             try
             {
-                int userID = GetSessionID(Session["UserLoggedIn"]);
+                int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
                 if (ModelState.IsValid)
                 {
                     userBLL.ChangePassword(userID, model.CurrentPassword, model.NewPassword);
                     return RedirectToAction("ProfileManagement");
                 }
 
-                return View("ProfileManagement", new ProfileManagementModels(userBLL.GetUserInformation(GetSessionID(Session["UserLoggedIn"])), model));
+                return View("ProfileManagement", new ProfileManagementModels(userBLL.GetUserInformation(UserLoginData.GetSessionID(Session["UserLoggedIn"])), model));
             }
             catch(Exception ex)
             {
-                ViewBag.error = ex.Message;
-                return View("ProfileManagement", new ProfileManagementModels(userBLL.GetUserInformation(GetSessionID(Session["UserLoggedIn"])), model));
+                TempData["error"] = ex.Message;
+                return View("ProfileManagement", new ProfileManagementModels(userBLL.GetUserInformation(UserLoginData.GetSessionID(Session["UserLoggedIn"])), model));
             }
         }
 

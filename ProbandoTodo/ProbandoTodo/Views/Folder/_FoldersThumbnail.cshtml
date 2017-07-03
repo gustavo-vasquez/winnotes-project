@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<ProbandoTodo.Models.FolderModels.FolderListModelView>
 
-@if (Model != null)
+@if (Model.Count() > 0)
 {
     foreach (var folder in Model)
     {        
@@ -21,7 +21,7 @@
 }
 else
 {
-    <div class="col-md-12 text-center">
-        <h2>Aún no hay carpetas creadas</h2>
+    <div class="well text-center">
+        <h4>No tienes carpetas creadas</h4>
     </div>
 }

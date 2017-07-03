@@ -24,6 +24,22 @@ $('#EditFolder').on('click', function () {
     });
 });
 
+$('.trash-folder').on('click', function () {
+    if (confirm("¿Está seguro que quiere borrar esta carpeta?\n\nNOTA: Se perderán todas las notas que contenga.\nNO PUEDE DESHACERSE")) {
+        $.ajax({
+            url: "/Folder/Remove",
+            method: "POST",
+            data: "folderID=" + $('#ThisFolder').data('iof'),
+            success: function() {
+                window.location.href = "/Folder/List";
+            },
+            error: function () {
+                window.location.reload();
+            }               
+        });
+    }    
+});
+
 // ************************ FUNCIONES PARA CARPETA *****************************
 
 function folderActions(data, action) {

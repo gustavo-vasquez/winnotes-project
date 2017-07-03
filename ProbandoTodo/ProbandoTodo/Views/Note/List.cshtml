@@ -30,15 +30,6 @@
 </div>
 <hr />
 
-@if (Model.PendingNotes.Count() > 0 || Model.CompleteNotes.Count() > 0)
-{
-    <div id="NotesInside">
-        @Html.Partial("_ListOfNotes", Model)
-    </div>
-}
-else
-{
-    <div class="col-md-12 text-center">
-        <p class="well">No hay ninguna nota creada.</p>
-    </div>
-}
+<div id="NotesInside">
+    @Html.Partial("_ListOfNotes", Model)
+</div>

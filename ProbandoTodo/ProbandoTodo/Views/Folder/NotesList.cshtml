@@ -9,6 +9,9 @@
 }
 
 <a href="@Url.Action("List", "Folder")" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-arrow-left"></span> Volver a las carpetas</a>
+<button type="submit" class="trash-folder" title="Eliminar esta carpeta" data-toggle="tooltip">
+    <span class="glyphicon glyphicon-trash"></span>
+</button>
 <h2 id="ThisFolder" class="text-center text-uppercase" data-iof="@Model.FolderData.FolderID">@Model.FolderData.Name
     <a id="EditFolder" data-folder-name="@Model.FolderData.Name" data-folder-details="@Model.FolderData.Details" title="Editar carpeta">
         <span class="glyphicon glyphicon-edit"></span>
@@ -19,15 +22,6 @@
 <a class="btn btn-success" href="@Url.Action("Create", "Note")"><i class="glyphicon glyphicon-list-alt"></i> Crear nota</a>
 <hr />
 
-@if (Model.NoteList.PendingNotes.Count() > 0 || Model.NoteList.CompleteNotes.Count() > 0)
-{
-    <div id="NotesInside">
-        @Html.Partial("_NotesInFolder", Model.NoteList)
-    </div>
-}
-else
-{
-    <div class="col-md-12 text-center">
-        <p class="well">No has creado notas para esta carpeta.</p>
-    </div>
-}
+<div id="NotesInside">
+    @Html.Partial("_NotesInFolder", Model.NoteList)
+</div>

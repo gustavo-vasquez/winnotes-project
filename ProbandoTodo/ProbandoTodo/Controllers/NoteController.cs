@@ -14,16 +14,11 @@ namespace ProbandoTodo.Controllers
     [WithAccount]
     public class NoteController : Controller
     {
-        static NoteBLL noteBLL = new NoteBLL();
-
-        private int GetSessionID(object user)
-        {
-            return ((UserLoginData)user).UserID;
-        }        
+        static NoteBLL noteBLL = new NoteBLL();        
         
         public ActionResult Create()
         {
-            int userID = GetSessionID(Session["UserLoggedIn"]);
+            int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
             CreateNoteModelView model = new CreateNoteModelView();
             this.PrepareModelToCreateNote(userID, ref model);
             return View(model);
@@ -35,7 +30,7 @@ namespace ProbandoTodo.Controllers
         {
             try
             {                
-                int userID = GetSessionID(Session["UserLoggedIn"]);
+                int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
 
                 if (!ModelState.IsValid)
                 {
@@ -62,7 +57,7 @@ namespace ProbandoTodo.Controllers
             catch(Exception ex)
             {
                 TempData["error"] = ex.Message;
-                this.PrepareModelToCreateNote(GetSessionID(Session["UserLoggedIn"]), ref model);
+                this.PrepareModelToCreateNote(UserLoginData.GetSessionID(Session["UserLoggedIn"]), ref model);
                 return View(model);
             }
         }
@@ -86,7 +81,7 @@ namespace ProbandoTodo.Controllers
         {
             try
             {                
-                int userID = GetSessionID(Session["UserLoggedIn"]);
+                int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
                 return View(new ClassifiedQueryableNotes(noteBLL.GetDataForNoteList(userID)));
             }
             catch(Exception ex)
@@ -102,7 +97,7 @@ namespace ProbandoTodo.Controllers
             try
             {
                 noteBLL.ForceCompleteTaskBLL(noteID);
-                int userID = GetSessionID(Session["UserLoggedIn"]);
+                int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
 
                 if (inFolder)
                     return PartialView("~/Views/Folder/_NotesInFolder.cshtml", new ClassifiedNotes(new FolderBLL().GetNotesInFolderBLL(userID, folderID)));
@@ -122,7 +117,7 @@ namespace ProbandoTodo.Controllers
             try
             {
                 noteBLL.StarTaskBLL(noteID);
-                int userID = GetSessionID(Session["UserLoggedIn"]);
+                int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
 
                 if (inFolder)
                     return PartialView("~/Views/Folder/_NotesInFolder.cshtml", new ClassifiedNotes(new FolderBLL().GetNotesInFolderBLL(userID, folderID)));
@@ -148,7 +143,7 @@ namespace ProbandoTodo.Controllers
         {
             try
             {                
-                int userID = GetSessionID(Session["UserLoggedIn"]);
+                int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
                 noteBLL.ChangeDatetimeEventBLL(model.CurrentDate, model.HourSelected, model.MinuteSelected, model.TimeTableSelected, model.ID_Note, userID);
                 if (model.InFolder)
                     return PartialView("~/Views/Folder/_NotesInFolder.cshtml", new ClassifiedNotes(new FolderBLL().GetNotesInFolderBLL(userID, model.ID_Folder)));
@@ -163,18 +158,19 @@ namespace ProbandoTodo.Controllers
         }
 
         [HttpPost]
-        public ActionResult CheckExpiredEventsPartial(string[] uhick)
+        public ActionResult CheckExpiredEventsPartial(FireAlarmModel model)
         {
             try
             {
-                return PartialView("_FireAlarmDialog", noteBLL.CheckExpiredEventsBLL(uhick[0]));
+                if (model.EncryptedCookie == null)
+                    model.EncryptedCookie = new UserBLL().GetEncryptedUserID(UserLoginData.GetSessionID(Session["UserLoggedIn"]));
+
+                return PartialView("_FireAlarmDialog", noteBLL.CheckExpiredEventsBLL(model.EncryptedCookie));
             }
             catch (Exception ex)
             {
-                //Response.StatusCode = 500;
-                Response.StatusDescription = "No se pudo cargar el resultado. " + ex.Message;
-                var responseError = new { statusCode = Response.StatusCode, statusText = Response.StatusDescription };
-                return Json(responseError, JsonRequestBehavior.DenyGet);
+                Response.StatusCode = 500;
+                return Json(new { error = ex.Message }, JsonRequestBehavior.DenyGet);
             }
         }
     }

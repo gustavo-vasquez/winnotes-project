@@ -13,15 +13,19 @@ namespace Data_Access_Layer
 {
     public class UserDAL
     {
-        public WinNotesDBEntities OpenConnection()
-        {            
-            WinNotesDBEntities WinNotesContext = new WinNotesDBEntities();
-            return WinNotesContext;
-        }
-
-        public void CloseConnection(WinNotesDBEntities WinNotesContext)
+        public string GetEncryptedUserID(int userID)
         {
-            WinNotesContext.Dispose();            
+            try
+            {
+                using (var context = new WinNotesDBEntities())
+                {
+                    return context.Person.Where(p => p.PersonID == userID).First().PersonIDEncrypted;
+                }
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         /// <summary>
@@ -191,11 +195,12 @@ namespace Data_Access_Layer
         {
             try
             {
-                var context = OpenConnection();
-                Person person = context.Person.Where(p => p.Email == email).First();
-                person.PersonIDEncrypted = IdentifierEncrypted;
-                context.SaveChanges();
-                CloseConnection(context);
+                using (var context = new WinNotesDBEntities())
+                {
+                    Person person = context.Person.Where(p => p.Email == email).First();
+                    person.PersonIDEncrypted = IdentifierEncrypted;
+                    context.SaveChanges();
+                }
             }
             catch (Exception ex)
             {
@@ -361,13 +366,14 @@ namespace Data_Access_Layer
             {
                 using (var context = new WinNotesDBEntities())
                 {                    
-                    string CurrentPassword = context.Person.Where(p => p.PersonID == userID).First().Password;
-                    if (CurrentPassword == currentPassword)
+                    var user = context.Person.Where(p => p.PersonID == userID).First();
+                    if (user.Password == currentPassword)
                     {
-                        CurrentPassword = newPassword;
+                        user.Password = newPassword;
                         context.SaveChanges();                        
-                    }                    
-                    throw new ArgumentException("EL CAMPO CONTRASEÑA ACTUAL NO ES CORRECTO");
+                    }
+                    else
+                        throw new ArgumentException("EL CAMPO CONTRASEÑA ACTUAL NO ES CORRECTO");
                 }
             }
             catch

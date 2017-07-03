@@ -1,8 +1,7 @@
 ﻿$(document).ready(function () {
     //$("#txtSearch").autocomplete({
     //    source: "/Home/Suggestion"
-    //});
-
+    //});    
     $(window).scroll(scrollFunction);    
 
     $('#registerLink').on('click', function (event) {
@@ -13,6 +12,7 @@
             success: function (data) {
                 $('#MainDialog').html(data);                
                 $('#RegisterDialog').modal("show");
+                registerFormActions();
                 $("form").removeData("validator");
                 $("form").removeData("unobtrusiveValidation");
                 $.validator.unobtrusive.parse("form");
@@ -47,8 +47,10 @@
         //}
     });
 
-    //checkIfEventsAreExpired();
-    //setInterval(checkIfEventsAreExpired, (60 - new Date().getSeconds) * 1000);
+    window.setTimeout(function () {
+        checkIfEventsAreExpired();
+        window.setInterval(checkIfEventsAreExpired, 60000);
+    }, 60000 - (new Date().getSeconds())*1000);
 });
 
 function scrollFunction() {    
@@ -65,30 +67,22 @@ function goTop() {
     return false;
 }
 
-//function checkIfEventsAreExpired() {
-//    var userCk = readCookie("UHICK");
+function checkIfEventsAreExpired() {    
+    var model = { "EncryptedCookie": readCookie("UHICK") };
 
-//    if(userCk != null && userCk != undefined) {
-//        var obj = { "uhick": userCk };
-//        $.ajax({
-//            url: "/Note/CheckExpiredEventsPartial",
-//            method: "POST",
-//            dataType: "html",
-//            data: JSON.stringify(obj),
-//            contentType: "application/json; charset=utf-8",
-//            success: function (data) {
-//                $('.body-content').append(data);
-//                $('.fired-alarm').show('puff');
-//                $('.stop').on('click', stopAlarm);
-//            },
-//            error: function (response, error, errorThrown) {
-//                console.log(response);
-//                console.log(error);
-//                console.log(errorThrown);
-//            }
-//        });
-//    }
-//}
+    $.ajax({
+        url: "/Note/CheckExpiredEventsPartial",
+        method: "POST",
+        data: JSON.stringify(model),
+        contentType: "application/json; charset=utf-8",        
+        dataType: "html",
+        success: function (data) {
+            $('body').append(data);            
+            $('.fired-alarm').show('puff');
+            $('.stop').on('click', stopAlarm);
+        }        
+    });
+}
 
 function stopAlarm() {
     $(this).closest('div[name=Alarm]').hide("puff", function () {
@@ -139,15 +133,12 @@ function readCookie(name) {
 // *******************************************************************************
 
 function errorHandler(xhr) {
-    $('body').append('<div class="message-result"><button type="button" class="close">&times;</button><p>' + xhr.responseJSON.error + '</p></div>');
+    var error = (xhr.responseJSON != undefined) ? xhr.responseJSON.error : xhr.statusText;
+    $('body').append('<div class="message-result"><button type="button" class="close">&times;</button><p>' + error + '</p></div>');
     $('.message-result').on('click', 'button', function () {
         $(this).parent().fadeOut(function () { $(this).remove() });
     });
     setTimeout(function () {
         $('.message-result').fadeOut(function () { $(this).remove() });
     }, 6000);
-}
-
-function addScripts(src) {
-    $('body').append('<script src=' + src + '></script>');
 }

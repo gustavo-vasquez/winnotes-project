@@ -1,22 +1,21 @@
-﻿body {
-    /*background-image: url('Images/blue-and-green-triangles.jpg');*/
-    /*background-image: url('Images/446.jpg');
-    background-attachment: fixed;*/
+﻿body {    
     padding-top: 50px;    
 }
 
 /* Set padding to keep content from hitting the edges */
-.body-content {
-    /*background-image: url('Images/triangle_pattern.png');*/
+.body-content {    
     padding-left: 15px;
-    padding-right: 15px;
-    /*border-left: 1px solid gray;
-    border-right: 1px solid gray;*/
+    padding-right: 15px;    
 }
 
 .body-content::before {
     content: '';
     margin-bottom: 40px;
+}
+
+p {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #ToTop {
@@ -256,6 +255,10 @@ textarea {
     color: crimson;
 }
 
+.provider {
+    font-weight: bold;
+}
+
 .label-form-required {
     color: gray;
     background-color: transparent;
@@ -389,6 +392,7 @@ textarea {
     border-radius: 4px;
     padding: 15px;    
     box-shadow: 0 0 1px 0 orange;
+    z-index: 9999;
 }
 
 #FolderDialog input, #FolderDialog textarea {
@@ -569,8 +573,25 @@ span.glyphicon-calendar.calendar-trigger {
 
 #EditFolder {
     font-size: large;
-    color: black;
+    color: black;    
+}
+
+#EditFolder:hover {
+    color: limegreen;
     cursor: pointer;
+}
+
+.trash-folder {
+    font-size: large;
+    color: black;
+    float: right;
+    background: none;
+    border: none;
+}
+
+.trash-folder:hover {
+    cursor: pointer;
+    color: red;
 }
 
 /*****************************************************************************/

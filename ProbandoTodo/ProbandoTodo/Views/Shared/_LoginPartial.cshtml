@@ -46,5 +46,9 @@ else
     <ul class="nav navbar-nav navbar-right">                
         <li><a id="registerLink" href="#"><i class="glyphicon glyphicon-upload"></i> Registrarse</a></li>        
         <li><a id="loginLink" href="#"><i class="glyphicon glyphicon-user"></i> Iniciar sesión</a></li>        
-    </ul>    
+    </ul>
+    @section custom_scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+            @Scripts.Render("~/Scripts/application/register-form.js")
+        }
 }

@@ -10,13 +10,13 @@ namespace Data_Access_Layer
 {
     public class FolderDAL
     {        
-        public IEnumerable<Folder> GetAllFoldersDAL()
+        public IEnumerable<Folder> GetAllFoldersDAL(int userID)
         {
             try
             {
                 using(var context = new WinNotesDBEntities())
                 {
-                    IEnumerable<Folder> folders = context.Folder.ToList();
+                    IEnumerable<Folder> folders = context.Folder.Where(f => f.Person_ID == userID).ToList();
                     return folders;
                 }
             }
@@ -64,6 +64,29 @@ namespace Data_Access_Layer
                     folder.Name = name;
                     folder.Details = details;
                     folder.LastModified = DateTime.Now;
+                    context.SaveChanges();
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void RemoveFolderDAL(int userID, int folderID)
+        {
+            try
+            {
+                using(var context = new WinNotesDBEntities())
+                {
+                    var notes = context.Note.Where(n => n.Person_ID == userID && n.Folder_ID == folderID);
+                    context.Note.RemoveRange(notes);
+                    //foreach (Note note in notes)
+                    //{
+                    //    context.Note.Remove(note);
+                    //}
+                    var folder = context.Folder.Where(f => f.Person_ID == userID && f.FolderID == folderID).First();
+                    context.Folder.Remove(folder);
                     context.SaveChanges();
                 }
             }
@@ -133,11 +156,11 @@ namespace Data_Access_Layer
                 {
                     int folderID = context.Folder.Where(f => f.Name == folderSelected && f.Person_ID == userID).First().FolderID;
                     Note note = context.Note.Where(n => n.NoteID == noteID).First();
-                    if (note.Completed != false)
-                        throw new ArgumentException("Esta nota ya se completó");
-
-                    note.Folder_ID = folderID;
-                    context.SaveChanges();
+                    if (note.Completed != true)
+                    {
+                        note.Folder_ID = folderID;
+                        context.SaveChanges();
+                    }                    
                 }
             }
             catch

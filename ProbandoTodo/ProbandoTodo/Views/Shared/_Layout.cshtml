@@ -130,10 +130,12 @@
         </div>
     }
 
-    @Scripts.Render("~/bundles/jquery", "~/bundles/bootstrap")
-    @Scripts.Render("~/jquery-ui-1.12.1.custom/jquery-ui.js")
+    @Scripts.Render("~/bundles/jquery", "~/jquery-ui-1.12.1.custom/jquery-ui.js", "~/bundles/bootstrap")    
     @Scripts.Render("~/Scripts/application.js")
-    @InitialScripts.Write()
+    @if (Session["UserLoggedIn"] == null)
+    {
+        @Scripts.Render("~/bundles/jqueryval", "~/Scripts/application/register-form.js", "~/Scripts/application/login-form.js");
+    }            
     @RenderSection("custom_scripts", required: false)
     <button id="ToTop" class="btn btn-primary" onclick="goTop();"><span class="glyphicon glyphicon-arrow-up"></span></button>
 </body>

@@ -11,11 +11,11 @@ namespace ProbandoTodo.Models
     public class RegisterModel
     {        
         [Required(ErrorMessage = "-Ingresar nombre de usuario")]
-        [RegularExpression("^[a-zA-Z0-9 _]*$")]
+        [RegularExpression("^[a-zA-Z0-9_]*$")]
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Ingresar nombre de email")]
-        [RegularExpression("^[^@]+$")]
+        [RegularExpression("^[^@ ]+$")]
         public string Email { get; set; }
 
         public MailProviders MailProvider { get; set; }

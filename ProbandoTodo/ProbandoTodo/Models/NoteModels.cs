@@ -108,6 +108,11 @@ namespace ProbandoTodo.Models
             {
 
             }
+        }
+        
+        public class FireAlarmModel
+        {
+            public string EncryptedCookie { get; set; }            
         }        
     }
 }

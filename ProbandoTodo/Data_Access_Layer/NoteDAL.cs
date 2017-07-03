@@ -91,18 +91,23 @@ namespace Data_Access_Layer
         {
             try
             {
-                if (timeTableSelected.Equals("PM"))
+                switch(timeTableSelected)
                 {
-                    if (hourSelected < 12)
-                        hourSelected += 12;
-                    else
-                        hourSelected = 0;
+                    case "AM":
+                        if(hourSelected == 12)
+                            hourSelected = 0;
+                        break;
+                    case "PM":
+                        if (hourSelected != 12)
+                            hourSelected += 12;
+                        break;
+                    default: throw new ArgumentException("No se reconoce como un horario válido");
                 }
 
                 expirationDate = new DateTime(expirationDate.Year, expirationDate.Month, expirationDate.Day, hourSelected, minuteSelected, 0);
 
                 using (var context = new WinNotesDBEntities())
-                {                    
+                {
                     Note newNote = new Note();
                     newNote.Title = title;
                     newNote.Details = details;
@@ -134,7 +139,7 @@ namespace Data_Access_Layer
                     {
                         note.Completed = true;
                         context.SaveChanges();
-                    }
+                    }                    
                 }
             }
             catch
@@ -159,7 +164,7 @@ namespace Data_Access_Layer
                             note.Starred = true;
 
                         context.SaveChanges();
-                    }
+                    }                    
                 }
             }
             catch

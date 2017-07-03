@@ -17,6 +17,11 @@ namespace Business_Logic_Layer
     {
         static UserDAL userDAL = new UserDAL();
 
+        public string GetEncryptedUserID(int userID)
+        {
+            return userDAL.GetEncryptedUserID(userID);
+        }
+
         /// <summary>
         /// (Capa de negocio) Crea un nuevo usuario en la base de datos.
         /// </summary>

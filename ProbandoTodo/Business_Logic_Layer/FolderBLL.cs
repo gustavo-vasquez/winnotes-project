@@ -13,9 +13,9 @@ namespace Business_Logic_Layer
     {
         static private FolderDAL folderDAL = new FolderDAL();
 
-        public IEnumerable<Folder> GetAllFoldersBLL()
+        public IEnumerable<Folder> GetAllFoldersBLL(int userID)
         {
-            return folderDAL.GetAllFoldersDAL();
+            return folderDAL.GetAllFoldersDAL(userID);
         }
 
         public void CreateFolderBLL(int id, string name, string details)
@@ -26,6 +26,11 @@ namespace Business_Logic_Layer
         public void EditFolderBLL(int userID, int folderID, string name, string details)
         {
             folderDAL.EditFolderDAL(userID, folderID, name, details);
+        }
+
+        public void RemoveFolderBLL(int userID, int folderID)
+        {
+            folderDAL.RemoveFolderDAL(userID, folderID);
         }
 
         public Folder GetFolderDataBLL(int folderID)

@@ -1,0 +1,13 @@
+﻿@model string
+
+<div class="message-result">
+    <button type="button" class="close">&times;</button>
+    @if (Model != null && Model != "")
+    {
+        <p>@Model</p>
+    }
+    else
+    {
+        <p>Error del servidor</p>
+    }
+</div>

@@ -26,7 +26,7 @@ namespace ProbandoTodo.Filters
             public override void OnActionExecuting(ActionExecutingContext filterContext)
             {
                 if (filterContext.HttpContext.Session["UserLoggedIn"] == null)
-                {
+                {                    
                     filterContext.Result = new HttpStatusCodeResult(403, "Acceso no autorizado - Solo usuarios registrados pueden ver el contenido");
                 }
             }            

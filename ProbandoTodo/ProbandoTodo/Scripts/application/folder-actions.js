@@ -30,12 +30,10 @@ $('.trash-folder').on('click', function () {
             url: "/Folder/Remove",
             method: "POST",
             data: "folderID=" + $('#ThisFolder').data('iof'),
-            success: function() {
-                window.location.href = "/Folder/List";
+            success: function(data) {
+                window.location.href = data.Path;
             },
-            error: function () {
-                window.location.reload();
-            }               
+            error: errorHandler
         });
     }    
 });

@@ -61,8 +61,7 @@ namespace ProbandoTodo.Controllers
             }
             catch(Exception ex)
             {
-                Response.StatusCode = 500;
-                return Json(new { error = ex.Message }, JsonRequestBehavior.AllowGet);
+                return RedirectToAction("InternalServerError", "Error", new { error = ex.Message });
             }
         }
 
@@ -86,8 +85,7 @@ namespace ProbandoTodo.Controllers
             }
             catch(Exception ex)
             {
-                Response.StatusCode = 500;
-                return Json(new { error = ex.Message }, JsonRequestBehavior.DenyGet);
+                return RedirectToAction("InternalServerError", "Error", new { error = ex.Message });
             }
         }
 
@@ -100,9 +98,8 @@ namespace ProbandoTodo.Controllers
                 if (ModelState.IsValid)
                 {                    
                     int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
-                    folderBLL.CreateFolderBLL(userID, model.Name, model.Details);
-                    //return PartialView("_FoldersThumbnail", FillFoldersThumbnail());
-                    return Redirect(Request.UrlReferrer.AbsolutePath.ToString());
+                    folderBLL.CreateFolderBLL(userID, model.Name, model.Details);                    
+                    return Redirect(Request.UrlReferrer.AbsolutePath);
                 }
 
                 return PartialView("_CreateFolder", model);
@@ -110,7 +107,7 @@ namespace ProbandoTodo.Controllers
             catch(Exception ex)
             {
                 TempData["error"] = ex.Message;
-                return Redirect(Request.UrlReferrer.AbsolutePath.ToString());
+                return Redirect(Request.UrlReferrer.AbsolutePath);
             }
         }
 
@@ -130,20 +127,27 @@ namespace ProbandoTodo.Controllers
             try
             {
                 folderBLL.EditFolderBLL(UserLoginData.GetSessionID(Session["UserLoggedIn"]), model.FolderID, model.Name, model.Details);
-                return Redirect(Request.UrlReferrer.AbsolutePath.ToString());
+                return Redirect(Request.UrlReferrer.AbsolutePath);
             }
             catch(Exception ex)
             {
                 TempData["error"] = ex.Message;
-                return Redirect(Request.UrlReferrer.AbsolutePath.ToString());
+                return Redirect(Request.UrlReferrer.AbsolutePath);
             }
         }
 
         [HttpPost]        
-        public void Remove(int folderID)
+        public ActionResult Remove(int folderID)
         {
-            try { folderBLL.RemoveFolderBLL(UserLoginData.GetSessionID(Session["UserLoggedIn"]), folderID); }
-            catch (Exception ex) { TempData["error"] = ex.Message; }
+            try
+            {
+                folderBLL.RemoveFolderBLL(UserLoginData.GetSessionID(Session["UserLoggedIn"]), folderID);
+                return Json(new { Path = "/Folder/List" }, JsonRequestBehavior.DenyGet);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("InternalServerError", "Error", new { error = ex.Message });
+            }
         }
         
         public ActionResult NotesList(int folderID)

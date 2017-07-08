@@ -193,6 +193,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FolderController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -226,9 +227,12 @@
     <Content Include="Content\bootstrap.flatly.min.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Images\446.jpg" />
+    <Content Include="Content\Images\internal_server_error.png" />
     <Content Include="Content\Images\alarm-clock-128.png" />
     <Content Include="Content\Images\blue-and-green-triangles.jpg" />
+    <Content Include="Content\Images\not_found.png" />
     <Content Include="Content\Images\folder.png" />
+    <Content Include="Content\Images\not-authorized.png" />
     <Content Include="Content\Images\landscape_bliss_alternate_1680_1920x1200_artwallpaperhi.com.jpg" />
     <Content Include="Content\Images\monkey.png" />
     <Content Include="Content\Images\social_media\1495840698_instagram.png" />
@@ -318,7 +322,9 @@
     <Content Include="Scripts\application.js" />
     <Content Include="c_sharp.ico" />
     <None Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -372,6 +378,12 @@
     <Content Include="Views\Note\_ChangeDateTimeEvent.cshtml" />
     <Content Include="Views\Note\_FireAlarmDialog.cshtml" />
     <Content Include="Views\Folder\_EditFolder.cshtml" />
+    <Content Include="Views\Error\NotAuthorized.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Error\_NotFound.cshtml" />
+    <Content Include="Views\Error\InternalServerError.cshtml" />
+    <Content Include="Views\Error\_NotAuthorized.cshtml" />
+    <Content Include="Views\Error\_InternalServerError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

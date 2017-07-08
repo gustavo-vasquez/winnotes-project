@@ -90,6 +90,27 @@ CREATE TABLE WinNotes.Note (
 GO
 
 
+-- OPERACIONES CON STORED PROCEDURES
+
+create procedure sp_login
+@email nvarchar(max),
+@password nvarchar(max)
+as
+	begin
+
+		select PersonID, UserName, Email, AvatarImage, AvatarMIMEType, Active
+		from WinNotes.Person
+		where Email = @email
+		and Password = @password
+
+	end
+go
+
+drop procedure sp_login
+
+exec sp_login
+@email = 'barril.de.duendes@outlook.com', @password = 'Barril3duendes'
+
 select * from WinNotes.Person
 select * from WinNotes.Folder
 select * from WinNotes.Note

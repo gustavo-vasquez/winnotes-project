@@ -17,7 +17,7 @@ namespace ProbandoTodo.Controllers
         static NoteBLL noteBLL = new NoteBLL();        
         
         public ActionResult Create()
-        {
+        {            
             int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
             CreateNoteModelView model = new CreateNoteModelView();
             this.PrepareModelToCreateNote(userID, ref model);
@@ -25,7 +25,7 @@ namespace ProbandoTodo.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]        
+        [ValidateAntiForgeryToken]
         public ActionResult Create(CreateNoteModelView model)
         {
             try
@@ -95,7 +95,7 @@ namespace ProbandoTodo.Controllers
         public ActionResult ForceCompleteTask(int folderID, int noteID, bool inFolder)
         {
             try
-            {
+            {                
                 noteBLL.ForceCompleteTaskBLL(noteID);
                 int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
 
@@ -106,8 +106,7 @@ namespace ProbandoTodo.Controllers
             }
             catch(Exception ex)
             {
-                Response.StatusCode = 500;
-                return Json(new { error = ex.Message }, JsonRequestBehavior.DenyGet);
+                return RedirectToAction("InternalServerError", "Error", new { error = ex.Message });
             }
         }
 
@@ -126,8 +125,7 @@ namespace ProbandoTodo.Controllers
             }
             catch(Exception ex)
             {
-                Response.StatusCode = 500;
-                return Json(new { error = ex.Message }, JsonRequestBehavior.DenyGet);
+                return RedirectToAction("InternalServerError", "Error", new { error = ex.Message });
             }
         }
 
@@ -152,8 +150,7 @@ namespace ProbandoTodo.Controllers
             }
             catch(Exception ex)
             {
-                Response.StatusCode = 500;
-                return Json(new { error = ex.Message }, JsonRequestBehavior.DenyGet);
+                return RedirectToAction("InternalServerError", "Error", new { error = ex.Message });
             }
         }
 
@@ -169,8 +166,7 @@ namespace ProbandoTodo.Controllers
             }
             catch (Exception ex)
             {
-                Response.StatusCode = 500;
-                return Json(new { error = ex.Message }, JsonRequestBehavior.DenyGet);
+                return RedirectToAction("InternalServerError", "Error", new { error = ex.Message });
             }
         }
     }

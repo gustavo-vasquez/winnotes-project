@@ -48,8 +48,7 @@ namespace ProbandoTodo.Controllers
             }
             catch(Exception ex)
             {
-                Response.StatusCode = 500;
-                return Json(new { error = ex.Message }, JsonRequestBehavior.DenyGet);
+                return RedirectToAction("InternalServerError", "Error", new { error = ex.Message });
             }
         }
 
@@ -89,8 +88,7 @@ namespace ProbandoTodo.Controllers
             }
             catch(Exception ex)
             {
-                Response.StatusCode = 500;
-                return Json(new { error = ex.Message }, JsonRequestBehavior.DenyGet);
+                return RedirectToAction("InternalServerError", "Error", new { error = ex.Message });
             }
         }
 
@@ -135,8 +133,8 @@ namespace ProbandoTodo.Controllers
             }
             catch(Exception ex)
             {
-                ViewBag.error = ex.Message;
-                return View("ProfileManagement", new ProfileManagementModels(userBLL.GetUserInformation(UserLoginData.GetSessionID(Session["UserLoggedIn"]))));
+                TempData["error"] = ex.Message;
+                return RedirectToAction("ProfileManagement");
             }
         }
 
@@ -158,7 +156,7 @@ namespace ProbandoTodo.Controllers
             catch(Exception ex)
             {
                 TempData["error"] = ex.Message;
-                return View("ProfileManagement", new ProfileManagementModels(userBLL.GetUserInformation(UserLoginData.GetSessionID(Session["UserLoggedIn"])), model));
+                return RedirectToAction("ProfileManagement");
             }
         }        
 
@@ -180,7 +178,7 @@ namespace ProbandoTodo.Controllers
             catch(Exception ex)
             {
                 TempData["error"] = ex.Message;
-                return View("ProfileManagement", new ProfileManagementModels(userBLL.GetUserInformation(UserLoginData.GetSessionID(Session["UserLoggedIn"])), model));
+                return RedirectToAction("ProfileManagement");
             }
         }
 

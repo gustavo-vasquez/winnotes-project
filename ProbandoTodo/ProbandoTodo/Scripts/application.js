@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
     //$("#txtSearch").autocomplete({
     //    source: "/Home/Suggestion"
-    //});    
+    //});
     $(window).scroll(scrollFunction);    
 
     $('#registerLink').on('click', function (event) {
@@ -132,9 +132,8 @@ function readCookie(name) {
 
 // *******************************************************************************
 
-function errorHandler(xhr) {
-    var error = (xhr.responseJSON != undefined) ? xhr.responseJSON.error : xhr.statusText;
-    $('body').append('<div class="message-result"><button type="button" class="close">&times;</button><p>' + error + '</p></div>');
+function errorHandler(xhr) {   
+    $('body').append(xhr.responseText);
     $('.message-result').on('click', 'button', function () {
         $(this).parent().fadeOut(function () { $(this).remove() });
     });

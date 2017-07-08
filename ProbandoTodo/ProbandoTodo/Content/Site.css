@@ -612,7 +612,12 @@ span.glyphicon-calendar.calendar-trigger {
     padding: 15px 5px 5px 5px;
     text-align: center;
     position: fixed;
-    z-index: 9999;    
+    z-index: 9999;
+    opacity: 0.9;
+}
+
+.message-result p {
+    font-weight: bold;
 }
 
 .message-result > .close {

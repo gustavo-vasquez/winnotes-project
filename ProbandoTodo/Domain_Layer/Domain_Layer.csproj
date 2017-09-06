@@ -64,6 +64,9 @@
       <DependentUpon>WinNotesDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="sp_login_Result.cs">
+      <DependentUpon>WinNotesDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="UserLoginData.cs" />
     <Compile Include="WinNotesDB.cs">
       <AutoGen>True</AutoGen>
@@ -72,17 +75,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="WinNotesDB.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>WinNotesDB.cs</LastGenOutput>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="WinNotesDB.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>WinNotesDB.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

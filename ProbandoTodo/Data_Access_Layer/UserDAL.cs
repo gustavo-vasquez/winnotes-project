@@ -1,6 +1,8 @@
 ﻿using Domain_Layer;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -41,27 +43,37 @@ namespace Data_Access_Layer
             {
                 using (var context = new WinNotesDBEntities())
                 {
-                    var existingUser = context.Person.Any(p => p.Email == Email);
+                    //var existingUser = context.Person.Any(p => p.Email == Email);
 
-                    if (!existingUser && !CheckUserNameDAL(UserName))
+                    //if (!existingUser && !CheckUserNameDAL(UserName))
+                    //{
+                    //    Person newUser = new Person();
+                    //    newUser.UserName = UserName;
+                    //    newUser.Email = Email;
+                    //    newUser.Password = Password;
+                    //    newUser.AvatarImage = null;
+                    //    newUser.AvatarMIMEType = null;
+                    //    newUser.Active = false;
+                    //    newUser.RegistrationDate = DateTime.Now;
+                    //    newUser.LastLoginDate = DateTime.Now;
+
+                    //    context.Person.Add(newUser);
+                    //    context.SaveChanges();
+                    //    newUser.PersonIDEncrypted = this.EncryptToSHA256(newUser.PersonID);
+                    //    context.SaveChanges();                        
+
+                    //    return Email;
+                    //}
+                    //return null;
+                    var userID_objResult = context.sp_createNewUser(UserName, Email, Password).First();
+                    if (userID_objResult.HasValue)
                     {
-                        Person newUser = new Person();
-                        newUser.UserName = UserName;
-                        newUser.Email = Email;
-                        newUser.Password = Password;
-                        newUser.AvatarImage = null;
-                        newUser.AvatarMIMEType = null;
-                        newUser.Active = false;
-                        newUser.RegistrationDate = DateTime.Now;
-                        newUser.LastLoginDate = DateTime.Now;
-
-                        context.Person.Add(newUser);
-                        context.SaveChanges();
-                        newUser.PersonIDEncrypted = this.EncryptToSHA256(newUser.PersonID);
-                        context.SaveChanges();                        
+                        int userID = userID_objResult.Value;
+                        context.sp_saveEncryptedUserID(userID, this.EncryptToSHA256(userID));
 
                         return Email;
-                    }                    
+                    }
+
                     return null;
                 }                
             }
@@ -123,9 +135,11 @@ namespace Data_Access_Layer
         {
             using (var context = new WinNotesDBEntities())
             {
-                bool result = context.Person.Any(p => p.UserName == UserName);
-                return result;
-            }                            
+                //bool result = context.Person.Any(p => p.UserName == UserName);
+                var result = new ObjectParameter("result", typeof(bool));                
+                context.sp_verifyUserName(UserName, result);
+                return (bool)result.Value;
+            }
         }
 
 
@@ -141,7 +155,8 @@ namespace Data_Access_Layer
             {
                 using (var context = new WinNotesDBEntities())
                 {
-                    Person user = context.Person.Where(p => p.Email == email && p.Password == password).FirstOrDefault();
+                    sp_login_Result user = context.sp_login(email, password).First();
+                    //Person user = context.Person.Where(p => p.Email == email && p.Password == password).FirstOrDefault();
                     UserLoginData login = null;
 
                     if (user != null)
@@ -153,8 +168,9 @@ namespace Data_Access_Layer
                                 GetAvatarImage(user.AvatarImage, user.AvatarMIMEType),
                                 Convert.ToBoolean(user.Active)
                             );
-                        user.LastLoginDate = DateTime.Now;
-                        context.SaveChanges();
+                        //user.LastLoginDate = DateTime.Now;
+                        //context.SaveChanges();
+                        context.sp_refreshLoginDate(user.PersonID);
                     }
 
                     return login;
@@ -339,11 +355,12 @@ namespace Data_Access_Layer
             try
             {
                 using (var context = new WinNotesDBEntities())
-                {
-                    Person PersonData = context.Person.Where(p => p.PersonID == userID).First();
-                    PersonData.PersonalPhrase = phrase;
-                    PersonData.PhraseColor = phraseColor;
-                    context.SaveChanges();
+                {                    
+                    //Person PersonData = context.Person.Where(p => p.PersonID == userID).First();
+                    //PersonData.PersonalPhrase = phrase;
+                    //PersonData.PhraseColor = phraseColor;
+                    //context.SaveChanges();
+                    context.sp_changePersonalPhrase(userID, phrase, phraseColor);
                 }
             }
             catch
@@ -365,21 +382,22 @@ namespace Data_Access_Layer
             try
             {
                 using (var context = new WinNotesDBEntities())
-                {                    
-                    var user = context.Person.Where(p => p.PersonID == userID).First();
-                    if (user.Password == currentPassword)
-                    {
-                        user.Password = newPassword;
-                        context.SaveChanges();                        
-                    }
-                    else
-                        throw new ArgumentException("EL CAMPO CONTRASEÑA ACTUAL NO ES CORRECTO");
+                {
+                    //var user = context.Person.Where(p => p.PersonID == userID).First();
+                    //if (user.Password == currentPassword)
+                    //{
+                    //    user.Password = newPassword;
+                    //    context.SaveChanges();                        
+                    //}
+                    //else
+                    //    throw new ArgumentException("EL CAMPO CONTRASEÑA ACTUAL NO ES CORRECTO");
+                    context.sp_changePassword(userID, currentPassword, newPassword);
                 }
             }
             catch
             {
                 throw;
-            }            
+            }
         }
     }
 }

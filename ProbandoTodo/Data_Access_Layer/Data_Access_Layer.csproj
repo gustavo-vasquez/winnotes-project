@@ -47,7 +47,9 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -83,14 +85,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="WinNotesDB.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>WinNotesDB.edmx</DependentUpon>
-      <LastGenOutput>WinNotesDB.Context.cs</LastGenOutput>
-      <CustomToolNamespace>Domain_Layer</CustomToolNamespace>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +92,14 @@
       <Project>{9151b0e7-bf37-4bd5-94a9-0a3a99c80d4f}</Project>
       <Name>Domain_Layer</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="WinNotesDB.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>WinNotesDB.edmx</DependentUpon>
+      <LastGenOutput>WinNotesDB.Context.cs</LastGenOutput>
+      <CustomToolNamespace>Domain_Layer</CustomToolNamespace>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -7,6 +7,7 @@ using ProbandoTodo.Models;
 using Business_Logic_Layer;
 using static ProbandoTodo.Filters.CustomFilters;
 using Domain_Layer;
+using System.Data.SqlClient;
 
 namespace ProbandoTodo.Controllers
 {
@@ -39,6 +40,7 @@ namespace ProbandoTodo.Controllers
                         Session["UserLoggedIn"] = userBLL.Login(EmailParsed, model.Password);
                         return Json(new { url = "Home/Index" });
                     }
+                    ViewData["SendingFormError"] = "- Error inesperado. Inténtelo nuevamente.";
                     return PartialView("_Register", model);
                 }
                 else
@@ -48,6 +50,11 @@ namespace ProbandoTodo.Controllers
             }
             catch(Exception ex)
             {
+                if (ex.InnerException is SqlException)
+                {
+                    return RedirectToAction("InternalServerError", "Error", new { error = ex.InnerException.Message });
+                }
+
                 return RedirectToAction("InternalServerError", "Error", new { error = ex.Message });
             }
         }
@@ -70,24 +77,28 @@ namespace ProbandoTodo.Controllers
             {
                 if (ModelState.IsValid)
                 {                    
-                    var user = userBLL.Login(model.Email, model.Password);
-                    if (user != null)
+                    var userData = userBLL.Login(model.Email, model.Password);
+                    if (userData != null)
                     {
-                        Session["UserLoggedIn"] = user;
+                        Session["UserLoggedIn"] = userData;
                         if (model.RememberMe)
                             this.SetCookieData(model.Email);
 
                         return Json(new { url = urlPath });
                     }
 
-                    ModelState.AddModelError(string.Empty, "Email/contraseña incorrecta");
-                    return PartialView("_Login", model);
+                    throw new ArgumentException("Email y/o contraseña incorrecta");
                 }
 
                 return PartialView("_Login", model);
             }
             catch(Exception ex)
             {
+                if(ex.InnerException is SqlException)
+                {
+                    return RedirectToAction("InternalServerError", "Error", new { error = ex.InnerException.Message });
+                }
+
                 return RedirectToAction("InternalServerError", "Error", new { error = ex.Message });
             }
         }
@@ -143,7 +154,7 @@ namespace ProbandoTodo.Controllers
         public ActionResult PersonalPhrase(ProfileManagementModels.PersonalPhraseViewModel model, string pColor)
         {
             try
-            {
+            {                
                 int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
                 if (ModelState.IsValid)
                 {
@@ -155,6 +166,12 @@ namespace ProbandoTodo.Controllers
             }
             catch(Exception ex)
             {
+                if(ex.InnerException is SqlException)
+                {
+                    TempData["error"] = ex.InnerException.Message;
+                    return RedirectToAction("ProfileManagement");
+                }
+
                 TempData["error"] = ex.Message;
                 return RedirectToAction("ProfileManagement");
             }
@@ -173,10 +190,16 @@ namespace ProbandoTodo.Controllers
                     return RedirectToAction("ProfileManagement");
                 }
 
-                return View("ProfileManagement", new ProfileManagementModels(userBLL.GetUserInformation(UserLoginData.GetSessionID(Session["UserLoggedIn"])), model));
+                return View("ProfileManagement", new ProfileManagementModels(userBLL.GetUserInformation(userID), model));
             }
             catch(Exception ex)
             {
+                if(ex.InnerException is SqlException)
+                {
+                    TempData["error"] = ex.InnerException.Message;
+                    return RedirectToAction("ProfileManagement");
+                }
+                
                 TempData["error"] = ex.Message;
                 return RedirectToAction("ProfileManagement");
             }

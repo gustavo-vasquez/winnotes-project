@@ -4,7 +4,7 @@ GO
 CREATE TABLE WinNotes.Person (
 	PersonID INTEGER IDENTITY(1,1),
 	UserName NVARCHAR(MAX) NOT NULL,
-	PersonIDEncrypted NVARCHAR(MAX) NOT NULL,
+	PersonIDEncrypted NVARCHAR(MAX),
 	Email NVARCHAR(MAX) NOT NULL,
 	Password NVARCHAR(MAX) NOT NULL,
 	RegistrationDate DATETIME NOT NULL,
@@ -12,8 +12,8 @@ CREATE TABLE WinNotes.Person (
 	LastLoginDate DATETIME NOT NULL,
 	PersonalPhrase NVARCHAR(MAX),
 	PhraseColor VARCHAR(MAX),
-	AvatarImage VARBINARY(MAX) NOT NULL,
-	AvatarMIMEType VARCHAR(MAX) NOT NULL,
+	AvatarImage VARBINARY(MAX),
+	AvatarMIMEType VARCHAR(MAX),
 	CONSTRAINT PK_Person PRIMARY KEY CLUSTERED (PersonID)
 )
 GO
@@ -31,9 +31,9 @@ ORDER BY T.[name], AC.[column_id]
 
 -------------------------------------------------------------------------------------------------------
 
-alter table WinNotes.Person alter column PersonIDEncrypted NVARCHAR(MAX)
-alter table WinNotes.Person alter column AvatarImage VARBINARY(MAX)
-alter table WinNotes.Person alter column AvatarMIMEType VARCHAR(MAX)
+alter table WinNotes.Person alter column PersonIDEncrypted NVARCHAR(MAX) NULL
+alter table WinNotes.Person alter column AvatarImage VARBINARY(MAX) NULL
+alter table WinNotes.Person alter column AvatarMIMEType VARCHAR(MAX) NULL
 
 ALTER TABLE WinNotes.Person
 ADD AvatarImage VARBINARY(MAX)
@@ -98,6 +98,15 @@ create procedure sp_login
 as
 	begin
 
+		if not exists ( select 1
+						from WinNotes.Person
+						where Email = @email
+						and Password = @password )
+		begin
+			raiserror('Email y/o contraseña incorrecta',16,1)
+			return
+		end
+
 		select PersonID, UserName, Email, AvatarImage, AvatarMIMEType, Active
 		from WinNotes.Person
 		where Email = @email
@@ -114,3 +123,153 @@ exec sp_login
 select * from WinNotes.Person
 select * from WinNotes.Folder
 select * from WinNotes.Note
+
+
+create procedure sp_refreshLoginDate
+@id_user integer
+as
+	begin
+
+		update WinNotes.Person set LastLoginDate = GETDATE()
+		where PersonID = @id_user
+
+	end
+
+
+create procedure sp_verifyUserName
+@userName nvarchar(max),
+@result bit out
+as
+	begin				
+
+		if exists (	select 1
+					from WinNotes.Person
+					where UserName = @userName )
+		begin
+
+			set @result = 1
+			return
+
+		end
+
+		set @result = 0
+		return
+
+	end
+
+
+DECLARE @result bit
+EXEC sp_verifyUserName 'Testing22', @result OUTPUT
+SELECT @result
+
+
+
+
+create procedure sp_createNewUser
+@userName nvarchar(max),
+@email nvarchar(max),
+@password nvarchar(max)
+as
+	begin
+
+		if not exists ( select 1
+						from WinNotes.Person
+						where UserName = @userName
+						and Email = @email )
+		begin
+
+			insert into WinNotes.Person(UserName, Email, Password, RegistrationDate, LastLoginDate)
+			values(@userName, @email, @password, GETDATE(), GETDATE())
+
+			select top 1 PersonID
+			from WinNotes.Person
+			order by PersonID desc
+			return
+
+		end
+
+		raiserror('Ya existe un usuario con esos datos',16,1)
+
+	end
+
+
+
+exec sp_createNewUser 'CosmeFulanito99', 'cosme.fulanito99@gmail.com', 'asdASD123'
+
+select * from WinNotes.Person
+
+
+create procedure sp_saveEncryptedUserID
+@id integer,
+@encryptedID nvarchar(max)
+as
+	begin
+
+		update WinNotes.Person set PersonIDEncrypted = @encryptedID
+		where PersonID = @id
+
+	end
+
+
+
+create procedure sp_changePersonalPhrase
+@userID integer,
+@phrase nvarchar(max),
+@phraseColor varchar(max)
+as
+	begin
+
+		if exists ( select 1
+					from WinNotes.Person
+					where PersonID = @userID )
+		begin
+
+			update WinNotes.Person set PersonalPhrase = @phrase, PhraseColor = @phraseColor
+			where PersonID = @userID
+			return
+
+		end
+
+		raiserror('El usuario proporcionado no existe',16,1)
+		return
+
+	end
+
+declare @userID integer, @phrase nvarchar(max), @phraseColor varchar(max)
+exec sp_changePersonalPhrase @userID = 1, @phrase = 'Hola soy un mensaje de prueba', @phraseColor = 'green'
+select * from WinNotes.Person
+
+create procedure sp_deprueba
+as
+begin
+	raiserror('deberia mostrarlo en el cartel rojo',16,1)
+end
+
+exec sp_deprueba
+
+
+create procedure sp_changePassword
+@userID integer,
+@currentPassword nvarchar(max),
+@newPassword nvarchar(max)
+as
+	begin
+		
+		if not exists ( select 1
+						from WinNotes.Person
+						where PersonID = @userID
+						and Password = @currentPassword )
+		begin
+			raiserror('El usuario no existe o la contraseña actual ingresada es incorrecta',16,1)
+			return
+		end
+
+		update WinNotes.Person set Password = @newPassword
+		where PersonID = @userID
+
+	end
+
+
+exec sp_changePassword 2, 'asdASD123', 'qweQWE123'
+
+select * from WinNotes.Person

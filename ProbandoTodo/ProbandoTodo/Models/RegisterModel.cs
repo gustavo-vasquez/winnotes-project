@@ -10,7 +10,7 @@ namespace ProbandoTodo.Models
 {            
     public class RegisterModel
     {        
-        [Required(ErrorMessage = "-Ingresar nombre de usuario")]
+        [Required(ErrorMessage = "Ingresar nombre de usuario")]
         [RegularExpression("^[a-zA-Z0-9_]*$")]
         public string UserName { get; set; }
 
@@ -20,12 +20,12 @@ namespace ProbandoTodo.Models
 
         public MailProviders MailProvider { get; set; }
 
-        [Required(ErrorMessage = "-Ingresar contraseña")]
+        [Required(ErrorMessage = "Ingresar contraseña")]
         [MinLength(6)]
         [RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).+$")]
         public string Password { get; set; }
 
-        [Required(ErrorMessage = " ")]
+        [Required(ErrorMessage = "Ingresar confirmar contraseña")]
         [Compare("Password", ErrorMessage = "-Las contraseñas no coinciden")]
         public string ConfirmPassword { get; set; }
     }

@@ -254,9 +254,10 @@ textarea {
 }
 
 .required-legend {
-    font-size: 12px;    
-    text-align: center;
-    color: crimson;
+    font-size: 12px;
+    font-weight: bold;    
+    text-align: center;    
+    margin-top: 20px;
 }
 
 .provider {

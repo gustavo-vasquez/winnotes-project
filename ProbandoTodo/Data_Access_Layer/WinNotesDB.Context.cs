@@ -130,5 +130,31 @@ namespace Domain_Layer
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_changePassword", userIDParameter, currentPasswordParameter, newPasswordParameter);
         }
+    
+        public virtual ObjectResult<sp_getUserInformation_Result> sp_getUserInformation(Nullable<int> userID)
+        {
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("userID", userID) :
+                new ObjectParameter("userID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_getUserInformation_Result>("sp_getUserInformation", userIDParameter);
+        }
+    
+        public virtual int sp_changeAvatar(Nullable<int> userID, byte[] avatarImage, string mimeType)
+        {
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("userID", userID) :
+                new ObjectParameter("userID", typeof(int));
+    
+            var avatarImageParameter = avatarImage != null ?
+                new ObjectParameter("avatarImage", avatarImage) :
+                new ObjectParameter("avatarImage", typeof(byte[]));
+    
+            var mimeTypeParameter = mimeType != null ?
+                new ObjectParameter("mimeType", mimeType) :
+                new ObjectParameter("mimeType", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_changeAvatar", userIDParameter, avatarImageParameter, mimeTypeParameter);
+        }
     }
 }

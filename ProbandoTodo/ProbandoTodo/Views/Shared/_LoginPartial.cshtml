@@ -12,7 +12,7 @@
             <li class="dropdown">
                 <div class="navbar-form">
                     <div class="btn-group">
-                        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#" title="@session.Email"><img src="@session.AvatarImage" width="24" height="24" alt="user_login" /> @session.UserName <span class="caret"></span></a>
+                        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#" title="@session.Email"><img class="img-circle" src="@session.AvatarImage" width="24" height="24" alt="user_login" /> @session.UserName <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="@Url.Action("ProfileManagement", "User")"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp; Mi perfil</a></li>
                             <li><a href="@Url.Action("List", "Note")"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp; Mis notas</a></li>

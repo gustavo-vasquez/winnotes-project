@@ -15,6 +15,38 @@ namespace ProbandoTodo.Controllers
     {
         static UserBLL userBLL = new UserBLL();
 
+        #region MANEJADOR DE ERRORES
+
+        /// <summary>
+        /// Recibe la excepción y devuelve su correspondiente acción basado en los parámetros de entrada
+        /// </summary>
+        /// <param name="ex">Excepción que arroja el servidor</param>
+        /// <param name="action">Nombre de la acción a la que se dirige</param>
+        /// <param name="controller">Nombre del controlador al que se dirige. Por defecto, el controlador es User</param>
+        /// <param name="forceError500">(Opcional) Indica si va a forzar un Internal Server Error</param>
+        /// <returns></returns>
+        private RedirectToRouteResult ManageException(Exception ex, string action, string controller = "User", bool forceError500 = false)
+        {
+            if(forceError500)
+            {
+                if (ex.InnerException is SqlException)
+                {
+                    return RedirectToAction("InternalServerError", "Error", new { error = ex.InnerException.Message });
+                }
+
+                return RedirectToAction("InternalServerError", "Error", new { error = ex.Message });
+            }
+
+            if (ex.InnerException is SqlException)
+                TempData["error"] = ex.InnerException.Message;
+            else
+                TempData["error"] = ex.Message;
+
+            return RedirectToAction(action, controller);
+        }
+
+        #endregion
+
         // GET: User
         public ActionResult Index()
         {            
@@ -49,13 +81,8 @@ namespace ProbandoTodo.Controllers
                 }
             }
             catch(Exception ex)
-            {
-                if (ex.InnerException is SqlException)
-                {
-                    return RedirectToAction("InternalServerError", "Error", new { error = ex.InnerException.Message });
-                }
-
-                return RedirectToAction("InternalServerError", "Error", new { error = ex.Message });
+            {                
+                return this.ManageException(ex, null, null, true);
             }
         }
 
@@ -93,13 +120,8 @@ namespace ProbandoTodo.Controllers
                 return PartialView("_Login", model);
             }
             catch(Exception ex)
-            {
-                if(ex.InnerException is SqlException)
-                {
-                    return RedirectToAction("InternalServerError", "Error", new { error = ex.InnerException.Message });
-                }
-
-                return RedirectToAction("InternalServerError", "Error", new { error = ex.Message });
+            {                
+                return this.ManageException(ex, null, null, true);
             }
         }
 
@@ -126,9 +148,8 @@ namespace ProbandoTodo.Controllers
                 return View(new ProfileManagementModels(userBLL.GetUserInformation(userID)));
             }
             catch(Exception ex)
-            {
-                TempData["error"] = ex.Message;
-                return RedirectToAction("Index", "Home");
+            {                
+                return this.ManageException(ex, "Index", "Home");                
             }
         }        
 
@@ -144,8 +165,7 @@ namespace ProbandoTodo.Controllers
             }
             catch(Exception ex)
             {
-                TempData["error"] = ex.Message;
-                return RedirectToAction("ProfileManagement");
+                return this.ManageException(ex, "ProfileManagement");
             }
         }
 
@@ -166,14 +186,7 @@ namespace ProbandoTodo.Controllers
             }
             catch(Exception ex)
             {
-                if(ex.InnerException is SqlException)
-                {
-                    TempData["error"] = ex.InnerException.Message;
-                    return RedirectToAction("ProfileManagement");
-                }
-
-                TempData["error"] = ex.Message;
-                return RedirectToAction("ProfileManagement");
+                return this.ManageException(ex, "ProfileManagement");
             }
         }        
 
@@ -194,14 +207,7 @@ namespace ProbandoTodo.Controllers
             }
             catch(Exception ex)
             {
-                if(ex.InnerException is SqlException)
-                {
-                    TempData["error"] = ex.InnerException.Message;
-                    return RedirectToAction("ProfileManagement");
-                }
-                
-                TempData["error"] = ex.Message;
-                return RedirectToAction("ProfileManagement");
+                return this.ManageException(ex, "ProfileManagement");                
             }
         }
 

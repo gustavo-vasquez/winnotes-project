@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -7,7 +8,7 @@ using System.Web.Mvc;
 namespace ProbandoTodo.Controllers
 {
     public class ErrorController : Controller
-    {
+    {                
         public ActionResult NotFound(string aspxerrorpath)
         {
             Response.StatusCode = 404;
@@ -20,9 +21,9 @@ namespace ProbandoTodo.Controllers
         }
 
         public ActionResult InternalServerError(string error)
-        {
+        {            
             Response.StatusCode = 500;
-            
+
             if (Request.IsAjaxRequest())
                 return PartialView("_InternalServerError", error);
             else

@@ -273,3 +273,47 @@ as
 exec sp_changePassword 2, 'asdASD123', 'qweQWE123'
 
 select * from WinNotes.Person
+
+
+create procedure sp_getUserInformation
+@userID integer
+as
+	begin
+
+		if not exists ( select 1
+						from WinNotes.Person
+						where PersonID = @userID )
+		begin
+			raiserror('El usuario especificado no existe',16,1)
+			return
+		end
+
+		select UserName, Email, RegistrationDate, PersonalPhrase, PhraseColor, AvatarImage, AvatarMIMEType
+		from WinNotes.Person
+		where PersonID = @userID
+	end
+
+
+exec sp_getUserInformation 3
+
+select * from WinNotes.Person
+
+
+create procedure sp_changeAvatar
+@userID integer,
+@avatarImage varbinary(max),
+@mimeType varchar(max)
+as
+	begin
+		
+		if not exists ( select 1
+						from WinNotes.Person
+						where PersonID = @userID )
+		begin
+			raiserror('El usuario especificado no existe',16,1)
+			return
+		end
+
+		update WinNotes.Person set AvatarImage = @avatarImage, AvatarMIMEType = @mimeType
+		where PersonID = @userID
+	end

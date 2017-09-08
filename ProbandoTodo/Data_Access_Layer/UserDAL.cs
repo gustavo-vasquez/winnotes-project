@@ -279,18 +279,35 @@ namespace Data_Access_Layer
         /// <returns></returns>
         public string[] GetUserInformation(int userID)
         {
-            using (var context = new WinNotesDBEntities())
+            try
             {
-                Person PersonData = context.Person.Where(p => p.PersonID == userID).FirstOrDefault();
-                var UserInformation = new string[] { GetAvatarImage(PersonData.AvatarImage, PersonData.AvatarMIMEType),
-                                                     PersonData.PersonalPhrase,
-                                                     PersonData.PhraseColor,
-                                                     PersonData.UserName,
-                                                     PersonData.Email,
-                                                     PersonData.RegistrationDate.ToShortDateString()
-                                                   };
-                return UserInformation;
-            }  
+                using (var context = new WinNotesDBEntities())
+                {
+                    //Person PersonData = context.Person.Where(p => p.PersonID == userID).FirstOrDefault();
+                    //var UserInformation = new string[] { GetAvatarImage(PersonData.AvatarImage, PersonData.AvatarMIMEType),
+                    //                                 PersonData.PersonalPhrase,
+                    //                                 PersonData.PhraseColor,
+                    //                                 PersonData.UserName,
+                    //                                 PersonData.Email,
+                    //                                 PersonData.RegistrationDate.ToShortDateString()
+                    //                               };
+                    //return UserInformation;
+                    sp_getUserInformation_Result userInformation = context.sp_getUserInformation(userID).First();
+                    return new string[]
+                    {
+                        this.GetAvatarImage(userInformation.AvatarImage, userInformation.AvatarMIMEType),
+                        userInformation.PersonalPhrase,
+                        userInformation.PhraseColor,
+                        userInformation.UserName,
+                        userInformation.Email,
+                        userInformation.RegistrationDate.ToShortDateString()
+                    };
+                }
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         /// <summary>
@@ -331,10 +348,11 @@ namespace Data_Access_Layer
             {
                 using (var context = new WinNotesDBEntities())
                 {
-                    Person PersonData = context.Person.Where(p => p.PersonID == userID).First();
-                    PersonData.AvatarImage = ConvertImageToByteArray(avatarImage);
-                    PersonData.AvatarMIMEType = MIMEType;
-                    context.SaveChanges();                    
+                    //Person PersonData = context.Person.Where(p => p.PersonID == userID).First();
+                    //PersonData.AvatarImage = ConvertImageToByteArray(avatarImage);
+                    //PersonData.AvatarMIMEType = MIMEType;
+                    //context.SaveChanges();
+                    context.sp_changeAvatar(userID, ConvertImageToByteArray(avatarImage), MIMEType);
                 }
             }
             catch

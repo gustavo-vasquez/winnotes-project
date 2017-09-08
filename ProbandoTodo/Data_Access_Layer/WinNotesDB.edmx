@@ -81,6 +81,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="sp_changeAvatar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userID" Type="int" Mode="In" />
+          <Parameter Name="avatarImage" Type="varbinary(max)" Mode="In" />
+          <Parameter Name="mimeType" Type="varchar(max)" Mode="In" />
+        </Function>
         <Function Name="sp_changePassword" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="userID" Type="int" Mode="In" />
           <Parameter Name="currentPassword" Type="nvarchar(max)" Mode="In" />
@@ -97,6 +102,9 @@
           <Parameter Name="password" Type="nvarchar(max)" Mode="In" />
         </Function>
         <Function Name="sp_deprueba" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_getUserInformation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userID" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_login" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="email" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="password" Type="nvarchar(max)" Mode="In" />
@@ -262,6 +270,14 @@
             <Parameter Name="currentPassword" Mode="In" Type="String" />
             <Parameter Name="newPassword" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="sp_getUserInformation" ReturnType="Collection(WinNotesDBModel.sp_getUserInformation_Result)">
+          <Parameter Name="userID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_changeAvatar">
+            <Parameter Name="userID" Mode="In" Type="Int32" />
+            <Parameter Name="avatarImage" Mode="In" Type="Binary" />
+            <Parameter Name="mimeType" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="sp_login_Result">
           <Property Type="Int32" Name="PersonID" Nullable="false" />
@@ -270,6 +286,15 @@
           <Property Type="Binary" Name="AvatarImage" Nullable="false" />
           <Property Type="String" Name="AvatarMIMEType" Nullable="false" />
           <Property Type="Boolean" Name="Active" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_getUserInformation_Result">
+          <Property Type="String" Name="UserName" Nullable="false" />
+          <Property Type="String" Name="Email" Nullable="false" />
+          <Property Type="DateTime" Name="RegistrationDate" Nullable="false" Precision="23" />
+          <Property Type="String" Name="PersonalPhrase" Nullable="true" />
+          <Property Type="String" Name="PhraseColor" Nullable="true" />
+          <Property Type="Binary" Name="AvatarImage" Nullable="true" />
+          <Property Type="String" Name="AvatarMIMEType" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -339,6 +364,20 @@
           <FunctionImportMapping FunctionImportName="sp_changePersonalPhrase" FunctionName="WinNotesDBModel.Store.sp_changePersonalPhrase" />
           <FunctionImportMapping FunctionImportName="sp_deprueba" FunctionName="WinNotesDBModel.Store.sp_deprueba" />
           <FunctionImportMapping FunctionImportName="sp_changePassword" FunctionName="WinNotesDBModel.Store.sp_changePassword" />
+          <FunctionImportMapping FunctionImportName="sp_getUserInformation" FunctionName="WinNotesDBModel.Store.sp_getUserInformation">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WinNotesDBModel.sp_getUserInformation_Result">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="RegistrationDate" ColumnName="RegistrationDate" />
+                <ScalarProperty Name="PersonalPhrase" ColumnName="PersonalPhrase" />
+                <ScalarProperty Name="PhraseColor" ColumnName="PhraseColor" />
+                <ScalarProperty Name="AvatarImage" ColumnName="AvatarImage" />
+                <ScalarProperty Name="AvatarMIMEType" ColumnName="AvatarMIMEType" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_changeAvatar" FunctionName="WinNotesDBModel.Store.sp_changeAvatar" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -1,9 +1,19 @@
-﻿@{
+﻿@model string
+
+@{
     ViewBag.Title = "500 (Error interno del servidor)";
 }
 
 <div class="col-md-12 text-center">
-    <h1 class="text-danger text-uppercase">Error interno del servidor</h1>
+    @if (Model != null && Model != "")
+    {
+        <h1 class="text-danger text-uppercase">Error inesperado del servidor. Inténtelo nuevamente.</h1>
+        <h1 class="text-danger text-uppercase">CAUSA: @Model</h1>
+    }
+    else
+    {
+        <h1 class="text-danger text-uppercase">Error inesperado del servidor. Inténtelo nuevamente.</h1>
+    }    
     <br />
     <img class="img-responsive" style="margin: 0 auto;" src="~/Content/Images/internal_server_error.png" width="375" alt="internal_server_error" />
 </div>

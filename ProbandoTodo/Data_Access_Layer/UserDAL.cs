@@ -310,6 +310,18 @@ namespace Data_Access_Layer
             }
         }
 
+        //public string[] GetWizardInformation(int userID)
+        //{
+        //    using (var context = new WinNotesDBEntities())
+        //    {
+        //        var user = context.Person.Where(p => p.PersonID == userID);
+        //        return new string[]
+        //        {
+        //            this.GetAvatarImage()
+        //        }
+        //    }
+        //}
+
         /// <summary>
         /// Devuelve la imágen de perfil expresada como base64. Por defecto: la imágen predeterminada de perfil.
         /// </summary>
@@ -416,6 +428,91 @@ namespace Data_Access_Layer
             {
                 throw;
             }
+        }
+
+        // METODOS PARA WIZARD
+        public string AvatarInfoForWizardDAL(int userID)
+        {
+            using (var context = new WinNotesDBEntities())
+            {
+                var userInfo = context.Person.Where(u => u.PersonID == userID).FirstOrDefault();
+
+                return this.GetAvatarImage(userInfo.AvatarImage, userInfo.AvatarMIMEType);
+            }
+        }
+
+        public string[] PhraseInfoForWizardDAL(int userID)
+        {
+            using (var context = new WinNotesDBEntities())
+            {
+                var userInfo = context.Person.Where(u => u.PersonID == userID).FirstOrDefault();
+                return new string[]
+                {
+                    userInfo.PersonalPhrase,
+                    userInfo.PhraseColor
+                };
+            }
+        }
+
+
+        public string TemporaryAvatarDAL(HttpPostedFile tempAvatar, HttpServerUtilityBase localServer, int userID)
+        {
+            if (tempAvatar != null && tempAvatar.ContentLength > 0)
+            {
+                // Get file info
+                //var fileName = Path.GetFileName(tempAvatar.FileName);
+                //var contentLength = registro.File.ContentLength;
+                //var contentType = registro.File.ContentType;
+                var extension = Path.GetExtension(tempAvatar.FileName);
+
+                // Get file data
+                byte[] data = new byte[] { };
+                using (var binaryReader = new BinaryReader(tempAvatar.InputStream))
+                {
+                    data = binaryReader.ReadBytes(tempAvatar.ContentLength);
+                }
+                
+                // Guardar imagen en el servidor
+                using (FileStream image = System.IO.File.Create(localServer.MapPath("~/Content/Temp/temporary_avatar") + extension, data.Length))
+                {
+                    image.Write(data, 0, data.Length);
+                }
+
+                return "/Content/Temp/temporary_avatar" + extension;
+            }
+
+            return null;
+        }
+
+        public void UpdateAvatar(string path, int userID)
+        {
+            if (!String.IsNullOrEmpty(path))
+            {
+                using (var context = new WinNotesDBEntities())
+                {
+                    var user = context.Person.Where(p => p.PersonID == userID).FirstOrDefault();
+
+                    if (path != "/Content/Images/monkey.png")
+                    {
+                        Image img = CreateImageFromPathString(path);
+                        System.Drawing.Imaging.ImageFormat format = img.RawFormat;
+                        System.Drawing.Imaging.ImageCodecInfo codec = System.Drawing.Imaging.ImageCodecInfo.GetImageDecoders().First(c => c.FormatID == format.Guid);
+                        user.AvatarImage = ConvertImageToByteArray(img);
+                        user.AvatarMIMEType = codec.MimeType;
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        user.AvatarImage = null;
+                        user.AvatarMIMEType = null;                        
+                    }                                        
+                }
+            }            
+        }
+
+        public Image CreateImageFromPathString(string path)
+        {            
+            return Image.FromFile(System.AppDomain.CurrentDomain.BaseDirectory + path);            
         }
     }
 }

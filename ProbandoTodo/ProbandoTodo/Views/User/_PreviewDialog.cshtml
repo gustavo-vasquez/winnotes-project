@@ -1,0 +1,28 @@
+﻿<div id="PreviewDialog">
+    <div class="row">
+        <div class="col-md-6">
+            <div id="PreviewTheme">
+                <h2 class="text-center text-uppercase">DEFAULT</h2>
+                <img class="img-center img-responsive" src="" width="500" height="500" alt="preview_theme" />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div>
+                <h2 class="text-center">AVATAR</h2>
+                <img id="PreviewAvatar" class="img-center img-responsive img-rounded" src="" width="200" height="200" alt="preview_avatar" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="text-center col-md-6 col-lg-push-3">
+            <h2>MENSAJE PERSONAL</h2>
+            <p id="PreviewPhrase" class="wizard-phrase"></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        generatePreview();
+    });
+</script>

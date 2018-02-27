@@ -13,9 +13,9 @@ namespace Business_Logic_Layer
     {
         static NoteDAL noteDAL = new NoteDAL();
 
-        public IEnumerable<SelectListItem> GetFoldersToSelectBLL(int userID)
+        public IEnumerable<SelectListItem> GetFoldersToSelectBLL(int userID, string toFolder = "")
         {
-            return noteDAL.GetFoldersToSelectDAL(userID);
+            return noteDAL.GetFoldersToSelectDAL(userID, toFolder);
         }
 
         public string[] GetUserBoxInfoBLL(int userID)

@@ -1,5 +1,31 @@
-﻿body {    
+﻿/*@import url('https://fonts.googleapis.com/css?family=Noto+Serif');*/
+@font-face {
+    font-family: 'Noto Serif';
+    src: url('Fonts/NotoSerif-Regular.ttf') format('truetype'),
+         url(Fonts/NotoSerif-Bold.ttf) format('truetype'),
+         url(Fonts/NotoSerif-Italic.ttf) format('truetype'),
+         url(Fonts/NotoSerif-BoldItalic.ttf) format('truetype');
+}
+
+body {    
     padding-top: 50px;    
+    /*font-family: 'Trebuchet MS';*/
+    font-family: 'Noto Serif', 'Trebuchet MS';
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    font-family: 'Noto Serif';
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -339,9 +365,10 @@ textarea {
 }
 
 #UserInfo img {
-    width: 50%;
+    width: 165px;
+    height: 165px;
     margin-top: 8%;
-    margin-bottom: 8%;
+    margin-bottom: 8%;    
 }
 
 .hover-info {    
@@ -497,9 +524,9 @@ span.glyphicon-calendar.calendar-trigger {
     margin-top: 10px;    
 }
 
-.task-background {
+/*.task-background {
     background-color: honeydew;    
-}
+}*/
 
 #NotesInFolder > .panel-success:hover {
     background-color: honeydew;
@@ -784,4 +811,12 @@ input[name=pColor] {
     /*max-height: 5.4em;*/
     line-height: 1.8em;
     overflow: hidden;
+}
+
+.wizard-phrase {
+    border-style: double;
+    border-radius: 6px;
+    border-color: lightgray;
+    padding: 10px;
+    font-size: 20px;
 }

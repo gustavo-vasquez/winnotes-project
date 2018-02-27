@@ -13,7 +13,7 @@ namespace Business_Logic_Layer
     {
         static private FolderDAL folderDAL = new FolderDAL();
 
-        public IEnumerable<Folder> GetAllFoldersBLL(int userID)
+        public IEnumerable<sp_getUserFolders_Result> GetAllFoldersBLL(int userID)
         {
             return folderDAL.GetAllFoldersDAL(userID);
         }

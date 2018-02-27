@@ -140,6 +140,30 @@ namespace Business_Logic_Layer
             userDAL.ChangePasswordDAL(userID, currentPassword, newPassword);
         }
 
+        // METODOS PARA EL WIZARD
+        public string AvatarInfoForWizardBLL(int userID)
+        {
+            return userDAL.AvatarInfoForWizardDAL(userID);
+        }
+
+        public string[] PhraseInfoForWizardDAL(int userID)
+        {
+            return userDAL.PhraseInfoForWizardDAL(userID);
+        }
+
+        public string TemporaryAvatarBLL(HttpPostedFile tempAvatar, HttpServerUtilityBase localServer, int userID)
+        {
+            //Image avatarImage = null;
+            //MemoryStream ms = new MemoryStream();
+            //tempAvatar.InputStream.CopyTo(ms);
+            //avatarImage = Image.FromStream(ms);
+            return userDAL.TemporaryAvatarDAL(tempAvatar, localServer, userID);
+        }
+
+        public void UpdateAvatar(string path, int userID)
+        {            
+            userDAL.UpdateAvatar(path, userID);            
+        }
 
         #region VALIDACIÓN DEL AVATAR DEL USUARIO
 

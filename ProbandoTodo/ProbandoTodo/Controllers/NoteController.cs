@@ -2,6 +2,7 @@
 using Domain_Layer;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -16,12 +17,21 @@ namespace ProbandoTodo.Controllers
     {
         static NoteBLL noteBLL = new NoteBLL();        
         
-        public ActionResult Create()
-        {            
-            int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
-            CreateNoteModelView model = new CreateNoteModelView();
-            this.PrepareModelToCreateNote(userID, ref model);
-            return View(model);
+        public ActionResult Create(string toFolder)
+        {
+            try
+            {
+                int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
+                CreateNoteModelView model = new CreateNoteModelView();
+                this.PrepareModelToCreateNote(userID, ref model, Server.UrlDecode(toFolder));
+                return View(model);
+            }
+            catch(Exception ex)
+            {
+                return RedirectToAction("InternalServerError", "Error", new {
+                    error = ex.InnerException is SqlException ? ex.InnerException.Message : ex.Message
+                });                
+            }
         }
 
         [HttpPost]
@@ -62,10 +72,10 @@ namespace ProbandoTodo.Controllers
             }
         }
 
-        private void PrepareModelToCreateNote(int userID, ref CreateNoteModelView model)
+        private void PrepareModelToCreateNote(int userID, ref CreateNoteModelView model, string toFolder = "")
         {
             string[] userInfoBox = noteBLL.GetUserBoxInfoBLL(userID);
-            model.FoldersBox = noteBLL.GetFoldersToSelectBLL(userID);
+            model.FoldersBox = noteBLL.GetFoldersToSelectBLL(userID, toFolder);
             model.HourBox = noteBLL.GenerateHourCombo();
             model.MinuteBox = noteBLL.GenerateMinuteCombo();
             model.TimeTableBox = noteBLL.GenerateTimeTableCombo();
@@ -162,11 +172,31 @@ namespace ProbandoTodo.Controllers
                 if (model.EncryptedCookie == null)
                     model.EncryptedCookie = new UserBLL().GetEncryptedUserID(UserLoginData.GetSessionID(Session["UserLoggedIn"]));
 
-                return PartialView("_FireAlarmDialog", noteBLL.CheckExpiredEventsBLL(model.EncryptedCookie));
+                var expiredList = noteBLL.CheckExpiredEventsBLL(model.EncryptedCookie);                
+
+                if (expiredList.Count() >= 1)
+                {
+                    return Json( new { list = true, render = RenderViewToString("_FireAlarmDialog", expiredList) });
+                }
+
+                return Json(new { list = false });
             }
             catch (Exception ex)
             {
                 return RedirectToAction("InternalServerError", "Error", new { error = ex.Message });
+            }
+        }
+
+        private object RenderViewToString(string viewName, object model)
+        {
+            ViewData.Model = model;
+            using (var sw = new System.IO.StringWriter())
+            {
+                var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext, viewName);
+                var viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw);
+                viewResult.View.Render(viewContext, sw);
+                viewResult.ViewEngine.ReleaseView(ControllerContext, viewResult.View);
+                return sw.GetStringBuilder().ToString();
             }
         }
     }

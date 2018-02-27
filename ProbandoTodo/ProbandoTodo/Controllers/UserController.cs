@@ -227,6 +227,66 @@ namespace ProbandoTodo.Controllers
             {
                 throw;
             }
-        }           
+        }
+
+        public ActionResult ProfileWizard()
+        {
+            int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
+            return View(new ProfileManagementModels(userBLL.GetUserInformation(userID)));            
+        }
+
+        public ActionResult AvatarDialog()
+        {
+            var model = new ProfileManagementModels.AvatarSectionViewModel();
+            model.AvatarSource = userBLL.AvatarInfoForWizardBLL(UserLoginData.GetSessionID(Session["UserLoggedIn"]));
+            return PartialView("_AvatarDialog", model);
+        }
+
+        public ActionResult PersonalMessageDialog()
+        {
+            int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
+            var model = new ProfileManagementModels.PersonalPhraseViewModel();
+            var dataForModel = userBLL.PhraseInfoForWizardDAL(userID);
+            model.PersonalPhrase = dataForModel[0];
+            model.PhraseColor = dataForModel[1];
+            return PartialView("_PersonalMessageDialog", model);
+        }
+
+        public ActionResult PasswordDialog()
+        {
+            return PartialView("_PasswordDialog");
+        }
+
+        public ActionResult PreviewDialog()
+        {
+            return PartialView("_PreviewDialog");
+        }
+
+        public string StoreTempAvatar()
+        {
+            if (System.Web.HttpContext.Current.Request.Files.AllKeys.Any())
+            {
+                int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
+                var pic = System.Web.HttpContext.Current.Request.Files["TempFile"];
+                return userBLL.TemporaryAvatarBLL(pic, Server, userID);
+            }
+
+            return null;
+        }
+
+        [HttpPost]
+        public string WizardComplete(WizardModel model)
+        {
+            if(model != null)
+            {
+                int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
+                userBLL.UpdateAvatar(model.avatarImg, userID);
+                userBLL.ChangePersonalPhrase(userID, model.personalMessage.phrase, model.personalMessage.color);
+
+                return "CAMBIOS GUARDADOS";
+            }
+
+            return "OCURRIÓ UN ERROR";
+        }
     }
 }

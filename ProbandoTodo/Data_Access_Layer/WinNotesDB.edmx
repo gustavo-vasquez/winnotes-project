@@ -96,12 +96,26 @@
           <Parameter Name="phrase" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="phraseColor" Type="varchar(max)" Mode="In" />
         </Function>
+        <Function Name="sp_createNewFolder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userID" Type="int" Mode="In" />
+          <Parameter Name="name" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="details" Type="nvarchar(max)" Mode="In" />
+        </Function>
         <Function Name="sp_createNewUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="userName" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="email" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="password" Type="nvarchar(max)" Mode="In" />
         </Function>
         <Function Name="sp_deprueba" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_editFolder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userID" Type="int" Mode="In" />
+          <Parameter Name="folderID" Type="int" Mode="In" />
+          <Parameter Name="name" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="details" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_getUserFolders" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userID" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_getUserInformation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="userID" Type="int" Mode="In" />
         </Function>
@@ -111,6 +125,10 @@
         </Function>
         <Function Name="sp_refreshLoginDate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id_user" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_removeFolder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userID" Type="int" Mode="In" />
+          <Parameter Name="folderID" Type="int" Mode="In" />
         </Function>
         <Function Name="sp_saveEncryptedUserID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id" Type="int" Mode="In" />
@@ -278,6 +296,24 @@
             <Parameter Name="avatarImage" Mode="In" Type="Binary" />
             <Parameter Name="mimeType" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="sp_getUserFolders" ReturnType="Collection(WinNotesDBModel.sp_getUserFolders_Result)">
+          <Parameter Name="userID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_createNewFolder">
+            <Parameter Name="userID" Mode="In" Type="Int32" />
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="details" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_editFolder">
+            <Parameter Name="userID" Mode="In" Type="Int32" />
+            <Parameter Name="folderID" Mode="In" Type="Int32" />
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="details" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_removeFolder">
+            <Parameter Name="userID" Mode="In" Type="Int32" />
+            <Parameter Name="folderID" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="sp_login_Result">
           <Property Type="Int32" Name="PersonID" Nullable="false" />
@@ -295,6 +331,12 @@
           <Property Type="String" Name="PhraseColor" Nullable="true" />
           <Property Type="Binary" Name="AvatarImage" Nullable="true" />
           <Property Type="String" Name="AvatarMIMEType" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_getUserFolders_Result">
+          <Property Type="Int32" Name="FolderID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <Property Type="String" Name="Details" Nullable="false" />
+          <Property Type="DateTime" Name="LastModified" Nullable="false" Precision="23" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -378,6 +420,19 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_changeAvatar" FunctionName="WinNotesDBModel.Store.sp_changeAvatar" />
+          <FunctionImportMapping FunctionImportName="sp_getUserFolders" FunctionName="WinNotesDBModel.Store.sp_getUserFolders">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WinNotesDBModel.sp_getUserFolders_Result">
+                <ScalarProperty Name="FolderID" ColumnName="FolderID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Details" ColumnName="Details" />
+                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_createNewFolder" FunctionName="WinNotesDBModel.Store.sp_createNewFolder" />
+          <FunctionImportMapping FunctionImportName="sp_editFolder" FunctionName="WinNotesDBModel.Store.sp_editFolder" />
+          <FunctionImportMapping FunctionImportName="sp_removeFolder" FunctionName="WinNotesDBModel.Store.sp_removeFolder" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

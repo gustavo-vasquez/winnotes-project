@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/x-icon" href="~/c_sharp.ico" />
     <title>@ViewBag.Title - WinNotes</title>
-    @Styles.Render("~/Content/css", "~/jquery-ui-1.12.1.custom/jquery-ui.css")    
+    @Styles.Render("~/Content/css", "~/jquery-ui-1.12.1.custom/jquery-ui.css")
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top" style="border-bottom: 1px solid gray; background: linear-gradient(#18bc9c, #05ac8c);">
@@ -68,6 +68,7 @@
                 <ul class="nav navbar-nav">                    
                     <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
                     <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Personalizar perfil", "ProfileWizard", "User")</li>
                 </ul>
                 @*@Html.Partial("_SearchBox")*@
                 @Html.Partial("_LoginPartial")

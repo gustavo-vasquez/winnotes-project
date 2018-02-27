@@ -19,7 +19,7 @@
 </h2>
 <h3 class="text-center">@Model.FolderData.Details</h3>
 
-<a class="btn btn-success" href="@Url.Action("Create", "Note")"><i class="glyphicon glyphicon-list-alt"></i> Crear nota</a>
+<a class="btn btn-success" href="@Url.Action("Create", "Note", new { toFolder = Url.Encode(Model.FolderData.Name) })"><i class="glyphicon glyphicon-list-alt"></i> Crear nota</a>
 <hr />
 
 <div id="NotesInside">

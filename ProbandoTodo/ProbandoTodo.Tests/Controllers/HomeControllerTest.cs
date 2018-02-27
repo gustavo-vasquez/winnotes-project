@@ -62,7 +62,7 @@ namespace ProbandoTodo.Tests.Controllers
         public void TestCreateNoteView()
         {
             NoteController controller = new NoteController();
-            ViewResult view = controller.Create() as ViewResult;
+            ViewResult view = controller.Create("pipipi") as ViewResult;
             Assert.IsNotNull(view);
         }
 

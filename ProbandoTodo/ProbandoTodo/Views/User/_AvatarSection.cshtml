@@ -11,7 +11,7 @@
             <img class="img-circle profile-picture" src="@Model.AvatarSource" width="200" height="200" alt="profile_picture" />
             <label for="UploadAvatar" class="btn btn-primary">Cambiar imágen</label>
             @Html.TextBoxFor(m => m.UploadAvatar, new { type = "file", @class = "hide" })
-            @Html.ValidationMessageFor(m => m.UploadAvatar, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(m => m.UploadAvatar, "", new { @class = "text-danger" })            
         </div>
     }
 </div>

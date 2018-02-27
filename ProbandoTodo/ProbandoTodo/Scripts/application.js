@@ -67,21 +67,25 @@ function goTop() {
     return false;
 }
 
-function checkIfEventsAreExpired() {    
-    var model = { "EncryptedCookie": readCookie("UHICK") };
+function checkIfEventsAreExpired() {
+    if (window.sessionStorage.getItem("uid") !== null) {
+        var model = { "EncryptedCookie": readCookie("UHICK") };
 
-    $.ajax({
-        url: "/Note/CheckExpiredEventsPartial",
-        method: "POST",
-        data: JSON.stringify(model),
-        contentType: "application/json; charset=utf-8",        
-        dataType: "html",
-        success: function (data) {
-            $('body').append(data);            
-            $('.fired-alarm').show('puff');
-            $('.stop').on('click', stopAlarm);
-        }        
-    });
+        $.ajax({
+            url: "/Note/CheckExpiredEventsPartial",
+            method: "POST",
+            data: JSON.stringify(model),
+            contentType: "application/json; charset=utf-8",
+            //dataType: "html",
+            success: function (data) {
+                if (data.list) {
+                    $('body').append(data.render);
+                    $('.fired-alarm').show('puff');
+                    $('.stop').on('click', stopAlarm);
+                }                
+            }
+        });
+    }    
 }
 
 function stopAlarm() {

@@ -7,38 +7,85 @@ using Business_Logic_Layer;
 using static ProbandoTodo.Filters.CustomFilters;
 using static ProbandoTodo.Models.FolderModels;
 using Domain_Layer;
+using System.Data.SqlClient;
 
 namespace ProbandoTodo.Controllers
 {
     [WithAccount]
     public class FolderController : Controller
     {
-        static private FolderBLL folderBLL = new FolderBLL();        
+        static private FolderBLL folderBLL = new FolderBLL();
+
+        #region MANEJADOR DE ERRORES
+
+        /// <summary>
+        /// Recibe la excepción y devuelve su correspondiente acción basado en los parámetros de entrada
+        /// </summary>
+        /// <param name="ex">Excepción que arroja el servidor</param>
+        /// <param name="action">Nombre de la acción a la que se dirige</param>
+        /// <param name="controller">Nombre del controlador al que se dirige. Por defecto, el controlador es Folder</param>
+        /// <param name="forceError500">(Opcional) Indica si va a forzar un Internal Server Error</param>
+        /// <returns></returns>
+        private RedirectToRouteResult ManageException(Exception ex, string action, string controller = "Folder", bool forceError500 = false)
+        {
+            if (forceError500)
+            {
+                if (ex.InnerException is SqlException)
+                {
+                    return RedirectToAction("InternalServerError", "Error", new { error = ex.InnerException.Message });
+                }
+
+                return RedirectToAction("InternalServerError", "Error", new { error = ex.Message });
+            }
+
+            if (ex.InnerException is SqlException)
+                TempData["error"] = ex.InnerException.Message;
+            else
+                TempData["error"] = ex.Message;
+
+            return RedirectToAction(action, controller);
+        }
+
+        #endregion        
 
         // GET: Folder        
         public ActionResult List()
         {
-            return View(FillFoldersThumbnail());
+            try
+            {                
+                return View(FillFoldersThumbnail());
+            }
+            catch(Exception ex)
+            {
+                return this.ManageException(ex, null, null, true);
+            }
         }
 
         public IEnumerable<FolderListModelView> FillFoldersThumbnail()
         {
-            List<FolderListModelView> model = new List<FolderListModelView>();
-            var folders = folderBLL.GetAllFoldersBLL(UserLoginData.GetSessionID(Session["UserLoggedIn"]));
-
-            foreach (var folder in folders)
+            try
             {
-                model.Add(
-                    new FolderListModelView()
-                    {
-                        FolderID = folder.FolderID,
-                        Name = folder.Name,
-                        Details = folder.Details,
-                        LastModified = folder.LastModified
-                    });
-            }
+                List<FolderListModelView> model = new List<FolderListModelView>();
+                var folders = folderBLL.GetAllFoldersBLL(UserLoginData.GetSessionID(Session["UserLoggedIn"]));
 
-            return model;
+                foreach (var folder in folders)
+                {
+                    model.Add(
+                        new FolderListModelView()
+                        {
+                            FolderID = folder.FolderID,
+                            Name = folder.Name,
+                            Details = folder.Details,
+                            LastModified = folder.LastModified
+                        });
+                }
+
+                return model;
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         [HttpGet]
@@ -146,7 +193,7 @@ namespace ProbandoTodo.Controllers
             }
             catch (Exception ex)
             {
-                return RedirectToAction("InternalServerError", "Error", new { error = ex.Message });
+                return this.ManageException(ex, null, null, true);                
             }
         }
         

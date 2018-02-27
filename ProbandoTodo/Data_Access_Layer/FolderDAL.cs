@@ -10,13 +10,14 @@ namespace Data_Access_Layer
 {
     public class FolderDAL
     {        
-        public IEnumerable<Folder> GetAllFoldersDAL(int userID)
+        public IEnumerable<sp_getUserFolders_Result> GetAllFoldersDAL(int userID)
         {
             try
             {
                 using(var context = new WinNotesDBEntities())
                 {
-                    IEnumerable<Folder> folders = context.Folder.Where(f => f.Person_ID == userID).ToList();
+                    //IEnumerable<Folder> folders = context.Folder.Where(f => f.Person_ID == userID).ToList();
+                    List<sp_getUserFolders_Result> folders = context.sp_getUserFolders(userID).ToList();
                     return folders;
                 }
             }
@@ -32,20 +33,21 @@ namespace Data_Access_Layer
             {
                 using (var context = new WinNotesDBEntities())
                 {
-                    if(!context.Folder.Any(f => f.Name == name))
-                    {
-                        Folder folder = new Folder();
-                        folder.Name = name;
-                        folder.Details = details;
-                        folder.LastModified = DateTime.Now;
-                        folder.Person_ID = id;
-                        context.Folder.Add(folder);
-                        context.SaveChanges();
-                    }
-                    else
-                    {
-                        throw new ArgumentException("Ya existe una carpeta con ese nombre");
-                    }
+                    //if(!context.Folder.Any(f => f.Name == name))
+                    //{
+                    //    Folder folder = new Folder();
+                    //    folder.Name = name;
+                    //    folder.Details = details;
+                    //    folder.LastModified = DateTime.Now;
+                    //    folder.Person_ID = id;
+                    //    context.Folder.Add(folder);
+                    //    context.SaveChanges();
+                    //}
+                    //else
+                    //{
+                    //    throw new ArgumentException("Ya existe una carpeta con ese nombre");
+                    //}
+                    context.sp_createNewFolder(id, name, details);
                 }
             }
             catch
@@ -60,11 +62,12 @@ namespace Data_Access_Layer
             {
                 using (var context = new WinNotesDBEntities())
                 {
-                    var folder = context.Folder.Where(f => f.Person_ID == userID && f.FolderID == folderID).First();
-                    folder.Name = name;
-                    folder.Details = details;
-                    folder.LastModified = DateTime.Now;
-                    context.SaveChanges();
+                    //var folder = context.Folder.Where(f => f.Person_ID == userID && f.FolderID == folderID).First();
+                    //folder.Name = name;
+                    //folder.Details = details;
+                    //folder.LastModified = DateTime.Now;
+                    //context.SaveChanges();
+                    context.sp_editFolder(userID, folderID, name, details);
                 }
             }
             catch
@@ -79,15 +82,12 @@ namespace Data_Access_Layer
             {
                 using(var context = new WinNotesDBEntities())
                 {
-                    var notes = context.Note.Where(n => n.Person_ID == userID && n.Folder_ID == folderID);
-                    context.Note.RemoveRange(notes);
-                    //foreach (Note note in notes)
-                    //{
-                    //    context.Note.Remove(note);
-                    //}
-                    var folder = context.Folder.Where(f => f.Person_ID == userID && f.FolderID == folderID).First();
-                    context.Folder.Remove(folder);
-                    context.SaveChanges();
+                    //var notes = context.Note.Where(n => n.Person_ID == userID && n.Folder_ID == folderID);
+                    //context.Note.RemoveRange(notes);
+                    //var folder = context.Folder.Where(f => f.Person_ID == userID && f.FolderID == folderID).First();
+                    //context.Folder.Remove(folder);
+                    //context.SaveChanges();                    
+                    context.sp_removeFolder(userID, folderID);
                 }
             }
             catch

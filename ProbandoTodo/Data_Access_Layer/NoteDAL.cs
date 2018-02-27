@@ -15,7 +15,7 @@ namespace Data_Access_Layer
         /// </summary>
         /// <param name="userID">ID del usuario</param>
         /// <returns></returns>
-        public IEnumerable<SelectListItem> GetFoldersToSelectDAL(int userID)
+        public IEnumerable<SelectListItem> GetFoldersToSelectDAL(int userID, string toFolder)
         {
             try
             {
@@ -23,23 +23,23 @@ namespace Data_Access_Layer
                 {                    
                     List<Folder> foldersToList = context.Folder.Where(f => f.Person_ID.Equals(userID)).ToList();
                     List<SelectListItem> listOfFolders = new List<SelectListItem>();
+                                        
                     listOfFolders.Add(new SelectListItem() { Value = String.Empty, Text = "Sin carpeta...", Selected = true });
 
                     foreach (var f in foldersToList)
                     {
-                        listOfFolders.Add(new SelectListItem() { Value = f.Name, Text = f.Name });
-                    }                    
+                        if(toFolder != f.Name)
+                            listOfFolders.Add(new SelectListItem() { Value = f.Name, Text = f.Name });
+                        else
+                            listOfFolders.Add(new SelectListItem() { Value = f.Name, Text = f.Name, Selected = true });
+                    }
 
                     return listOfFolders;
                 }                
             }
             catch
             {
-                List<SelectListItem> listOfFolders = new List<SelectListItem>();
-                listOfFolders.Add(new SelectListItem() { Value = String.Empty, Text = "Sin carpeta...", Selected = true });
-                SelectList listFolderComplete = new SelectList(listOfFolders);
-
-                return listFolderComplete;
+                throw;               
             }
         }
 

@@ -1,0 +1,31 @@
+﻿@model ProbandoTodo.Models.ProfileManagementModels.PersonalPhraseViewModel
+
+<div id="PersonalMessageDialog">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Mi mensaje personal:</h3>
+                    @Html.TextAreaFor(m => m.PersonalPhrase, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row action-area">
+                <div class="col-md-12">
+                    <label>280 carac.</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div id="AvailableColors" data-color="@Model.PhraseColor">
+                <h4>Colores disponibles:</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-md-push-3" style="padding-top: 50px;">
+            <div class="text-center col-md-6 col-lg-push-3">                
+                <p id="TestPhrase" class="wizard-phrase">@Model.PersonalPhrase</p>
+            </div>
+        </div>
+    </div>
+</div>

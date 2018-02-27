@@ -27,7 +27,7 @@ namespace ProbandoTodo.Controllers
             if (Request.IsAjaxRequest())
                 return PartialView("_InternalServerError", error);
             else
-                return View();
+                return View(error);
         }
 
         public ActionResult NotAuthorized()

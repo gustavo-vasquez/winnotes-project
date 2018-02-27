@@ -156,5 +156,65 @@ namespace Domain_Layer
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_changeAvatar", userIDParameter, avatarImageParameter, mimeTypeParameter);
         }
+    
+        public virtual ObjectResult<sp_getUserFolders_Result> sp_getUserFolders(Nullable<int> userID)
+        {
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("userID", userID) :
+                new ObjectParameter("userID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_getUserFolders_Result>("sp_getUserFolders", userIDParameter);
+        }
+    
+        public virtual int sp_createNewFolder(Nullable<int> userID, string name, string details)
+        {
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("userID", userID) :
+                new ObjectParameter("userID", typeof(int));
+    
+            var nameParameter = name != null ?
+                new ObjectParameter("name", name) :
+                new ObjectParameter("name", typeof(string));
+    
+            var detailsParameter = details != null ?
+                new ObjectParameter("details", details) :
+                new ObjectParameter("details", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_createNewFolder", userIDParameter, nameParameter, detailsParameter);
+        }
+    
+        public virtual int sp_editFolder(Nullable<int> userID, Nullable<int> folderID, string name, string details)
+        {
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("userID", userID) :
+                new ObjectParameter("userID", typeof(int));
+    
+            var folderIDParameter = folderID.HasValue ?
+                new ObjectParameter("folderID", folderID) :
+                new ObjectParameter("folderID", typeof(int));
+    
+            var nameParameter = name != null ?
+                new ObjectParameter("name", name) :
+                new ObjectParameter("name", typeof(string));
+    
+            var detailsParameter = details != null ?
+                new ObjectParameter("details", details) :
+                new ObjectParameter("details", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_editFolder", userIDParameter, folderIDParameter, nameParameter, detailsParameter);
+        }
+    
+        public virtual int sp_removeFolder(Nullable<int> userID, Nullable<int> folderID)
+        {
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("userID", userID) :
+                new ObjectParameter("userID", typeof(int));
+    
+            var folderIDParameter = folderID.HasValue ?
+                new ObjectParameter("folderID", folderID) :
+                new ObjectParameter("folderID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_removeFolder", userIDParameter, folderIDParameter);
+        }
     }
 }

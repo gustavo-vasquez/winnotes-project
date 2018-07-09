@@ -182,12 +182,12 @@ namespace Business_Logic_Layer
                     throw new ArgumentNullException("DEBE ELEGIR UNA IMAGEN");
 
                 const int _maxSize = 2 * 1024 * 1024;
-                const int _maxWidth = 1280;
-                const int _maxHeight = 720;
+                const int _maxWidth = 1000;
+                const int _maxHeight = 1000;
                 List<string> _fileTypes = new List<string>() { "jpg", "jpeg", "gif", "png" };
 
-                if (newAvatar.ContentLength > _maxSize)                
-                    throw new FormatException("EL AVATAR DEBE TENER UN TAMAÑO MAXIMO DE 2MB");                
+                if (newAvatar.ContentLength > _maxSize)
+                    throw new FormatException("EL AVATAR NO DEBE SUPERAR LOS 2MB");                
 
                 string avatarExtension = System.IO.Path.GetExtension(newAvatar.FileName).Substring(1);
 
@@ -198,8 +198,8 @@ namespace Business_Logic_Layer
                 newAvatar.InputStream.CopyTo(ms);
                 avatarImage = Image.FromStream(ms);
 
-                if (avatarImage.Width > _maxWidth || avatarImage.Height > _maxHeight)                
-                    throw new FormatException("EL AVATAR ADMITE HASTA UNA RESOLUCIÓN DE 1280x720");                
+                if (avatarImage.Width > _maxWidth || avatarImage.Height > _maxHeight)         
+                    throw new FormatException("EL AVATAR ADMITE HASTA UNA RESOLUCIÓN DE 1000x1000");
             }
             catch
             {

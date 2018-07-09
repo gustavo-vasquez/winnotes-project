@@ -5,15 +5,17 @@
     @Html.AntiForgeryToken()
     <label class="label label-default">MENSAJE PERSONAL</label>    
     <div class="panel panel-primary profile-section phrase-box-style">
-        @Html.TextAreaFor(m => m.PersonalPhrase, new { @class = "form-control personal-phrase phrase-color-effect", rows = "1", placeholder = "Escriba un mensaje personal..." })
-        <div class="well-box">
+        @Html.TextAreaFor(m => m.PersonalPhrase, new { @class = "form-control personal-phrase phrase-color-effect", placeholder = "Escriba un mensaje personal..." })
+        <div class="well-box">            
             @Html.HiddenFor(m => m.PhraseColor)
-            <label for="pBlack" class="color-box" title="Negro"></label><input type="radio" value="black" id="pBlack" name="pColor" />
-            <label for="pRed" class="color-box" title="Rojo"></label><input type="radio" value="red" id="pRed" name="pColor" />
-            <label for="pBlue" class="color-box" title="Celeste"></label><input type="radio" value="blue" id="pBlue" name="pColor" />
-            <label for="pGreen" class="color-box" title="Verde"></label><input type="radio" value="green" id="pGreen" name="pColor" />
+            <button type="submit" class="btn btn-success">Publicar</button>
             <label class="available-chars">140</label>
-            <button type="submit" class="btn btn-sm btn-default">Publicar</button>
+
+            @foreach (var c in Model.AvailableColors)
+            {
+                <label for="@c.Color" class="color-box" title="@c.Name"></label>
+                <input type="radio" value="@c.Color" id="@c.Color" name="pColor" />
+            }
         </div>
     </div>
 }

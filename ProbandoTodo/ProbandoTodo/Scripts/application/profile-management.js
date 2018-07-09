@@ -4,12 +4,14 @@ function viewActions() {
     //$("form").removeData("validator");
     //$("form").removeData("unobtrusiveValidation");
     //$.validator.unobtrusive.parse("form");
+    $('#PersonalPhrase').css("height", document.getElementById("PersonalPhrase").scrollHeight);
+    var initText = $('#PersonalPhrase').val();
 
     // Se abre la barra con los botones al hacer click en el textbox
     $('#PersonalPhrase').on('focus', function () {
         $('.available-chars').text(140 - $(this).val().length);
         $(this).removeClass('phrase-color-effect');
-        $(this).next().slideDown(1000);
+        $(this).next().slideDown(500);
     });
 
     // Avisa cuando se excede de los 140 caracteres y tocando ESC se esconden los botones
@@ -26,24 +28,18 @@ function viewActions() {
 
         if (e.keyCode === 27) { // escape key maps to keycode '27'
             // <DO YOUR WORK HERE>            
-            $(this).next().slideUp(1000);
+            $(this).next().slideUp(500);
             $(this).addClass('phrase-color-effect');
             $(this).blur();
+            $('#PersonalPhrase').val(initText);
         }
     });
 
-    // Segun el valor del campo oculto que guarda el color dispara el evento click al circulo de color que corresponde
-    switch ($('#PhraseColor').val()) {
-        case "black": $('#pBlack').prev().trigger('click');
-            break;
-        case "red": $('#pRed').prev().trigger('click');
-            break;
-        case "blue": $('#pBlue').prev().trigger('click');
-            break;
-        case "green": $('#pGreen').prev().trigger('click');
-            break;
-        default: $('#pBlack').prev().trigger('click');
-    }
+    $.each($('input[name=pColor]'), function (index, currentRadio) {
+        $(this).prev().css('background-color', currentRadio.value);
+    });
+
+    $('#' + $('#PhraseColor').val()).prev().trigger('click');    
 
     paintColorCircle();
 
@@ -57,7 +53,7 @@ function viewActions() {
 
 // Le pone el tilde al circulo de color que corresponde
 function paintColorCircle() {
-    $.each($('input[name=pColor]'), function (index, value) {
+    $.each($('input[name=pColor]'), function () {
         switch ($(this).is(':checked')) {
             case true: $(this).prev().html("&#10004;");
                 $('#PersonalPhrase').css('color', $(this).prev().css("background-color"));

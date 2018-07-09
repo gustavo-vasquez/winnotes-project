@@ -86,6 +86,11 @@
           <Parameter Name="avatarImage" Type="varbinary(max)" Mode="In" />
           <Parameter Name="mimeType" Type="varchar(max)" Mode="In" />
         </Function>
+        <Function Name="sp_changeNoteLocation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userID" Type="int" Mode="In" />
+          <Parameter Name="noteID" Type="int" Mode="In" />
+          <Parameter Name="selectedFolder" Type="nvarchar(max)" Mode="In" />
+        </Function>
         <Function Name="sp_changePassword" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="userID" Type="int" Mode="In" />
           <Parameter Name="currentPassword" Type="nvarchar(max)" Mode="In" />
@@ -106,7 +111,6 @@
           <Parameter Name="email" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="password" Type="nvarchar(max)" Mode="In" />
         </Function>
-        <Function Name="sp_deprueba" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_editFolder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="userID" Type="int" Mode="In" />
           <Parameter Name="folderID" Type="int" Mode="In" />
@@ -314,6 +318,11 @@
             <Parameter Name="userID" Mode="In" Type="Int32" />
             <Parameter Name="folderID" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="sp_changeNoteLocation">
+            <Parameter Name="userID" Mode="In" Type="Int32" />
+            <Parameter Name="noteID" Mode="In" Type="Int32" />
+            <Parameter Name="selectedFolder" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="sp_login_Result">
           <Property Type="Int32" Name="PersonID" Nullable="false" />
@@ -404,7 +413,6 @@
           <FunctionImportMapping FunctionImportName="sp_createNewUser" FunctionName="WinNotesDBModel.Store.sp_createNewUser" />
           <FunctionImportMapping FunctionImportName="sp_saveEncryptedUserID" FunctionName="WinNotesDBModel.Store.sp_saveEncryptedUserID" />
           <FunctionImportMapping FunctionImportName="sp_changePersonalPhrase" FunctionName="WinNotesDBModel.Store.sp_changePersonalPhrase" />
-          <FunctionImportMapping FunctionImportName="sp_deprueba" FunctionName="WinNotesDBModel.Store.sp_deprueba" />
           <FunctionImportMapping FunctionImportName="sp_changePassword" FunctionName="WinNotesDBModel.Store.sp_changePassword" />
           <FunctionImportMapping FunctionImportName="sp_getUserInformation" FunctionName="WinNotesDBModel.Store.sp_getUserInformation">
             <ResultMapping>
@@ -433,6 +441,7 @@
           <FunctionImportMapping FunctionImportName="sp_createNewFolder" FunctionName="WinNotesDBModel.Store.sp_createNewFolder" />
           <FunctionImportMapping FunctionImportName="sp_editFolder" FunctionName="WinNotesDBModel.Store.sp_editFolder" />
           <FunctionImportMapping FunctionImportName="sp_removeFolder" FunctionName="WinNotesDBModel.Store.sp_removeFolder" />
+          <FunctionImportMapping FunctionImportName="sp_changeNoteLocation" FunctionName="WinNotesDBModel.Store.sp_changeNoteLocation" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

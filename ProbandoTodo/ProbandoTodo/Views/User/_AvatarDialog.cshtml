@@ -3,20 +3,22 @@
 <div id="AvatarDialog" class="row">
     <div class="col-md-6 text-center">
         @*<img class="img-center img-responsive img-circle" src="https://images.playfulbet.com/system/uploads/user/avatar/3537465/homero_pikachu.jpg" width="200" height="200" alt="current_avatar" />*@
-        <img id="CurrAvatar" class="img-center img-responsive img-rounded" src="@Model.AvatarSource" width="200" height="200" alt="current_avatar" />
+        <img id="CurrAvatar" class="img-center img-circle" src="@Model.AvatarSource" width="350" height="350" alt="current_avatar" />
         @Html.TextBoxFor(m => m.UploadAvatar, new { type = "file", @class = "hide" })
-        <label class="btn btn-lg btn-primary" for="UploadAvatar">Cambiar imágen</label>
+        <label class="btn btn-lg btn-danger" for="UploadAvatar">Cambiar imágen</label>
     </div>
     <div class="col-md-6">
         <p>· Debe tener extensión JPG, JPEG, GIF o PNG</p>
         <p>· No debe tener un tamaño superior a 2mb</p>
         <div class="col-md-6 text-center">
-            <img class="img-center img-responsive img-rounded default-avatar" src="~/Content/Images/monkey.png" width="100" height="100" alt="current_avatar" />
-            <label id="ResetAvatar" class="btn btn-sm btn-primary">Por defecto</label>
-        </div>        
+            <h3>Actual</h3>
+            <img class="img-center img-circle" src="@Model.AvatarSource" width="230" height="230" alt="current_avatar" />
+            <label class="btn btn-primary">Cambiar</label>
+        </div>
         <div class="col-md-6 text-center">
-            <img class="img-center img-responsive img-rounded" src="https://images.playfulbet.com/system/uploads/user/avatar/3537465/homero_pikachu.jpg" width="100" height="100" alt="current_avatar" />
-            <label class="btn btn-sm btn-primary" for="pepe">Deshacer</label>
+            <h3>Predeterminada</h3>
+            <img class="img-center img-circle default-avatar" src="~/Content/Images/user_profile.jpg" width="230" height="230" alt="default_avatar" />
+            <label id="ResetAvatar" class="btn btn-primary">Por defecto</label>
         </div>  
     </div>
 </div>

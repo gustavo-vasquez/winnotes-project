@@ -88,8 +88,23 @@ function loadPanel(selectedDialog) {
             complete: function() {
                 if (selectedDialog == "PersonalMessageDialog") {
                     availableColors($('#AvailableColors').data('color'));
-                    $('#PersonalPhrase').on('change', function () {
+                    $('#PersonalPhrase').css("height", document.getElementById("PersonalPhrase").scrollHeight);
+                    $('.available-chars').text(140 - $('#PersonalPhrase').val().length);
+                    var initText = $('#PersonalPhrase').val();
+
+                    $('#PersonalPhrase').on('keyup', function () {
                         $('#TestPhrase').text($(this).val());
+                    });
+                    $('#UndoPhrase').on('click', function () {
+                        $('#PersonalPhrase').val(initText);
+                        $('.available-chars').text(140 - $('#PersonalPhrase').val().length);
+                        if ($('.available-chars').text() < 0) {
+                            $('.available-chars').addClass('text-danger');
+                        }
+                        else {
+                            $('.available-chars').removeClass('text-danger');
+                        }
+                        $('#TestPhrase').text($('#PersonalPhrase').val());
                     });
                 }
 
@@ -130,17 +145,22 @@ function loadPanel(selectedDialog) {
 }
 
 function availableColors(color) {
-    var availableColors = ["black", "blue", "blueviolet", "brown", "coral", "gold", "crimson", "darkgoldenrod", "darkturquoise", "deeppink", "deepskyblue", "fuchsia", "hotpink", "lightskyblue", "limegreen", "seagreen"];
+    //var availableColors = ["black", "blue", "blueviolet", "brown", "coral", "gold", "crimson", "darkgoldenrod", "darkturquoise", "deeppink", "deepskyblue", "fuchsia", "hotpink", "lightskyblue", "limegreen", "seagreen"];
 
-    $.each(availableColors, function (index, value) {
-        var newCircleColor = $('<label></label>');
-        $('#AvailableColors').append(newCircleColor.addClass('color-box1').css('background-color', value).attr('title', value));
+    //$.each(availableColors, function (index, value) {
+    //    var newCircleColor = $('<label></label>');
+    //    $('#AvailableColors').append(newCircleColor.addClass('color-box1').css('background-color', value).attr('title', value));
 
-        if (color != null && color === value)
-            $('#AvailableColors :last').append('<span class="glyphicon glyphicon-ok"></span>');
+    //    if (color != null && color === value)
+    //        $('#AvailableColors :last').append('<span class="glyphicon glyphicon-ok"></span>');
+    //});
+
+    $.each($('label[class=color-box-wizard]'), function () {
+        $(this).css('background-color', $(this).attr('id'));
     });
 
     $('#TestPhrase').css('color', color);
+
     preview.personalMessage.phrase = $('#PersonalPhrase').val();
     preview.personalMessage.color = color;
 
@@ -148,14 +168,23 @@ function availableColors(color) {
         preview.personalMessage.phrase = $(this).val();
     });
 
-    $('.color-box1').on('click', function () {
-        $('.color-box1').children('span').remove();
-        //while ($(this).firstChild) {
-        //    $(this).removeChild($(this).firstChild);
-        //}
-        $(this).append('<span class="glyphicon glyphicon-ok"></span>');
+    $('#PersonalPhrase').on('keyup', function (e) {
+        $('.available-chars').text(140 - $(this).val().length);
+        $(this).css("height", document.getElementById("PersonalPhrase").scrollHeight);
+
+        if ($('.available-chars').text() < 0) {
+            $('.available-chars').addClass('text-danger');
+        }
+        else {
+            $('.available-chars').removeClass('text-danger');
+        }        
+    });
+
+    $('.color-box-wizard').on('click', function () {
+        $('.color-box-wizard').text('');
+        $(this).append('&#10004;');
         $('#TestPhrase').css('color', $(this).css('background-color'));
-        preview.personalMessage.color = $(this).attr('title');
+        preview.personalMessage.color = $(this).attr('id');
     });
 }
 

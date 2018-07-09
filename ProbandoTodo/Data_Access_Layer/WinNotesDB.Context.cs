@@ -216,5 +216,22 @@ namespace Domain_Layer
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_removeFolder", userIDParameter, folderIDParameter);
         }
+    
+        public virtual int sp_changeNoteLocation(Nullable<int> userID, Nullable<int> noteID, string selectedFolder)
+        {
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("userID", userID) :
+                new ObjectParameter("userID", typeof(int));
+    
+            var noteIDParameter = noteID.HasValue ?
+                new ObjectParameter("noteID", noteID) :
+                new ObjectParameter("noteID", typeof(int));
+    
+            var selectedFolderParameter = selectedFolder != null ?
+                new ObjectParameter("selectedFolder", selectedFolder) :
+                new ObjectParameter("selectedFolder", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_changeNoteLocation", userIDParameter, noteIDParameter, selectedFolderParameter);
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using static ProbandoTodo.Models.CustomDataAnnotations;
 using System.Linq;
 using System.Web;
+using Domain_Layer;
 
 namespace ProbandoTodo.Models
 {
@@ -73,8 +74,8 @@ namespace ProbandoTodo.Models
             [FileSize(2*1024*1024)]
             [FileTypes("jpg,jpeg,png")]
             public HttpPostedFileBase UploadAvatar { get; set; }
-        }
-        
+        }        
+
         public class PersonalPhraseViewModel
         {
             [Required]
@@ -82,6 +83,9 @@ namespace ProbandoTodo.Models
             public string PersonalPhrase { get; set; }
 
             public string PhraseColor { get; set; }
+
+            //public string[] ColorList = new string[] { "black", "blue", "blueviolet", "brown", "coral", "gold", "crimson", "darkgoldenrod", "darkturquoise", "deeppink", "deepskyblue", "fuchsia", "hotpink", "lightskyblue", "limegreen", "seagreen" };
+            public IEnumerable<ColorTemplate.ColorData> AvailableColors = new ColorTemplate.AvailableColors().ColorList;
         }
 
         public class InformationSectionViewModel

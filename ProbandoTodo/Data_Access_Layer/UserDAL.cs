@@ -330,7 +330,7 @@ namespace Data_Access_Layer
         /// <returns></returns>
         public string GetAvatarImage(byte[] AvatarImage, string MIMEtype)
         {
-            string defaultImage = "/Content/Images/monkey.png";
+            string defaultImage = "/Content/Images/user_profile.jpg";
 
             if (AvatarImage != null)
             {
@@ -492,7 +492,7 @@ namespace Data_Access_Layer
                 {
                     var user = context.Person.Where(p => p.PersonID == userID).FirstOrDefault();
 
-                    if (path != "/Content/Images/monkey.png")
+                    if (path != "/Content/Images/user_profile.jpg")
                     {
                         Image img = CreateImageFromPathString(path);
                         System.Drawing.Imaging.ImageFormat format = img.RawFormat;

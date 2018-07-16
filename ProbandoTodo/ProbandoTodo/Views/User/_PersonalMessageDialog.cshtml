@@ -7,6 +7,7 @@
                 <div class="col-md-12">
                     <h3>Mi mensaje personal:</h3>
                     @Html.TextAreaFor(m => m.PersonalPhrase, new { @class = "form-control", placeholder = "Escriba un mensaje personal..." })
+                    @Html.ValidationMessageFor(m => m.PersonalPhrase)
                 </div>
             </div>
             <div class="row action-area">

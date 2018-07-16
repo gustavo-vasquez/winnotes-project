@@ -95,16 +95,34 @@ function loadPanel(selectedDialog) {
                     $('#PersonalPhrase').on('keyup', function () {
                         $('#TestPhrase').text($(this).val());
                     });
+
                     $('#UndoPhrase').on('click', function () {
                         $('#PersonalPhrase').val(initText);
                         $('.available-chars').text(140 - $('#PersonalPhrase').val().length);
+
                         if ($('.available-chars').text() < 0) {
                             $('.available-chars').addClass('text-danger');
                         }
                         else {
                             $('.available-chars').removeClass('text-danger');
                         }
+                        
+                        $('#NextBtn').removeClass("disabled");
+                        $('#PersonalPhrase').removeClass('input-validation-error');
+
                         $('#TestPhrase').text($('#PersonalPhrase').val());
+                        preview.personalMessage.phrase = $('#PersonalPhrase').val();
+                    });
+
+                    $('#PersonalPhrase').on('focusout', function () {
+                        if ($(this).val().length > 140) {
+                            $('#NextBtn').addClass("disabled");
+                            $(this).addClass('input-validation-error');
+                        }
+                        else {
+                            $('#NextBtn').removeClass("disabled");
+                            $(this).removeClass('input-validation-error');
+                        }
                     });
                 }
 
@@ -114,23 +132,30 @@ function loadPanel(selectedDialog) {
                         var files = $("#UploadAvatar").get(0).files;
                         if (files.length > 0) {
                             data.append("TempFile", files[0]);
+                        
+                            $.ajax({
+                                url: "/User/StoreTempAvatar",
+                                type: "POST",
+                                processData: false,
+                                contentType: false,
+                                data: data,
+                                success: function (response) {
+                                    //code after success                                
+                                    $('#CurrAvatar').attr('src', response);
+                                    preview.avatarImg = response;
+                                },
+                                error: function (response) {
+                                    $('.body-content').prepend('<div class="alert alert-dismissible alert-danger"><button type="button" class="close" data-dismiss="alert">&times;</button>' + response.responseText + '</div>');
+                                    window.scrollTo(0, 0);
+                                }
+                            });
                         }
-                        $.ajax({
-                            url: "/User/StoreTempAvatar",
-                            type: "POST",
-                            processData: false,
-                            contentType: false,
-                            data: data,
-                            success: function (response) {
-                                //code after success
-                                $('#CurrAvatar').attr('src', response);
-                                preview.avatarImg = response;
-                            },
-                            error: function (er) {
-                                alert(er);
-                            }
-                        });
                     };
+
+                    $('#RollbackAvatar').on('click', function () {
+                        $('#CurrAvatar').attr('src', $('.rollback-avatar').attr('src'));
+                        preview.avatarImg = $('#CurrAvatar').attr('src');
+                    });
 
                     $('#ResetAvatar').on('click', function () {
                         $('#CurrAvatar').attr('src', $('.default-avatar').attr('src'));
@@ -145,16 +170,6 @@ function loadPanel(selectedDialog) {
 }
 
 function availableColors(color) {
-    //var availableColors = ["black", "blue", "blueviolet", "brown", "coral", "gold", "crimson", "darkgoldenrod", "darkturquoise", "deeppink", "deepskyblue", "fuchsia", "hotpink", "lightskyblue", "limegreen", "seagreen"];
-
-    //$.each(availableColors, function (index, value) {
-    //    var newCircleColor = $('<label></label>');
-    //    $('#AvailableColors').append(newCircleColor.addClass('color-box1').css('background-color', value).attr('title', value));
-
-    //    if (color != null && color === value)
-    //        $('#AvailableColors :last').append('<span class="glyphicon glyphicon-ok"></span>');
-    //});
-
     $.each($('label[class=color-box-wizard]'), function () {
         $(this).css('background-color', $(this).attr('id'));
     });
@@ -196,31 +211,19 @@ $('#EndBtn').on('click', function () {
             url: "/User/WizardComplete",
             type: "POST",
             data: JSON.stringify(preview),
-            contentType: "application/json; charset=utf-8",
-            //dataType: 'json',
-            success: function (response) {
-                $('.wizardWrapper').children().remove();
-                $('.wizardWrapper').append('<div class="panel-body"><h2 class="text-center">' + response + '</h2></div>');
+            contentType: "application/json; charset=utf-8",            
+            success: function (response) {                
+                $('.body-content').prepend('<div class="alert alert-dismissible alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>' + response + '</div>');
                 window.scrollTo(0, 0);
                 window.localStorage.setItem("user-theme", preview.theme.name);
+                $('.panel-footer').remove();
             },
-            error: function (err) {
-                alert(err);
+            error: function (response) {
+                $('.body-content').prepend('<div class="alert alert-dismissible alert-danger"><button type="button" class="close" data-dismiss="alert">&times;</button>' + response.responseText + '</div>');
+                window.scrollTo(0, 0);
             }
         });
-    }
-    //event.preventDefault();
-    //var wizard_formData = new FormData();
-    //wizard_formData.append("theme", JSON.stringify(preview.theme));
-    //wizard_formData.append("avatarImg", preview.avatarImg);
-    //wizard_formData.append("personalMessage", JSON.stringify(preview.personalMessage));
-    //for(var key in preview) {
-    //    wizard_formData.append(key,preview[key]);
-    //}    
-
-    //var request = new XMLHttpRequest();
-    //request.open("POST", "/User/WizardComplete");
-    //request.send(wizard_formData);    
+    }    
 });
 
 function generatePreview() {

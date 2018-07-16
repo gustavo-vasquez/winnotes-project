@@ -264,29 +264,38 @@ namespace ProbandoTodo.Controllers
 
         public string StoreTempAvatar()
         {
-            if (System.Web.HttpContext.Current.Request.Files.AllKeys.Any())
+            try
             {
-                int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
-                var pic = System.Web.HttpContext.Current.Request.Files["TempFile"];
-                return userBLL.TemporaryAvatarBLL(pic, Server, userID);
+                if (System.Web.HttpContext.Current.Request.Files.AllKeys.Any())
+                {
+                    int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
+                    var pic = System.Web.HttpContext.Current.Request.Files["TempFile"];
+                    return userBLL.TemporaryAvatarBLL(pic, Server, userID);
+                }
             }
+            catch(Exception ex)
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.Conflict;
+                return ex.Message;
+            }            
 
             return null;
         }
 
         [HttpPost]
         public string WizardComplete(WizardModel model)
-        {
-            if(model != null)
-            {
-                int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
-                userBLL.UpdateAvatar(model.avatarImg, userID);
-                userBLL.ChangePersonalPhrase(userID, model.personalMessage.phrase, model.personalMessage.color);
-
-                return "CAMBIOS GUARDADOS";
+        {            
+            if (model.personalMessage.phrase.Length > 140)
+            {                
+                Response.StatusCode = (int)System.Net.HttpStatusCode.Conflict;
+                return "El mensaje personal superó los 140 caracteres.";
             }
+                                    
+            int userID = UserLoginData.GetSessionID(Session["UserLoggedIn"]);
+            userBLL.UpdateAvatar(model.avatarImg, userID);
+            userBLL.ChangePersonalPhrase(userID, model.personalMessage.phrase, model.personalMessage.color);
 
-            return "OCURRIÓ UN ERROR";
+            return "Cambios guardados.";            
         }
     }
 }

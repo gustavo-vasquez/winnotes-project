@@ -152,12 +152,8 @@ namespace Business_Logic_Layer
         }
 
         public string TemporaryAvatarBLL(HttpPostedFile tempAvatar, HttpServerUtilityBase localServer, int userID)
-        {
-            //Image avatarImage = null;
-            //MemoryStream ms = new MemoryStream();
-            //tempAvatar.InputStream.CopyTo(ms);
-            //avatarImage = Image.FromStream(ms);
-            return userDAL.TemporaryAvatarDAL(tempAvatar, localServer, userID);
+        {            
+            return userDAL.TemporaryAvatarDAL(tempAvatar, localServer, userID);            
         }
 
         public void UpdateAvatar(string path, int userID)
@@ -187,18 +183,18 @@ namespace Business_Logic_Layer
                 List<string> _fileTypes = new List<string>() { "jpg", "jpeg", "gif", "png" };
 
                 if (newAvatar.ContentLength > _maxSize)
-                    throw new FormatException("EL AVATAR NO DEBE SUPERAR LOS 2MB");                
+                    throw new FormatException("EL AVATAR NO DEBE SUPERAR LOS 2MB");
 
                 string avatarExtension = System.IO.Path.GetExtension(newAvatar.FileName).Substring(1);
 
-                if (!_fileTypes.Contains(avatarExtension, StringComparer.OrdinalIgnoreCase))                
-                    throw new FormatException("PARA EL AVATAR SOLO SE ADMITEN IMÁGENES JPG, JPEG, GIF Y PNG");
+                if (!_fileTypes.Contains(avatarExtension, StringComparer.OrdinalIgnoreCase))
+                    throw new FormatException("PARA EL AVATAR SOLO SE ADMITEN IMÁGENES JPG, JPEG, GIF Y PNG");                             
                 
                 MemoryStream ms = new MemoryStream();
                 newAvatar.InputStream.CopyTo(ms);
                 avatarImage = Image.FromStream(ms);
 
-                if (avatarImage.Width > _maxWidth || avatarImage.Height > _maxHeight)         
+                if (avatarImage.Width > _maxWidth || avatarImage.Height > _maxHeight)
                     throw new FormatException("EL AVATAR ADMITE HASTA UNA RESOLUCIÓN DE 1000x1000");
             }
             catch
@@ -206,7 +202,7 @@ namespace Business_Logic_Layer
                 throw;
             }
             
-        }
+        }        
 
         #endregion               
     }

@@ -457,31 +457,58 @@ namespace Data_Access_Layer
 
         public string TemporaryAvatarDAL(HttpPostedFile tempAvatar, HttpServerUtilityBase localServer, int userID)
         {
-            if (tempAvatar != null && tempAvatar.ContentLength > 0)
+            try
             {
-                // Get file info
-                //var fileName = Path.GetFileName(tempAvatar.FileName);
-                //var contentLength = registro.File.ContentLength;
-                //var contentType = registro.File.ContentType;
-                var extension = Path.GetExtension(tempAvatar.FileName);
+                if (tempAvatar == null)
+                    throw new ArgumentNullException("Debe elegir una imágen.");
+
+                string imgDir;                
+                using (var context = new WinNotesDBEntities())
+                {
+                    imgDir = "/Content/Temp/" + context.Person.Where(p => p.PersonID == userID).Single().UserName;
+                }
+                                   
+                Directory.CreateDirectory(localServer.MapPath(imgDir));
+                string imgFullPath = localServer.MapPath(imgDir) + "/" + tempAvatar.FileName;                
 
                 // Get file data
                 byte[] data = new byte[] { };
                 using (var binaryReader = new BinaryReader(tempAvatar.InputStream))
                 {
-                    data = binaryReader.ReadBytes(tempAvatar.ContentLength);
-                }
-                
+                    data = binaryReader.ReadBytes(tempAvatar.ContentLength);                    
+                }                
+
                 // Guardar imagen en el servidor
-                using (FileStream image = System.IO.File.Create(localServer.MapPath("~/Content/Temp/temporary_avatar") + extension, data.Length))
+                using (FileStream image = File.Create(imgFullPath, data.Length))
                 {
                     image.Write(data, 0, data.Length);
                 }
 
-                return "/Content/Temp/temporary_avatar" + extension;
-            }
+                // Verifica si la imágen cumple las condiciones de validación
+                const int _maxSize = 2 * 1024 * 1024;
+                const int _maxWidth = 1000;
+                const int _maxHeight = 1000;
+                List<string> _fileTypes = new List<string>() { "jpg", "jpeg", "gif", "png" };
+                string fileExt = Path.GetExtension(tempAvatar.FileName);
 
-            return null;
+                if (new FileInfo(imgFullPath).Length > _maxSize)
+                    throw new FormatException("El avatar no debe superar los 2mb.");
+
+                if (!_fileTypes.Contains(fileExt.Substring(1), StringComparer.OrdinalIgnoreCase))
+                    throw new FormatException("Para el avatar solo se admiten imágenes JPG, JPEG, GIF Y PNG.");
+
+                using (Image img = Image.FromFile(imgFullPath))
+                {
+                    if (img.Width > _maxWidth || img.Height > _maxHeight)
+                        throw new FormatException("El avatar admite hasta una resolución de 1000x1000.");
+                }                
+
+                return imgDir + "/" + tempAvatar.FileName;
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         public void UpdateAvatar(string path, int userID)
@@ -494,25 +521,52 @@ namespace Data_Access_Layer
 
                     if (path != "/Content/Images/user_profile.jpg")
                     {
-                        Image img = CreateImageFromPathString(path);
-                        System.Drawing.Imaging.ImageFormat format = img.RawFormat;
-                        System.Drawing.Imaging.ImageCodecInfo codec = System.Drawing.Imaging.ImageCodecInfo.GetImageDecoders().First(c => c.FormatID == format.Guid);
-                        user.AvatarImage = ConvertImageToByteArray(img);
-                        user.AvatarMIMEType = codec.MimeType;
-                        context.SaveChanges();
+                        using (Image img = CreateImageFromPathString(path))
+                        {
+                            System.Drawing.Imaging.ImageFormat format = img.RawFormat;
+                            System.Drawing.Imaging.ImageCodecInfo codec = System.Drawing.Imaging.ImageCodecInfo.GetImageDecoders().First(c => c.FormatID == format.Guid);
+                            user.AvatarImage = ConvertImageToByteArray(img);
+                            user.AvatarMIMEType = codec.MimeType;
+                            context.SaveChanges();
+                        }                                                                        
                     }
                     else
                     {
                         user.AvatarImage = null;
-                        user.AvatarMIMEType = null;                        
-                    }                                        
+                        user.AvatarMIMEType = null;
+                        context.SaveChanges();
+                    }
                 }
-            }            
+            }
+            
+            int pos = path.LastIndexOf("/");
+            string folderPath = path.Substring(0, pos);
+            //Directory.Delete(Path.GetFullPath(System.AppDomain.CurrentDomain.BaseDirectory + folderPath), true);
+            DeleteDirectory(Path.GetFullPath(System.AppDomain.CurrentDomain.BaseDirectory + folderPath));
         }
 
         public Image CreateImageFromPathString(string path)
-        {            
+        {
             return Image.FromFile(System.AppDomain.CurrentDomain.BaseDirectory + path);            
+        }
+
+        public static void DeleteDirectory(string directoryPath)
+        {
+            string[] files = Directory.GetFiles(directoryPath);
+            string[] dirs = Directory.GetDirectories(directoryPath);
+
+            foreach (string file in files)
+            {
+                File.SetAttributes(file, FileAttributes.Normal);
+                File.Delete(file);
+            }
+
+            foreach (string dir in dirs)
+            {
+                DeleteDirectory(dir);
+            }
+
+            Directory.Delete(directoryPath, false);
         }
     }
 }

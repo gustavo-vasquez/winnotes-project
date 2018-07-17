@@ -537,12 +537,9 @@ namespace Data_Access_Layer
                         context.SaveChanges();
                     }
                 }
+
+                DeleteDirectory(path);
             }
-            
-            int pos = path.LastIndexOf("/");
-            string folderPath = path.Substring(0, pos);
-            //Directory.Delete(Path.GetFullPath(System.AppDomain.CurrentDomain.BaseDirectory + folderPath), true);
-            DeleteDirectory(Path.GetFullPath(System.AppDomain.CurrentDomain.BaseDirectory + folderPath));
         }
 
         public Image CreateImageFromPathString(string path)
@@ -550,8 +547,11 @@ namespace Data_Access_Layer
             return Image.FromFile(System.AppDomain.CurrentDomain.BaseDirectory + path);            
         }
 
-        public static void DeleteDirectory(string directoryPath)
+        public static void DeleteDirectory(string path)
         {
+            int pos = path.LastIndexOf("/");
+            string folderPath = path.Substring(0, pos);
+            string directoryPath = Path.GetFullPath(System.AppDomain.CurrentDomain.BaseDirectory + folderPath);
             string[] files = Directory.GetFiles(directoryPath);
             string[] dirs = Directory.GetDirectories(directoryPath);
 

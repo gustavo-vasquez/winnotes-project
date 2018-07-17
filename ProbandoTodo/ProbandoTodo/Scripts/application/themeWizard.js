@@ -87,43 +87,8 @@ function loadPanel(selectedDialog) {
             },
             complete: function() {
                 if (selectedDialog == "PersonalMessageDialog") {
-                    availableColors($('#AvailableColors').data('color'));
-                    $('#PersonalPhrase').css("height", document.getElementById("PersonalPhrase").scrollHeight);
-                    $('.available-chars').text(140 - $('#PersonalPhrase').val().length);
-                    var initText = $('#PersonalPhrase').val();
-
-                    $('#PersonalPhrase').on('keyup', function () {
-                        $('#TestPhrase').text($(this).val());
-                    });
-
-                    $('#UndoPhrase').on('click', function () {
-                        $('#PersonalPhrase').val(initText);
-                        $('.available-chars').text(140 - $('#PersonalPhrase').val().length);
-
-                        if ($('.available-chars').text() < 0) {
-                            $('.available-chars').addClass('text-danger');
-                        }
-                        else {
-                            $('.available-chars').removeClass('text-danger');
-                        }
-                        
-                        $('#NextBtn').removeClass("disabled");
-                        $('#PersonalPhrase').removeClass('input-validation-error');
-
-                        $('#TestPhrase').text($('#PersonalPhrase').val());
-                        preview.personalMessage.phrase = $('#PersonalPhrase').val();
-                    });
-
-                    $('#PersonalPhrase').on('focusout', function () {
-                        if ($(this).val().length > 140) {
-                            $('#NextBtn').addClass("disabled");
-                            $(this).addClass('input-validation-error');
-                        }
-                        else {
-                            $('#NextBtn').removeClass("disabled");
-                            $(this).removeClass('input-validation-error');
-                        }
-                    });
+                    PhraseFunctionality();
+                    
                 }
 
                 if (selectedDialog == "AvatarDialog") {
@@ -169,40 +134,6 @@ function loadPanel(selectedDialog) {
     prevNextBtnState();    
 }
 
-function availableColors(color) {
-    $.each($('label[class=color-box-wizard]'), function () {
-        $(this).css('background-color', $(this).attr('id'));
-    });
-
-    $('#TestPhrase').css('color', color);
-
-    preview.personalMessage.phrase = $('#PersonalPhrase').val();
-    preview.personalMessage.color = color;
-
-    $('#PersonalPhrase').on('change', function () {
-        preview.personalMessage.phrase = $(this).val();
-    });
-
-    $('#PersonalPhrase').on('keyup', function (e) {
-        $('.available-chars').text(140 - $(this).val().length);
-        $(this).css("height", document.getElementById("PersonalPhrase").scrollHeight);
-
-        if ($('.available-chars').text() < 0) {
-            $('.available-chars').addClass('text-danger');
-        }
-        else {
-            $('.available-chars').removeClass('text-danger');
-        }        
-    });
-
-    $('.color-box-wizard').on('click', function () {
-        $('.color-box-wizard').text('');
-        $(this).append('&#10004;');
-        $('#TestPhrase').css('color', $(this).css('background-color'));
-        preview.personalMessage.color = $(this).attr('id');
-    });
-}
-
 $('#EndBtn').on('click', function () {
     var answer = confirm("¿Está seguro?");
 
@@ -232,4 +163,67 @@ function generatePreview() {
     preview.avatarImg != null ? $('#PreviewAvatar').attr('src', preview.avatarImg) : $('#PreviewAvatar').attr('src', $('#CurrAvatar').attr('src'));
     $('#PreviewPhrase').text(preview.personalMessage.phrase);
     $('#PreviewPhrase').css('color', preview.personalMessage.color);
+}
+
+function PhraseFunctionality() {
+    $PersonalPhrase = $('#PersonalPhrase');
+
+    $.each($('label[class=color-box-wizard]'), function () {
+        $(this).css('background-color', $(this).attr('id'));
+    });
+
+    $('#TestPhrase').css('color', $('#AvailableColors').data('color'));
+    preview.personalMessage.phrase = $PersonalPhrase.val();
+    preview.personalMessage.color = $('#AvailableColors').data('color');
+
+    $PersonalPhrase.on('change', function () {
+        preview.personalMessage.phrase = $(this).val();
+    });
+
+    $PersonalPhrase.on('keyup', function (e) {
+        checkAvailableChars($PersonalPhrase);
+    });
+
+    $('.color-box-wizard').on('click', function () {
+        $('.color-box-wizard').text('');
+        $(this).append('&#10004;');
+        $('#TestPhrase').css('color', $(this).css('background-color'));
+        preview.personalMessage.color = $(this).attr('id');
+    });
+
+    checkAvailableChars($PersonalPhrase);    
+    var initText = $PersonalPhrase.val();
+
+    $PersonalPhrase.on('keyup', function () {
+        $('#TestPhrase').text($(this).val());
+    });
+
+    $('#UndoPhrase').on('click', function () {
+        $PersonalPhrase.val(initText);
+        checkAvailableChars($PersonalPhrase);
+
+        $('#NextBtn').removeClass("disabled");
+        $PersonalPhrase.removeClass('input-validation-error');
+
+        $('#TestPhrase').text($PersonalPhrase.val());
+        preview.personalMessage.phrase = $PersonalPhrase.val();
+    });    
+}
+
+function checkAvailableChars(personalPhrase) {
+    var $available_chars = $('.available-chars');
+    $available_chars.text(140 - $('#PersonalPhrase').val().length);    
+
+    if (personalPhrase.val().length > 140) {
+        $('#NextBtn').addClass("disabled");
+        personalPhrase.addClass('input-validation-error');
+        $available_chars.addClass('text-danger');
+    }
+    else {
+        $('#NextBtn').removeClass("disabled");
+        personalPhrase.removeClass('input-validation-error');
+        $available_chars.removeClass('text-danger');
+    }
+
+    personalPhrase.css("height", document.getElementById("PersonalPhrase").scrollHeight);
 }

@@ -4,18 +4,20 @@ function viewActions() {
     //$("form").removeData("validator");
     //$("form").removeData("unobtrusiveValidation");
     //$.validator.unobtrusive.parse("form");
-    $('#PersonalPhrase').css("height", document.getElementById("PersonalPhrase").scrollHeight);
-    var initText = $('#PersonalPhrase').val();
+    var $PersonalPhrase = $('#PersonalPhrase');
+
+    $PersonalPhrase.css("height", document.getElementById("PersonalPhrase").scrollHeight);
+    var initText = $PersonalPhrase.val();
 
     // Se abre la barra con los botones al hacer click en el textbox
-    $('#PersonalPhrase').on('focus', function () {
+    $PersonalPhrase.on('focus', function () {
         $('.available-chars').text(140 - $(this).val().length);
         $(this).removeClass('phrase-color-effect');
         $(this).next().slideDown(500);
     });
 
     // Avisa cuando se excede de los 140 caracteres y tocando ESC se esconden los botones
-    $('#PersonalPhrase').on('keyup', function (e) {
+    $PersonalPhrase.on('keyup', function (e) {
         $('.available-chars').text(140 - $(this).val().length);
         $(this).css("height", document.getElementById("PersonalPhrase").scrollHeight);
 
@@ -31,7 +33,7 @@ function viewActions() {
             $(this).next().slideUp(500);
             $(this).addClass('phrase-color-effect');
             $(this).blur();
-            $('#PersonalPhrase').val(initText);
+            $PersonalPhrase.val(initText);
         }
     });
 

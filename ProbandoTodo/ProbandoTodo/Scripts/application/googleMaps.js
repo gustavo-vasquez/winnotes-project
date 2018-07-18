@@ -20,7 +20,7 @@ function initialize() {
         content: "Microsoft Visitor Center"
     });
 
-    infowindow.open(map, marker);
+    //infowindow.open(map, marker);
 
     google.maps.event.addListener(marker, 'click', function () {
         infowindow.open(map, marker);

@@ -2,6 +2,12 @@
     //$("#txtSearch").autocomplete({
     //    source: "/Home/Suggestion"
     //});
+    loadThemeSaved();    
+
+    $('#themes').on('click', 'button', function () {
+        setTheme($(this));
+    });
+
     $(window).scroll(scrollFunction);    
 
     $('#registerLink').on('click', function (event) {
@@ -144,4 +150,84 @@ function errorHandler(xhr) {
     setTimeout(function () {
         $('.message-result').fadeOut(function () { $(this).remove() });
     }, 6000);
+}
+
+function setTheme($anchor) {
+    var themeBefore = localStorage.getItem('user-theme');
+    var themeNow = $anchor.data('color');    
+    
+    if (!themeBefore)
+        $('link[href*="bootstrap.flatly.css"]').remove();
+    else
+        $('link[href*="bootstrap.' + themeBefore + '.css"]').remove();
+
+    $('link[href*="site.css"]').remove();
+    localStorage.setItem('user-theme', themeNow);
+
+    var lnk = document.createElement('link');
+    lnk.type = 'text/css';
+
+    switch (themeNow) {
+        case "cerulean":
+            lnk.href = '/Content/bootstrap.cerulean.css';
+            break;
+        case "slate":
+            lnk.href = '/Content/bootstrap.slate.css';
+            break;
+        case "flatly":
+            lnk.href = '/Content/bootstrap.flatly.css';
+            break;
+        case "superhero":
+            lnk.href = '/Content/bootstrap.superhero.css';
+            break;
+        case "united":
+            lnk.href = '/Content/bootstrap.united.css';
+            break;
+        case "yeti":
+            lnk.href = '/Content/bootstrap.yeti.css';
+            break;        
+    }
+
+    lnk.rel = 'stylesheet';
+    document.getElementsByTagName('head')[0].appendChild(lnk);
+
+    var lnk2 = document.createElement('link');
+    lnk2.type = 'text/css';
+    lnk2.href = '/Content/site.css';
+    lnk2.rel = 'stylesheet';
+    document.getElementsByTagName('head')[0].appendChild(lnk2);    
+}
+
+function loadThemeSaved() {    
+    var lnk = document.createElement('link');
+    lnk.type = 'text/css';
+
+    switch (localStorage.getItem('user-theme')) {        
+        case "cerulean":
+            lnk.href = '/Content/bootstrap.cerulean.css';
+            break;
+        case "slate":
+            lnk.href = '/Content/bootstrap.slate.css';
+            break;        
+        case "superhero":
+            lnk.href = '/Content/bootstrap.superhero.css';
+            break;
+        case "united":
+            lnk.href = '/Content/bootstrap.united.css';
+            break;
+        case "yeti":
+            lnk.href = '/Content/bootstrap.yeti.css';
+            break;
+        default: return false;
+    } 
+
+    lnk.rel = 'stylesheet';
+    document.getElementsByTagName('head')[0].appendChild(lnk);
+
+    $('link[href*="site.css"]').remove();
+    var lnk2 = document.createElement('link');
+    lnk2.type = 'text/css';
+    lnk2.href = '/Content/site.css';
+    lnk2.rel = 'stylesheet';
+    document.getElementsByTagName('head')[0].appendChild(lnk2);    
 }

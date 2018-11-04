@@ -1,6 +1,5 @@
 -- OPERACIONES CON STORED PROCEDURES
 
-
 -- USERCONTROLLER
 
 -- Login
@@ -27,14 +26,11 @@ as
 	end
 go
 
-drop procedure sp_login
 
 exec sp_login
-@email = 'barril.de.duendes@outlook.com', @password = 'Barril3duendes'
+@email = 'testing.correo@gmail.com', @password = 'asdASD123'
 
 select * from WinNotes.Person
-select * from WinNotes.Folder
-select * from WinNotes.Note
 
 
 -- Actualizar la fecha de ultimo login
@@ -47,6 +43,7 @@ as
 		where PersonID = @id_user
 
 	end
+go
 
 
 -- Comprobar si ya existe el nombre de usuario
@@ -70,10 +67,11 @@ as
 		return
 
 	end
+go
 
 
 DECLARE @result bit
-EXEC sp_verifyUserName 'Testing22', @result OUTPUT
+EXEC sp_verifyUserName 'Testeando99', @result OUTPUT
 SELECT @result
 
 
@@ -106,13 +104,13 @@ as
 		raiserror('Ya existe un usuario con esos datos',16,1)
 
 	end
+go
 
 
 
-exec sp_createNewUser 'CosmeFulanito99', 'cosme.fulanito99@gmail.com', 'asdASD123'
+exec sp_createNewUser 'Testeando99', 'testing.correo@gmail.com', 'asdASD123'
 
 select * from WinNotes.Person
-
 
 
 -- Guardar el id de usuario encriptado
@@ -126,7 +124,7 @@ as
 		where PersonID = @id
 
 	end
-
+go
 
 
 
@@ -153,18 +151,11 @@ as
 		return
 
 	end
+go
 
 declare @userID integer, @phrase nvarchar(max), @phraseColor varchar(max)
 exec sp_changePersonalPhrase @userID = 1, @phrase = 'Hola soy un mensaje de prueba', @phraseColor = 'green'
 select * from WinNotes.Person
-
-create procedure sp_deprueba
-as
-begin
-	raiserror('deberia mostrarlo en el cartel rojo',16,1)
-end
-
-exec sp_deprueba
 
 
 
@@ -189,6 +180,7 @@ as
 		where PersonID = @userID
 
 	end
+go
 
 
 exec sp_changePassword 2, 'asdASD123', 'qweQWE123'
@@ -215,6 +207,7 @@ as
 		from WinNotes.Person
 		where PersonID = @userID
 	end
+go
 
 
 exec sp_getUserInformation 3
@@ -242,6 +235,7 @@ as
 		update WinNotes.Person set AvatarImage = @avatarImage, AvatarMIMEType = @mimeType
 		where PersonID = @userID
 	end
+go
 
 
 --------------------------------------------------------------------
@@ -304,6 +298,7 @@ as
 		insert into WinNotes.Folder(Name, Details, LastModified, Person_ID)
 		values (@name, @details, GETDATE(), @userID)
 	end
+go
 
 
 exec sp_createNewFolder 3, 'Carpeta de prueba', 'Creada directamente desde sql'
@@ -335,6 +330,7 @@ as
 		where FolderID = @folderID
 		and Person_ID = @userID
 	end
+go
 
 
 exec sp_editFolder 3, 1, 'Probando editar', 'Nuevamente desde sql'
@@ -425,7 +421,3 @@ as
 
 	end
 go
-
-
-
---------------------------------------------------------------------

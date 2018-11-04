@@ -19,7 +19,7 @@ namespace Data_Access_Layer
         {
             try
             {
-                using (var context = new WinNotesDBEntities())
+                using (var context = new WinNotesEntities())
                 {
                     return context.Person.Where(p => p.PersonID == userID).First().PersonIDEncrypted;
                 }
@@ -41,7 +41,7 @@ namespace Data_Access_Layer
         {
             try
             {
-                using (var context = new WinNotesDBEntities())
+                using (var context = new WinNotesEntities())
                 {
                     //var existingUser = context.Person.Any(p => p.Email == Email);
 
@@ -133,7 +133,7 @@ namespace Data_Access_Layer
         /// <returns></returns>
         public bool CheckUserNameDAL(string UserName)
         {
-            using (var context = new WinNotesDBEntities())
+            using (var context = new WinNotesEntities())
             {
                 //bool result = context.Person.Any(p => p.UserName == UserName);
                 var result = new ObjectParameter("result", typeof(bool));                
@@ -153,7 +153,7 @@ namespace Data_Access_Layer
         {
             try
             {
-                using (var context = new WinNotesDBEntities())
+                using (var context = new WinNotesEntities())
                 {
                     sp_login_Result user = context.sp_login(email, password).First();
                     //Person user = context.Person.Where(p => p.Email == email && p.Password == password).FirstOrDefault();
@@ -191,7 +191,7 @@ namespace Data_Access_Layer
         {
             try
             {
-                using (var context = new WinNotesDBEntities())
+                using (var context = new WinNotesEntities())
                 {
                     return context.Person.Where(p => p.Email == email).First().PersonIDEncrypted;                    
                 }
@@ -211,7 +211,7 @@ namespace Data_Access_Layer
         {
             try
             {
-                using (var context = new WinNotesDBEntities())
+                using (var context = new WinNotesEntities())
                 {
                     Person person = context.Person.Where(p => p.Email == email).First();
                     person.PersonIDEncrypted = IdentifierEncrypted;
@@ -231,7 +231,7 @@ namespace Data_Access_Layer
         /// <returns></returns>
         public UserLoginData RememberSessionInfoDAL(string encryptedID)
         {
-            using (var context = new WinNotesDBEntities())
+            using (var context = new WinNotesEntities())
             {
                 UserLoginData userLoggedIn = null;                
                 Person user = context.Person.Where(p => p.PersonIDEncrypted == encryptedID).FirstOrDefault();
@@ -281,7 +281,7 @@ namespace Data_Access_Layer
         {
             try
             {
-                using (var context = new WinNotesDBEntities())
+                using (var context = new WinNotesEntities())
                 {
                     //Person PersonData = context.Person.Where(p => p.PersonID == userID).FirstOrDefault();
                     //var UserInformation = new string[] { GetAvatarImage(PersonData.AvatarImage, PersonData.AvatarMIMEType),
@@ -312,7 +312,7 @@ namespace Data_Access_Layer
 
         //public string[] GetWizardInformation(int userID)
         //{
-        //    using (var context = new WinNotesDBEntities())
+        //    using (var context = new WinNotesEntities())
         //    {
         //        var user = context.Person.Where(p => p.PersonID == userID);
         //        return new string[]
@@ -358,7 +358,7 @@ namespace Data_Access_Layer
         {
             try
             {
-                using (var context = new WinNotesDBEntities())
+                using (var context = new WinNotesEntities())
                 {
                     //Person PersonData = context.Person.Where(p => p.PersonID == userID).First();
                     //PersonData.AvatarImage = ConvertImageToByteArray(avatarImage);
@@ -384,7 +384,7 @@ namespace Data_Access_Layer
         {
             try
             {
-                using (var context = new WinNotesDBEntities())
+                using (var context = new WinNotesEntities())
                 {                    
                     //Person PersonData = context.Person.Where(p => p.PersonID == userID).First();
                     //PersonData.PersonalPhrase = phrase;
@@ -411,7 +411,7 @@ namespace Data_Access_Layer
         {
             try
             {
-                using (var context = new WinNotesDBEntities())
+                using (var context = new WinNotesEntities())
                 {
                     //var user = context.Person.Where(p => p.PersonID == userID).First();
                     //if (user.Password == currentPassword)
@@ -433,7 +433,7 @@ namespace Data_Access_Layer
         // METODOS PARA WIZARD
         public string AvatarInfoForWizardDAL(int userID)
         {
-            using (var context = new WinNotesDBEntities())
+            using (var context = new WinNotesEntities())
             {
                 var userInfo = context.Person.Where(u => u.PersonID == userID).FirstOrDefault();
 
@@ -443,7 +443,7 @@ namespace Data_Access_Layer
 
         public string[] PhraseInfoForWizardDAL(int userID)
         {
-            using (var context = new WinNotesDBEntities())
+            using (var context = new WinNotesEntities())
             {
                 var userInfo = context.Person.Where(u => u.PersonID == userID).FirstOrDefault();
                 return new string[]
@@ -463,7 +463,7 @@ namespace Data_Access_Layer
                     throw new ArgumentNullException("Debe elegir una imágen.");
 
                 string imgDir;                
-                using (var context = new WinNotesDBEntities())
+                using (var context = new WinNotesEntities())
                 {
                     imgDir = "/Content/Temp/" + context.Person.Where(p => p.PersonID == userID).Single().UserName;
                 }
@@ -515,7 +515,7 @@ namespace Data_Access_Layer
         {
             if (!String.IsNullOrEmpty(path))
             {
-                using (var context = new WinNotesDBEntities())
+                using (var context = new WinNotesEntities())
                 {
                     var user = context.Person.Where(p => p.PersonID == userID).FirstOrDefault();
 

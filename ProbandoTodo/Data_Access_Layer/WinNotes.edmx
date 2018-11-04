@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="WinNotesDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="WinNotesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Folder">
           <Key>
             <PropertyRef Name="FolderID" />
@@ -142,7 +142,7 @@
           <Parameter Name="userName" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="result" Type="bit" Mode="InOut" />
         </Function>
-        <EntityContainer Name="WinNotesDBModelStoreContainer">
+        <EntityContainer Name="WinNotesModelStoreContainer">
           <EntitySet Name="Folder" EntityType="Self.Folder" Schema="WinNotes" store:Type="Tables" />
           <EntitySet Name="Note" EntityType="Self.Note" Schema="WinNotes" store:Type="Tables" />
           <EntitySet Name="Person" EntityType="Self.Person" Schema="WinNotes" store:Type="Tables" />
@@ -162,7 +162,7 @@
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="WinNotesDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="WinNotesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Folder">
           <Key>
             <PropertyRef Name="FolderID" />
@@ -245,7 +245,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="WinNotesDBEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="WinNotesEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Folder" EntityType="Self.Folder" />
           <EntitySet Name="Note" EntityType="Self.Note" />
           <EntitySet Name="Person" EntityType="Self.Person" />
@@ -261,52 +261,35 @@
             <End Role="Person" EntitySet="Person" />
             <End Role="Note" EntitySet="Note" />
           </AssociationSet>
-          <FunctionImport Name="sp_login" ReturnType="Collection(WinNotesDBModel.sp_login_Result)">
-            <Parameter Name="email" Mode="In" Type="String" />
-            <Parameter Name="password" Mode="In" Type="String" />
+          <FunctionImport Name="sp_changeAvatar">
+            <Parameter Name="userID" Mode="In" Type="Int32" />
+            <Parameter Name="avatarImage" Mode="In" Type="Binary" />
+            <Parameter Name="mimeType" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="sp_refreshLoginDate">
-          <Parameter Name="id_user" Mode="In" Type="Int32" />
+          <FunctionImport Name="sp_changeNoteLocation">
+            <Parameter Name="userID" Mode="In" Type="Int32" />
+            <Parameter Name="noteID" Mode="In" Type="Int32" />
+            <Parameter Name="selectedFolder" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="sp_verifyUserName">
-            <Parameter Name="userName" Mode="In" Type="String" />
-            <Parameter Name="result" Mode="InOut" Type="Boolean" />
-          </FunctionImport>
-          <FunctionImport Name="sp_createNewUser" ReturnType="Collection(Int32)">
-            <Parameter Name="userName" Mode="In" Type="String" />
-            <Parameter Name="email" Mode="In" Type="String" />
-            <Parameter Name="password" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="sp_saveEncryptedUserID">
-            <Parameter Name="id" Mode="In" Type="Int32" />
-            <Parameter Name="encryptedID" Mode="In" Type="String" />
+          <FunctionImport Name="sp_changePassword">
+            <Parameter Name="userID" Mode="In" Type="Int32" />
+            <Parameter Name="currentPassword" Mode="In" Type="String" />
+            <Parameter Name="newPassword" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_changePersonalPhrase">
             <Parameter Name="userID" Mode="In" Type="Int32" />
             <Parameter Name="phrase" Mode="In" Type="String" />
             <Parameter Name="phraseColor" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="sp_deprueba" />
-          <FunctionImport Name="sp_changePassword">
-            <Parameter Name="userID" Mode="In" Type="Int32" />
-            <Parameter Name="currentPassword" Mode="In" Type="String" />
-            <Parameter Name="newPassword" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="sp_getUserInformation" ReturnType="Collection(WinNotesDBModel.sp_getUserInformation_Result)">
-          <Parameter Name="userID" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_changeAvatar">
-            <Parameter Name="userID" Mode="In" Type="Int32" />
-            <Parameter Name="avatarImage" Mode="In" Type="Binary" />
-            <Parameter Name="mimeType" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="sp_getUserFolders" ReturnType="Collection(WinNotesDBModel.sp_getUserFolders_Result)">
-          <Parameter Name="userID" Mode="In" Type="Int32" />
-          </FunctionImport>
           <FunctionImport Name="sp_createNewFolder">
             <Parameter Name="userID" Mode="In" Type="Int32" />
             <Parameter Name="name" Mode="In" Type="String" />
             <Parameter Name="details" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_createNewUser" ReturnType="Collection(Int32)">
+            <Parameter Name="userName" Mode="In" Type="String" />
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_editFolder">
             <Parameter Name="userID" Mode="In" Type="Int32" />
@@ -314,23 +297,37 @@
             <Parameter Name="name" Mode="In" Type="String" />
             <Parameter Name="details" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="sp_getUserFolders" ReturnType="Collection(WinNotesModel.sp_getUserFolders_Result)">
+            <Parameter Name="userID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_getUserInformation" ReturnType="Collection(WinNotesModel.sp_getUserInformation_Result)">
+            <Parameter Name="userID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_login" ReturnType="Collection(WinNotesModel.sp_login_Result)">
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_refreshLoginDate">
+            <Parameter Name="id_user" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="sp_removeFolder">
             <Parameter Name="userID" Mode="In" Type="Int32" />
             <Parameter Name="folderID" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="sp_changeNoteLocation">
-            <Parameter Name="userID" Mode="In" Type="Int32" />
-            <Parameter Name="noteID" Mode="In" Type="Int32" />
-            <Parameter Name="selectedFolder" Mode="In" Type="String" />
+          <FunctionImport Name="sp_saveEncryptedUserID">
+            <Parameter Name="id" Mode="In" Type="Int32" />
+            <Parameter Name="encryptedID" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_verifyUserName">
+            <Parameter Name="userName" Mode="In" Type="String" />
+            <Parameter Name="result" Mode="InOut" Type="Boolean" />
           </FunctionImport>
         </EntityContainer>
-        <ComplexType Name="sp_login_Result">
-          <Property Type="Int32" Name="PersonID" Nullable="false" />
-          <Property Type="String" Name="UserName" Nullable="false" />
-          <Property Type="String" Name="Email" Nullable="false" />
-          <Property Type="Binary" Name="AvatarImage" Nullable="false" />
-          <Property Type="String" Name="AvatarMIMEType" Nullable="false" />
-          <Property Type="Boolean" Name="Active" Nullable="true" />
+        <ComplexType Name="sp_getUserFolders_Result">
+          <Property Type="Int32" Name="FolderID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <Property Type="String" Name="Details" Nullable="false" />
+          <Property Type="DateTime" Name="LastModified" Nullable="false" Precision="23" />
         </ComplexType>
         <ComplexType Name="sp_getUserInformation_Result">
           <Property Type="String" Name="UserName" Nullable="false" />
@@ -341,20 +338,22 @@
           <Property Type="Binary" Name="AvatarImage" Nullable="true" />
           <Property Type="String" Name="AvatarMIMEType" Nullable="true" />
         </ComplexType>
-        <ComplexType Name="sp_getUserFolders_Result">
-          <Property Type="Int32" Name="FolderID" Nullable="false" />
-          <Property Type="String" Name="Name" Nullable="false" />
-          <Property Type="String" Name="Details" Nullable="false" />
-          <Property Type="DateTime" Name="LastModified" Nullable="false" Precision="23" />
+        <ComplexType Name="sp_login_Result">
+          <Property Type="Int32" Name="PersonID" Nullable="false" />
+          <Property Type="String" Name="UserName" Nullable="false" />
+          <Property Type="String" Name="Email" Nullable="false" />
+          <Property Type="Binary" Name="AvatarImage" Nullable="true" />
+          <Property Type="String" Name="AvatarMIMEType" Nullable="true" />
+          <Property Type="Boolean" Name="Active" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="WinNotesDBModelStoreContainer" CdmEntityContainer="WinNotesDBEntities">
+        <EntityContainerMapping StorageEntityContainer="WinNotesModelStoreContainer" CdmEntityContainer="WinNotesEntities">
           <EntitySetMapping Name="Folder">
-            <EntityTypeMapping TypeName="WinNotesDBModel.Folder">
+            <EntityTypeMapping TypeName="WinNotesModel.Folder">
               <MappingFragment StoreEntitySet="Folder">
                 <ScalarProperty Name="FolderID" ColumnName="FolderID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -365,7 +364,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Note">
-            <EntityTypeMapping TypeName="WinNotesDBModel.Note">
+            <EntityTypeMapping TypeName="WinNotesModel.Note">
               <MappingFragment StoreEntitySet="Note">
                 <ScalarProperty Name="NoteID" ColumnName="NoteID" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
@@ -379,7 +378,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Person">
-            <EntityTypeMapping TypeName="WinNotesDBModel.Person">
+            <EntityTypeMapping TypeName="WinNotesModel.Person">
               <MappingFragment StoreEntitySet="Person">
                 <ScalarProperty Name="PersonID" ColumnName="PersonID" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
@@ -396,27 +395,26 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="sp_login" FunctionName="WinNotesDBModel.Store.sp_login">
+          <FunctionImportMapping FunctionImportName="sp_changeAvatar" FunctionName="WinNotesModel.Store.sp_changeAvatar" />
+          <FunctionImportMapping FunctionImportName="sp_changeNoteLocation" FunctionName="WinNotesModel.Store.sp_changeNoteLocation" />
+          <FunctionImportMapping FunctionImportName="sp_changePassword" FunctionName="WinNotesModel.Store.sp_changePassword" />
+          <FunctionImportMapping FunctionImportName="sp_changePersonalPhrase" FunctionName="WinNotesModel.Store.sp_changePersonalPhrase" />
+          <FunctionImportMapping FunctionImportName="sp_createNewFolder" FunctionName="WinNotesModel.Store.sp_createNewFolder" />
+          <FunctionImportMapping FunctionImportName="sp_createNewUser" FunctionName="WinNotesModel.Store.sp_createNewUser" />
+          <FunctionImportMapping FunctionImportName="sp_editFolder" FunctionName="WinNotesModel.Store.sp_editFolder" />
+          <FunctionImportMapping FunctionImportName="sp_getUserFolders" FunctionName="WinNotesModel.Store.sp_getUserFolders">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="WinNotesDBModel.sp_login_Result">
-                <ScalarProperty Name="PersonID" ColumnName="PersonID" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="AvatarImage" ColumnName="AvatarImage" />
-                <ScalarProperty Name="AvatarMIMEType" ColumnName="AvatarMIMEType" />
-                <ScalarProperty Name="Active" ColumnName="Active" />
+              <ComplexTypeMapping TypeName="WinNotesModel.sp_getUserFolders_Result">
+                <ScalarProperty Name="FolderID" ColumnName="FolderID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Details" ColumnName="Details" />
+                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_refreshLoginDate" FunctionName="WinNotesDBModel.Store.sp_refreshLoginDate" />
-          <FunctionImportMapping FunctionImportName="sp_verifyUserName" FunctionName="WinNotesDBModel.Store.sp_verifyUserName" />
-          <FunctionImportMapping FunctionImportName="sp_createNewUser" FunctionName="WinNotesDBModel.Store.sp_createNewUser" />
-          <FunctionImportMapping FunctionImportName="sp_saveEncryptedUserID" FunctionName="WinNotesDBModel.Store.sp_saveEncryptedUserID" />
-          <FunctionImportMapping FunctionImportName="sp_changePersonalPhrase" FunctionName="WinNotesDBModel.Store.sp_changePersonalPhrase" />
-          <FunctionImportMapping FunctionImportName="sp_changePassword" FunctionName="WinNotesDBModel.Store.sp_changePassword" />
-          <FunctionImportMapping FunctionImportName="sp_getUserInformation" FunctionName="WinNotesDBModel.Store.sp_getUserInformation">
+          <FunctionImportMapping FunctionImportName="sp_getUserInformation" FunctionName="WinNotesModel.Store.sp_getUserInformation">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="WinNotesDBModel.sp_getUserInformation_Result">
+              <ComplexTypeMapping TypeName="WinNotesModel.sp_getUserInformation_Result">
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="RegistrationDate" ColumnName="RegistrationDate" />
@@ -427,21 +425,22 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_changeAvatar" FunctionName="WinNotesDBModel.Store.sp_changeAvatar" />
-          <FunctionImportMapping FunctionImportName="sp_getUserFolders" FunctionName="WinNotesDBModel.Store.sp_getUserFolders">
+          <FunctionImportMapping FunctionImportName="sp_login" FunctionName="WinNotesModel.Store.sp_login">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="WinNotesDBModel.sp_getUserFolders_Result">
-                <ScalarProperty Name="FolderID" ColumnName="FolderID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Details" ColumnName="Details" />
-                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+              <ComplexTypeMapping TypeName="WinNotesModel.sp_login_Result">
+                <ScalarProperty Name="PersonID" ColumnName="PersonID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="AvatarImage" ColumnName="AvatarImage" />
+                <ScalarProperty Name="AvatarMIMEType" ColumnName="AvatarMIMEType" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_createNewFolder" FunctionName="WinNotesDBModel.Store.sp_createNewFolder" />
-          <FunctionImportMapping FunctionImportName="sp_editFolder" FunctionName="WinNotesDBModel.Store.sp_editFolder" />
-          <FunctionImportMapping FunctionImportName="sp_removeFolder" FunctionName="WinNotesDBModel.Store.sp_removeFolder" />
-          <FunctionImportMapping FunctionImportName="sp_changeNoteLocation" FunctionName="WinNotesDBModel.Store.sp_changeNoteLocation" />
+          <FunctionImportMapping FunctionImportName="sp_refreshLoginDate" FunctionName="WinNotesModel.Store.sp_refreshLoginDate" />
+          <FunctionImportMapping FunctionImportName="sp_removeFolder" FunctionName="WinNotesModel.Store.sp_removeFolder" />
+          <FunctionImportMapping FunctionImportName="sp_saveEncryptedUserID" FunctionName="WinNotesModel.Store.sp_saveEncryptedUserID" />
+          <FunctionImportMapping FunctionImportName="sp_verifyUserName" FunctionName="WinNotesModel.Store.sp_verifyUserName" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

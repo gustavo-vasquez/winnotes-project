@@ -19,7 +19,7 @@ namespace Data_Access_Layer
         {
             try
             {
-                using (var context = new WinNotesDBEntities())
+                using (var context = new WinNotesEntities())
                 {                    
                     List<Folder> foldersToList = context.Folder.Where(f => f.Person_ID.Equals(userID)).ToList();
                     List<SelectListItem> listOfFolders = new List<SelectListItem>();
@@ -52,7 +52,7 @@ namespace Data_Access_Layer
         {
             try
             {
-                using (var context = new WinNotesDBEntities())
+                using (var context = new WinNotesEntities())
                 {                    
                     Person user = context.Person.Where(p => p.PersonID == userID).First();
                     int foldersCount = context.Folder.Where(f => f.Person_ID == userID).Count();
@@ -106,7 +106,7 @@ namespace Data_Access_Layer
 
                 expirationDate = new DateTime(expirationDate.Year, expirationDate.Month, expirationDate.Day, hourSelected, minuteSelected, 0);
 
-                using (var context = new WinNotesDBEntities())
+                using (var context = new WinNotesEntities())
                 {
                     Note newNote = new Note();
                     newNote.Title = title;
@@ -131,7 +131,7 @@ namespace Data_Access_Layer
         {
             try
             {
-                using (var context = new WinNotesDBEntities())
+                using (var context = new WinNotesEntities())
                 {
                     Note note = new Note();
                     note = context.Note.Where(n => n.NoteID == noteID).First();
@@ -152,7 +152,7 @@ namespace Data_Access_Layer
         {
             try
             {
-                using (var context = new WinNotesDBEntities())
+                using (var context = new WinNotesEntities())
                 {
                     Note note = new Note();
                     note = context.Note.Where(n => n.NoteID == noteID).First();
@@ -177,7 +177,7 @@ namespace Data_Access_Layer
         {
             try
             {
-                var context = new WinNotesDBEntities();                
+                var context = new WinNotesEntities();                
                 IQueryable<NoteInformationQueryable> notes = context.Note.Join(context.Folder,
                                                                             n => n.Folder_ID,
                                                                             f => f.FolderID,
@@ -206,7 +206,7 @@ namespace Data_Access_Layer
         {
             try
             {
-                using (var context = new WinNotesDBEntities())
+                using (var context = new WinNotesEntities())
                 {
                     var note = context.Note.Where(n => n.NoteID.Equals(id_note) && n.Person_ID.Equals(userID)).First();
                     if (note.Completed != true)
@@ -234,7 +234,7 @@ namespace Data_Access_Layer
         {
             try
             {
-                using (var context = new WinNotesDBEntities())
+                using (var context = new WinNotesEntities())
                 {                    
                     int userID = context.Person.Where(p => p.PersonIDEncrypted == encryptedUser).First().PersonID;
                     List<Note> notes = context.Note.Where(n => n.Person_ID == userID && n.Completed != true).ToList();

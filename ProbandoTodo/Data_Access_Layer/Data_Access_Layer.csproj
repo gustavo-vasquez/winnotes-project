@@ -35,10 +35,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -62,26 +64,26 @@
     <Compile Include="NoteDAL.cs" />
     <Compile Include="UserDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WinNotesDB.Context.cs">
+    <Compile Include="WinNotes.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>WinNotesDB.Context.tt</DependentUpon>
+      <DependentUpon>WinNotes.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="WinNotesDB.Designer.cs">
+    <Compile Include="WinNotes.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>WinNotesDB.edmx</DependentUpon>
+      <DependentUpon>WinNotes.edmx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
     <None Include="packages.config" />
-    <EntityDeploy Include="WinNotesDB.edmx">
+    <EntityDeploy Include="WinNotes.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>WinNotesDB.Designer.cs</LastGenOutput>
+      <LastGenOutput>WinNotes.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="WinNotesDB.edmx.diagram">
-      <DependentUpon>WinNotesDB.edmx</DependentUpon>
+    <None Include="WinNotes.edmx.diagram">
+      <DependentUpon>WinNotes.edmx</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -94,10 +96,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="WinNotesDB.Context.tt">
+    <Content Include="WinNotes.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>WinNotesDB.edmx</DependentUpon>
-      <LastGenOutput>WinNotesDB.Context.cs</LastGenOutput>
+      <DependentUpon>WinNotes.edmx</DependentUpon>
+      <LastGenOutput>WinNotes.Context.cs</LastGenOutput>
       <CustomToolNamespace>Domain_Layer</CustomToolNamespace>
     </Content>
   </ItemGroup>

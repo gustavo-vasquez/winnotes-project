@@ -14,7 +14,7 @@ namespace Data_Access_Layer
         {
             try
             {
-                using(var context = new WinNotesDBEntities())
+                using(var context = new WinNotesEntities())
                 {
                     //IEnumerable<Folder> folders = context.Folder.Where(f => f.Person_ID == userID).ToList();
                     List<sp_getUserFolders_Result> folders = context.sp_getUserFolders(userID).ToList();
@@ -31,7 +31,7 @@ namespace Data_Access_Layer
         {
             try
             {
-                using (var context = new WinNotesDBEntities())
+                using (var context = new WinNotesEntities())
                 {
                     //if(!context.Folder.Any(f => f.Name == name))
                     //{
@@ -60,7 +60,7 @@ namespace Data_Access_Layer
         {
             try
             {
-                using (var context = new WinNotesDBEntities())
+                using (var context = new WinNotesEntities())
                 {
                     //var folder = context.Folder.Where(f => f.Person_ID == userID && f.FolderID == folderID).First();
                     //folder.Name = name;
@@ -80,7 +80,7 @@ namespace Data_Access_Layer
         {
             try
             {
-                using(var context = new WinNotesDBEntities())
+                using(var context = new WinNotesEntities())
                 {
                     //var notes = context.Note.Where(n => n.Person_ID == userID && n.Folder_ID == folderID);
                     //context.Note.RemoveRange(notes);
@@ -100,7 +100,7 @@ namespace Data_Access_Layer
         {
             try
             {
-                using (var context = new WinNotesDBEntities())
+                using (var context = new WinNotesEntities())
                 {
                     Folder folder = context.Folder.Where(f => f.FolderID == folderID).First();
                     return folder;
@@ -116,7 +116,7 @@ namespace Data_Access_Layer
         {
             try
             {
-                using (var context = new WinNotesDBEntities())
+                using (var context = new WinNotesEntities())
                 {
                     List<Note> notes = context.Note.Where(n => n.Folder_ID == folderID && n.Person_ID == userID).ToList();                    
                     return notes;
@@ -132,7 +132,7 @@ namespace Data_Access_Layer
         {
             try
             {
-                using (var context = new WinNotesDBEntities())
+                using (var context = new WinNotesEntities())
                 {                    
                     List<Folder> folders = context.Folder.Where(f => f.Person_ID == userID).ToList();
                     List<SelectListItem> folderComboBox = new List<SelectListItem>();
@@ -152,7 +152,7 @@ namespace Data_Access_Layer
         {
             try
             {
-                using (var context = new WinNotesDBEntities())
+                using (var context = new WinNotesEntities())
                 {
                     int folderID = context.Folder.Where(f => f.Name == folderSelected && f.Person_ID == userID).First().FolderID;
                     Note note = context.Note.Where(n => n.NoteID == noteID).First();

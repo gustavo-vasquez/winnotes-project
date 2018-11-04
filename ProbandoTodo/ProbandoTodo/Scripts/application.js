@@ -56,7 +56,12 @@
     window.setTimeout(function () {
         checkIfEventsAreExpired();
         window.setInterval(checkIfEventsAreExpired, 60000);
-    }, 60000 - (new Date().getSeconds())*1000);
+    }, 60000 - (new Date().getSeconds()) * 1000);
+
+    if (window.localStorage.getItem("user-theme") !== null) {
+        if(window.localStorage.getItem("user-theme") == "Default")
+            $('link[href*="bootstrap.flatly.css"]').remove();
+    }
 });
 
 function scrollFunction() {    

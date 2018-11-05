@@ -1,7 +1,7 @@
 # Proyecto_Notas (WinNotes)
 <h4>Una aplicación web para organizar las tareas pendientes que no quieres olvidar</h4>
 
-La aplicación puede:
+Las funcionalidades de la aplicación son:
 
 <ul>
   <li>Crear usuarios</li>
@@ -21,10 +21,13 @@ Tecnologías utilizadas:
   <li>Javascript</li>
   <li>Jquery</li>
   <li>Jquery UI</li>
+  <li>Ajax</li>
   <li>Bootstrap</li>
   <li>ASP.NET MVC C#</li>
   <li>Entity Framework</li>
   <li>SQL Server</li>
 </ul>
 
-Autor: Gustavo Vasquez
+<i>Nota: el script de generación de la base de datos se encuentra en la carpeta "Sql_script" dentro del proyecto</i>
+
+<h5>Autor: Gustavo Vasquez</h5>

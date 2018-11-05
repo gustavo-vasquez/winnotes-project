@@ -33,6 +33,7 @@ namespace Data_Access_Layer
             {
                 using (var context = new WinNotesEntities())
                 {
+                    #region FORMA ALTERNATIVA
                     //if(!context.Folder.Any(f => f.Name == name))
                     //{
                     //    Folder folder = new Folder();
@@ -47,6 +48,8 @@ namespace Data_Access_Layer
                     //{
                     //    throw new ArgumentException("Ya existe una carpeta con ese nombre");
                     //}
+                    #endregion
+
                     context.sp_createNewFolder(id, name, details);
                 }
             }
@@ -62,11 +65,14 @@ namespace Data_Access_Layer
             {
                 using (var context = new WinNotesEntities())
                 {
+                    #region FORMA ALTERNATIVA
                     //var folder = context.Folder.Where(f => f.Person_ID == userID && f.FolderID == folderID).First();
                     //folder.Name = name;
                     //folder.Details = details;
                     //folder.LastModified = DateTime.Now;
                     //context.SaveChanges();
+                    #endregion
+
                     context.sp_editFolder(userID, folderID, name, details);
                 }
             }
@@ -82,11 +88,14 @@ namespace Data_Access_Layer
             {
                 using(var context = new WinNotesEntities())
                 {
+                    #region FORMA ALTERNATIVA
                     //var notes = context.Note.Where(n => n.Person_ID == userID && n.Folder_ID == folderID);
                     //context.Note.RemoveRange(notes);
                     //var folder = context.Folder.Where(f => f.Person_ID == userID && f.FolderID == folderID).First();
                     //context.Folder.Remove(folder);
                     //context.SaveChanges();                    
+                    #endregion
+
                     context.sp_removeFolder(userID, folderID);
                 }
             }

@@ -43,6 +43,8 @@ namespace Data_Access_Layer
             {
                 using (var context = new WinNotesEntities())
                 {
+
+                    #region FORMA ALTERNATIVA
                     //var existingUser = context.Person.Any(p => p.Email == Email);
 
                     //if (!existingUser && !CheckUserNameDAL(UserName))
@@ -65,6 +67,8 @@ namespace Data_Access_Layer
                     //    return Email;
                     //}
                     //return null;
+                    #endregion
+
                     var userID_objResult = context.sp_createNewUser(UserName, Email, Password).First();
                     if (userID_objResult.HasValue)
                     {
@@ -283,6 +287,7 @@ namespace Data_Access_Layer
             {
                 using (var context = new WinNotesEntities())
                 {
+                    #region FORMA ALTERNATIVA
                     //Person PersonData = context.Person.Where(p => p.PersonID == userID).FirstOrDefault();
                     //var UserInformation = new string[] { GetAvatarImage(PersonData.AvatarImage, PersonData.AvatarMIMEType),
                     //                                 PersonData.PersonalPhrase,
@@ -292,6 +297,8 @@ namespace Data_Access_Layer
                     //                                 PersonData.RegistrationDate.ToShortDateString()
                     //                               };
                     //return UserInformation;
+                    #endregion
+
                     sp_getUserInformation_Result userInformation = context.sp_getUserInformation(userID).First();
                     return new string[]
                     {
@@ -360,10 +367,13 @@ namespace Data_Access_Layer
             {
                 using (var context = new WinNotesEntities())
                 {
+                    #region FORMA ALTERNATIVA
                     //Person PersonData = context.Person.Where(p => p.PersonID == userID).First();
                     //PersonData.AvatarImage = ConvertImageToByteArray(avatarImage);
                     //PersonData.AvatarMIMEType = MIMEType;
                     //context.SaveChanges();
+                    #endregion
+
                     context.sp_changeAvatar(userID, ConvertImageToByteArray(avatarImage), MIMEType);
                 }
             }
@@ -385,11 +395,14 @@ namespace Data_Access_Layer
             try
             {
                 using (var context = new WinNotesEntities())
-                {                    
+                {
+                    #region FORMA ALTERNATIVA
                     //Person PersonData = context.Person.Where(p => p.PersonID == userID).First();
                     //PersonData.PersonalPhrase = phrase;
                     //PersonData.PhraseColor = phraseColor;
                     //context.SaveChanges();
+                    #endregion
+
                     context.sp_changePersonalPhrase(userID, phrase, phraseColor);
                 }
             }
@@ -413,6 +426,7 @@ namespace Data_Access_Layer
             {
                 using (var context = new WinNotesEntities())
                 {
+                    #region FORMA ALTERNATIVA
                     //var user = context.Person.Where(p => p.PersonID == userID).First();
                     //if (user.Password == currentPassword)
                     //{
@@ -421,6 +435,8 @@ namespace Data_Access_Layer
                     //}
                     //else
                     //    throw new ArgumentException("EL CAMPO CONTRASEÑA ACTUAL NO ES CORRECTO");
+                    #endregion
+
                     context.sp_changePassword(userID, currentPassword, newPassword);
                 }
             }

@@ -278,6 +278,7 @@
     <Content Include="Content\Images\user_pic2.jpg" />
     <Content Include="Content\Images\user_profile.jpg" />
     <Content Include="Content\Images\vector_bg.jpg" />
+    <Content Include="Content\Images\WinNotes_preview.png" />
     <Content Include="Content\Video\pencilmation_cartoon.mp4" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />

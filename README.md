@@ -1,8 +1,7 @@
-# Proyecto_Notas (WinNotes)
-<h4>Una aplicación web para organizar las tareas pendientes que no quieres olvidar</h4>
+# WinNotes
+Una aplicación web para organizar las tareas pendientes que no quieres olvidar
 
-Las funcionalidades de la aplicación son:
-
+## Funcionalidades
 <ul>
   <li>Crear usuarios</li>
   <li>Crear notas con descripciones y fecha de caducidad</li>
@@ -13,8 +12,7 @@ Las funcionalidades de la aplicación son:
   <li>Configurar el perfil (imágen de perfil, mensaje personal y cambio de contraseña)</li>
 </ul>
 
-Tecnologías utilizadas:
-
+## Tecnologías
 <ul>
   <li>HTML5</li>
   <li>CSS</li>
@@ -28,6 +26,8 @@ Tecnologías utilizadas:
   <li>SQL Server</li>
 </ul>
 
-<i>Nota: el script de generación de la base de datos se encuentra en la carpeta "Sql_script" dentro del proyecto</i>
+## Notas
+El script de generación de la base de datos se encuentra en la carpeta "Sql_script" dentro del proyecto.
 
-<h5>Autor: Gustavo Vasquez</h5>
+## Autor
+Gustavo Vasquez

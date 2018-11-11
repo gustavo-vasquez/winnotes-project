@@ -1,5 +1,7 @@
 # WinNotes
-Una aplicación web para organizar las tareas pendientes que no quieres olvidar
+Una aplicación web para organizar las tareas pendientes que no quieres olvidar.
+
+![WinNotes-Preview](https://github.com/gustavo-vasquez/Proyecto_Notas/blob/stable/ProbandoTodo/ProbandoTodo/Content/Images/WinNotes_preview.png)
 
 ## Funcionalidades
 <ul>

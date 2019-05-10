@@ -27,12 +27,6 @@ as
 go
 
 
-exec sp_login
-@email = 'testing.correo@gmail.com', @password = 'asdASD123'
-
-select * from WinNotes.Person
-
-
 -- Actualizar la fecha de ultimo login
 create procedure sp_refreshLoginDate
 @id_user integer
@@ -70,13 +64,6 @@ as
 go
 
 
-DECLARE @result bit
-EXEC sp_verifyUserName 'Testeando99', @result OUTPUT
-SELECT @result
-
-
-
-
 -- Crear nuevo usuario
 create procedure sp_createNewUser
 @userName nvarchar(max),
@@ -107,12 +94,6 @@ as
 go
 
 
-
-exec sp_createNewUser 'Testeando99', 'testing.correo@gmail.com', 'asdASD123'
-
-select * from WinNotes.Person
-
-
 -- Guardar el id de usuario encriptado
 create procedure sp_saveEncryptedUserID
 @id integer,
@@ -125,7 +106,6 @@ as
 
 	end
 go
-
 
 
 -- Cambiar la frase personal
@@ -153,11 +133,6 @@ as
 	end
 go
 
-declare @userID integer, @phrase nvarchar(max), @phraseColor varchar(max)
-exec sp_changePersonalPhrase @userID = 1, @phrase = 'Hola soy un mensaje de prueba', @phraseColor = 'green'
-select * from WinNotes.Person
-
-
 
 -- Cambiar contraseña del usuario
 create procedure sp_changePassword
@@ -183,12 +158,6 @@ as
 go
 
 
-exec sp_changePassword 2, 'asdASD123', 'qweQWE123'
-
-select * from WinNotes.Person
-
-
-
 -- Obtener la información de perfil del usuario
 create procedure sp_getUserInformation
 @userID integer
@@ -208,12 +177,6 @@ as
 		where PersonID = @userID
 	end
 go
-
-
-exec sp_getUserInformation 3
-
-select * from WinNotes.Person
-
 
 
 -- Cambiar la imágen de perfil del usuario
@@ -265,12 +228,6 @@ as
 go
 
 
-exec sp_getUserFolders 1
-select * from WinNotes.Person
-select * from WinNotes.Folder
-
-
-
 -- Crear nueva carpeta
 create procedure sp_createNewFolder
 @userID integer,
@@ -301,13 +258,6 @@ as
 go
 
 
-exec sp_createNewFolder 3, 'Carpeta de prueba', 'Creada directamente desde sql'
-
-select * from WinNotes.Person
-select * from WinNotes.Folder
-
-
-
 -- Editar carpeta
 create procedure sp_editFolder
 @userID integer,
@@ -331,12 +281,6 @@ as
 		and Person_ID = @userID
 	end
 go
-
-
-exec sp_editFolder 3, 1, 'Probando editar', 'Nuevamente desde sql'
-
-select * from WinNotes.Folder
-
 
 
 -- Eliminar carpeta
@@ -370,15 +314,6 @@ as
 
 	end
 go
-
-
-exec sp_removeFolder 
-
-select * from WinNotes.Person
-select * from WinNotes.Folder
-select * from WinNotes.Note
-
-
 
 
 create procedure sp_changeNoteLocation

@@ -1,6 +1,9 @@
 CREATE DATABASE WinNotes
 GO
 
+USE WinNotes
+GO
+
 CREATE SCHEMA WinNotes
 GO
 

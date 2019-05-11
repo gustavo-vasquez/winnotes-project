@@ -248,6 +248,10 @@
     <Content Include="Content\Images\not-authorized.png" />
     <Content Include="Content\Images\landscape_bliss_alternate_1680_1920x1200_artwallpaperhi.com.jpg" />
     <Content Include="Content\Images\monkey.png" />
+    <Content Include="Content\Images\previews\1-inicio.png" />
+    <Content Include="Content\Images\previews\2-perfil.png" />
+    <Content Include="Content\Images\previews\3-carpetas.png" />
+    <Content Include="Content\Images\previews\4-notas.png" />
     <Content Include="Content\Images\profile_wizard\theme_default.png" />
     <Content Include="Content\Images\profile_wizard\theme_flatly.png" />
     <Content Include="Content\Images\social_media\1495840698_instagram.png" />
@@ -278,7 +282,6 @@
     <Content Include="Content\Images\user_pic2.jpg" />
     <Content Include="Content\Images\user_profile.jpg" />
     <Content Include="Content\Images\vector_bg.jpg" />
-    <Content Include="Content\Images\WinNotes_preview.png" />
     <Content Include="Content\Video\pencilmation_cartoon.mp4" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />

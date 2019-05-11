@@ -1,7 +1,13 @@
 # WinNotes
 Una aplicación web para organizar las tareas pendientes que no quieres olvidar.
 
-![WinNotes-Preview](https://github.com/gustavo-vasquez/Proyecto_Notas/blob/stable/ProbandoTodo/ProbandoTodo/Content/Images/WinNotes_preview.png)
+![WinNotes-Home](ProbandoTodo/ProbandoTodo/Content/Images/previews/1-inicio.png)
+
+![WinNotes-Profile](ProbandoTodo/ProbandoTodo/Content/Images/previews/2-perfil.png)
+
+![WinNotes-Folders](ProbandoTodo/ProbandoTodo/Content/Images/previews/3-carpetas.png)
+
+![WinNotes-Notes](ProbandoTodo/ProbandoTodo/Content/Images/previews/4-notas.png)
 
 ## Funcionalidades
 <ul>

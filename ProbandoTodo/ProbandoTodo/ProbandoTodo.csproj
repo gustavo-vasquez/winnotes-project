@@ -251,7 +251,9 @@
     <Content Include="Content\Images\previews\1-inicio.png" />
     <Content Include="Content\Images\previews\2-perfil.png" />
     <Content Include="Content\Images\previews\3-carpetas.png" />
-    <Content Include="Content\Images\previews\4-notas.png" />
+    <Content Include="Content\Images\previews\4-crear_nota.png" />
+    <Content Include="Content\Images\previews\5-notas.png" />
+    <Content Include="Content\Images\previews\6-alarma.png" />
     <Content Include="Content\Images\profile_wizard\theme_default.png" />
     <Content Include="Content\Images\profile_wizard\theme_flatly.png" />
     <Content Include="Content\Images\social_media\1495840698_instagram.png" />

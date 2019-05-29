@@ -1,5 +1,5 @@
 # WinNotes
-Una aplicación web para organizar las tareas pendientes que no quieres olvidar.
+Aplicación web para organizar todas tus tareas y no olvidarte de nada.
 
 Inicio
 :-------------------------:

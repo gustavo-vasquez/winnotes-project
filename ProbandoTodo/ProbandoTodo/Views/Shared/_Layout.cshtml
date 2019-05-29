@@ -22,39 +22,6 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li class="navigation">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Menu 1 <span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">Acceso 1</a></li>
-                            <li><a href="#">Acceso 2</a></li>
-                            <li><a href="#">Acceso 3</a></li>
-                            <li><a href="#">Acceso 4</a></li>
-                            <li><a href="#">Acceso 5</a></li>
-                            <li><a href="#">Acceso 6</a></li>
-                        </ul>
-                    </li>
-                    <li class="navigation">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Menu 2 <span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">Acceso 1</a></li>
-                            <li><a href="#">Acceso 2</a></li>
-                            <li><a href="#">Acceso 3</a></li>
-                            <li><a href="#">Acceso 4</a></li>
-                            <li><a href="#">Acceso 5</a></li>
-                            <li><a href="#">Acceso 6</a></li>
-                        </ul>
-                    </li>
-                    <li class="navigation">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Menu 3 <span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">Acceso 1</a></li>
-                            <li><a href="#">Acceso 2</a></li>
-                            <li><a href="#">Acceso 3</a></li>
-                            <li><a href="#">Acceso 4</a></li>
-                            <li><a href="#">Acceso 5</a></li>
-                            <li><a href="#">Acceso 6</a></li>
-                        </ul>
-                    </li>                    
-                    <li class="navigation">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Temas<span class="caret"></span></a>
                         <ul id="themes" class="dropdown-menu" role="menu">
                             <li><a href="#"><i>*Solo para probar*</i></a></li>
@@ -70,10 +37,6 @@
                         </ul>
                     </li>
                 </ul>
-                <ul class="nav navbar-nav">                    
-                    <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>                                        
-                </ul>
                 @*@Html.Partial("_SearchBox")*@
                 @Html.Partial("_LoginPartial")
             </div>
@@ -85,44 +48,35 @@
     </div>
     <footer class="col-md-12">
         <div class="container">
-            <div class="col-md-2">
+            <div class="col-md-2 text-center">
                 <h3></h3>
                 <p class="logo-footer">WN</p>
                 <p>&copy; WinNotes - @DateTime.Now.Year</p>
-                <p>Buenos Aires</p>
-                <p>Argentina</p>
             </div>
-            <div class="col-md-3">
-                <h3 class="text-center">LEGAL</h3>
-                <ul>
+            <div class="col-md-3 text-center">
+                <h3>LEGAL</h3>
+                <ul class="list-unstyled">
                     <li><a href="#">Términos y condiciones</a></li>
                     <li><a href="#">Política de privacidad</a></li>
                 </ul>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 text-center">
                 <h3>CONTACTO</h3>
-                <ul>
-                    <li>One Microsoft Way</li>
-                    <li>Redmond, WA 98052-6399</li>
-                    <li>Teléfono: 425.555.0100</li>
-                </ul>
-                <br />
-                <ol type="I">
+                <ul class="list-unstyled">
                     <li>Soporte: <a href="#">Soporte@winnotes.com</a></li>
                     <li>Marketing: <a href="#">Marketing@winnotes.com</a></li>
-                </ol>
+                    <li>Buenos Aires, Argentina <span class="glyphicon glyphicon-map-marker"></span></li>
+                </ul>
             </div>            
-            <div class="col-md-3 social-media">
+            <div class="col-md-3 social-media text-center">
                 <h3>REDES SOCIALES</h3>
-                <ol>
-                    <li><img src="~/Content/Images/social_media/1495840813_facebook_circle.png" width="32" alt="facebook" /> &nbsp; <a href="https://www.facebook.com/">Facebook</a></li>
-                    <li><img src="~/Content/Images/social_media/1495840731_twitter_circle.png" width="32" alt="twitter" /> &nbsp; <a href="https://twitter.com/">Twitter</a></li>
-                    <li><img src="~/Content/Images/social_media/1495840725_social-03.png" width="32" alt="google+" /> &nbsp; <a href="https://plus.google.com/?hl=es">Google+</a></li>
-                    <li><img src="~/Content/Images/social_media/1495840705_youtube.png" width="32" alt="youtube" /> &nbsp; <a href="https://www.youtube.com/">Youtube</a></li>
-                    <li><img src="~/Content/Images/social_media/1495840698_instagram.png" width="32" alt="instagram" /> &nbsp; <a href="https://www.instagram.com/">Instagram</a></li>
-                    <li><img src="~/Content/Images/social_media/1495840711_github.png" width="32" alt="github" /> &nbsp; <a href="https://github.com/">Github</a></li>
-                    <li><img src="~/Content/Images/social_media/1495840719_reddit.png" width="32" alt="reddit" /> &nbsp; <a href="https://www.reddit.com/">Reddit</a></li>
-                </ol>
+                <p>
+                    <a href="https://www.facebook.com/"><img src="~/Content/Images/social_media/1495840813_facebook_circle.png" width="32" alt="facebook" /></a>
+                    <a href="https://twitter.com/"><img src="~/Content/Images/social_media/1495840731_twitter_circle.png" width="32" alt="twitter" /></a>
+                    <a href="https://www.youtube.com/"><img src="~/Content/Images/social_media/1495840705_youtube.png" width="32" alt="youtube" /></a>
+                    <a href="https://www.instagram.com/"><img src="~/Content/Images/social_media/1495840698_instagram.png" width="32" alt="instagram" /></a>
+                    <a href="https://github.com/"><img src="~/Content/Images/social_media/1495840711_github.png" width="32" alt="github" /></a>
+                </p>
             </div>
         </div>
     </footer>

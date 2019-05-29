@@ -1,8 +1,9 @@
 ﻿$(document).ready(function () {
+    $('div.container.body-content').height($(this).height() - ($('div.navbar-fixed-top').height() + $('footer').height() + 28));
     //$("#txtSearch").autocomplete({
     //    source: "/Home/Suggestion"
     //});
-    loadThemeSaved();    
+    loadThemeSaved();
 
     $('#themes').on('click', 'button', function () {
         setTheme($(this));

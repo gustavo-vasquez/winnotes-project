@@ -8,8 +8,7 @@
 }
 
 body {    
-    padding-top: 50px;    
-    /*font-family: 'Trebuchet MS';*/
+    padding-top: 50px;
     font-family: 'Noto Serif', 'Trebuchet MS';
 }
 
@@ -31,7 +30,7 @@ h6,
 /* Set padding to keep content from hitting the edges */
 .body-content {    
     padding-left: 15px;
-    padding-right: 15px;    
+    padding-right: 15px;
 }
 
 .body-content::before {

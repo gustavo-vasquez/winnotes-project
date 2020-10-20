@@ -529,6 +529,8 @@ namespace Data_Access_Layer
 
         public void UpdateAvatar(string path, int userID)
         {
+            bool deleteTemporaryFiles = false;
+
             if (!String.IsNullOrEmpty(path))
             {
                 using (var context = new WinNotesEntities())
@@ -537,14 +539,16 @@ namespace Data_Access_Layer
 
                     if (path != "/Content/Images/user_profile.jpg")
                     {
-                        using (Image img = CreateImageFromPathString(path))
-                        {
-                            System.Drawing.Imaging.ImageFormat format = img.RawFormat;
-                            System.Drawing.Imaging.ImageCodecInfo codec = System.Drawing.Imaging.ImageCodecInfo.GetImageDecoders().First(c => c.FormatID == format.Guid);
-                            user.AvatarImage = ConvertImageToByteArray(img);
-                            user.AvatarMIMEType = codec.MimeType;
-                            context.SaveChanges();
-                        }                                                                        
+                        if(!path.StartsWith("data:image"))
+                            using (Image img = CreateImageFromPathString(path))
+                            {
+                                System.Drawing.Imaging.ImageFormat format = img.RawFormat;
+                                System.Drawing.Imaging.ImageCodecInfo codec = System.Drawing.Imaging.ImageCodecInfo.GetImageDecoders().First(c => c.FormatID == format.Guid);
+                                user.AvatarImage = ConvertImageToByteArray(img);
+                                user.AvatarMIMEType = codec.MimeType;
+                                context.SaveChanges();
+                                deleteTemporaryFiles = true;
+                            }
                     }
                     else
                     {
@@ -554,7 +558,8 @@ namespace Data_Access_Layer
                     }
                 }
 
-                DeleteDirectory(path);
+                if(deleteTemporaryFiles)
+                    DeleteDirectory(path);
             }
         }
 

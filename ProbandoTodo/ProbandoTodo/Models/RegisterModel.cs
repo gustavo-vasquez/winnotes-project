@@ -26,7 +26,7 @@ namespace ProbandoTodo.Models
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Ingresar confirmar contraseña")]
-        [Compare("Password", ErrorMessage = "-Las contraseñas no coinciden")]
+        [Compare("Password", ErrorMessage = "Las contraseñas no coinciden")]
         public string ConfirmPassword { get; set; }
     }
 }

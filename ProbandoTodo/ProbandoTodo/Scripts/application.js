@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    $('div.container.body-content').height($(this).height() - ($('div.navbar-fixed-top').height() + $('footer').height() + 28));
+    //$('div.container.body-content').height($(this).height() - ($('div.navbar-fixed-top').height() + $('footer').height() + 28));
     //$("#txtSearch").autocomplete({
     //    source: "/Home/Suggestion"
     //});
@@ -168,7 +168,7 @@ function setTheme($anchor) {
         $('link[href*="bootstrap.' + themeBefore + '.css"]').remove();
 
     $('link[href*="site.css"]').remove();
-    localStorage.setItem('user-theme', themeNow);
+    //localStorage.setItem('user-theme', themeNow);
 
     var lnk = document.createElement('link');
     lnk.type = 'text/css';

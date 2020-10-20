@@ -1,6 +1,21 @@
 ﻿var panels = ["THEME", "AVATAR", "PERSONAL_MESSAGE", "PREVIEW"]; // Array con todos los paneles disponibles
-var panelActive = { NAME: "THEME", POS: 0 }; // Indica el panel que se esta mostrando
-var preview = { "theme": { "name": "Default", "image": "/Content/Images/profile_wizard/theme_default.png" }, "avatarImg": null, "personalMessage": { "phrase": null, "color": null } };
+
+var panelActive = {
+    NAME: "THEME",
+    POS: 0
+}; // Indica el panel que se esta mostrando
+
+var preview = {
+    "theme": {
+        "name": "Default",
+        "image": "/Content/Images/profile_wizard/theme_default.png"
+    },
+    "avatarImg": null,
+    "personalMessage": {
+        "phrase": null,
+        "color": null
+    }
+};
 
 $(document).ready(function () {
     prevNextBtnState();
@@ -30,7 +45,11 @@ $(document).ready(function () {
     });
 
     if (window.localStorage.getItem("user-theme") !== null) {
-        $('*[data-theme="' + window.localStorage.getItem("user-theme") + '"]').prop("checked", true);
+        //$('*[data-theme="' + window.localStorage.getItem("user-theme") + '"]').prop("checked", true);
+        var themeRadioButton = $('*[data-theme="' + window.localStorage.getItem("user-theme") + '"]');
+        themeRadioButton.prop("checked", true);
+        preview.theme.name = window.localStorage.getItem("user-theme");
+        preview.theme.image = themeRadioButton.closest('.theme').children('img').attr('src');
     }
 });
 

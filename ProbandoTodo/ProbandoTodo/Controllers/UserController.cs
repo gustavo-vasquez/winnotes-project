@@ -129,13 +129,16 @@ namespace ProbandoTodo.Controllers
         public ActionResult LogOff()
         {
             Session.Abandon();
+            Session.Clear();
+
             if (Request.Cookies.AllKeys.Contains("UHICK"))
             {
-                HttpCookie cookie = Request.Cookies["UHICK"];
+                HttpCookie cookie = new HttpCookie("UHICK");
+                //HttpCookie cookie = Request.Cookies["UHICK"];
                 cookie.Expires = DateTime.Now.AddDays(-1);
                 Response.Cookies.Add(cookie);
             }
-
+            
             return RedirectToAction("Index", "Home");
         }
 
